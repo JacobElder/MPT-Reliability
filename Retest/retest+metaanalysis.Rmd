@@ -1,0 +1,969 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(irr)
+library(metafor)
+library(psych)
+library(dplyr)
+```
+
+```{r}
+I2gen <- function(res){
+  W <- diag(1/res$vi)
+X <- model.matrix(res)
+P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+100 * sum(res$sigma2) / (sum(res$sigma2) + (res$k-res$p)/sum(diag(P)))
+}
+
+# I2gen(res.mod_D)
+
+# I2gen <- function(res, var){
+# 
+#   W <- diag(1 / var)
+#   X <- model.matrix(res)
+#   P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+#   output <- 100 * sum(res$sigma2) / (sum(res$sigma2) + (res$k - res$p) / sum(diag(P)))
+#   return(output)
+# 
+# }
+# 
+# I2gen(res.mod_D, reliability_Df$D_SE)
+
+```
+
+
+```{r}
+#path <- "/Volumes/GoogleDrive/My Drive/"
+path <- "/Volumes/"
+```
+
+
+```{r}
+x <- c("Study","D_ICC","G_ICC","OB_ICC","ACbb_ICC","ACwg_ICC","N","Interval", "Order")
+reliability_Df <- data.frame(matrix(ncol=length(x)))
+colnames(reliability_Df) <- x
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/UCR/"))
+Time1<-read.csv("IndividualParametersQuadUCR1.csv", header = T)
+Time2<-read.csv("IndividualParametersQuadUCR2.csv", header = T)
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+# 
+# raw1 <- read.csv("Race_IAT_study1_part1_quad_freq.csv", header=T)
+# raw2 <- read.csv("Race_IAT_study1_part2_quad_freq.csv", header=T)
+# 
+# Time1$subID <- raw1$subject
+# Time2$subID <- raw2$subject
+
+timeDf <- merge(Time1, Time2, by = "subject", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$ID), unique(Time2$ID)))
+
+length(setdiff(unique(Time2$ID), unique(Time1$ID)))
+```
+
+```{r}
+D_ICC <- icc(timeDf[grep("^D1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+G_ICC <- icc(timeDf[grep("^G1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+OB_ICC <- icc(timeDf[grep("^OB1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACbb_ICC <- icc(timeDf[grep("^ACbb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+reliability_Df <- rbind(reliability_Df, c("Calanchini", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, 48, 2 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/PI/"))
+Time1 <- read.csv("IndividualParametersQuadProjectImplicit1.csv")
+Time2 <- read.csv("IndividualParametersQuadProjectImplicit2.csv")
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "ID", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$subject), unique(Time2$subject)))
+
+length(setdiff(unique(Time2$subject), unique(Time1$subject)))
+```
+
+```{r}
+D_ICC <- icc(timeDf[grep("^D1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+G_ICC <- icc(timeDf[grep("^G1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+OB_ICC <- icc(timeDf[grep("^OB1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACbb_ICC <- icc(timeDf[grep("^ACbb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+reliability_Df <- rbind(reliability_Df, c("PI", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, 28, 1 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Gawronski/"))
+Time1 <- read.csv("IndividualParametersQuadGawronski1.csv")
+Time2 <- read.csv("IndividualParametersQuadGawronski2.csv")
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "code", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$code), unique(Time2$code)))
+
+length(setdiff(unique(Time2$code), unique(Time1$code)))
+```
+
+```{r}
+D_ICC <- icc(timeDf[grep("^D1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+G_ICC <- icc(timeDf[grep("^G1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+OB_ICC <- icc(timeDf[grep("^OB1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACbb_ICC <- icc(timeDf[grep("^ACbb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+reliability_Df <- rbind(reliability_Df, c("Gawronski", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, 730, 4 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Forscher/"))
+Time1<-read.csv("IndividualParametersQuadForscher1.csv", header = T)
+Time2<-read.csv("IndividualParametersQuadForscher2.csv", header = T)
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "subject", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$subID), unique(Time2$subID)))
+
+length(setdiff(unique(Time2$subID), unique(Time1$subID)))
+
+```
+
+```{r}
+D_ICC <- icc(timeDf[grep("^D1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+G_ICC <- icc(timeDf[grep("^G1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+OB_ICC <- icc(timeDf[grep("^OB1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACbb_ICC <- icc(timeDf[grep("^ACbb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+reliability_Df <- rbind(reliability_Df, c("Forscher", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, 8760, 5 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai1/"))
+Time1<-read.csv("IndividualParametersLaiStudy1Quad1.csv", header = T)
+Time2<-read.csv("IndividualParametersLaiStudy1Quad2.csv", header = T)
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "session_id", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$session_id), unique(Time2$session_id)))
+
+length(setdiff(unique(Time2$session_id), unique(Time1$session_id)))
+```
+
+```{r}
+D_ICC <- icc(timeDf[grep("^D1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+G_ICC <- icc(timeDf[grep("^G1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+OB_ICC <- icc(timeDf[grep("^OB1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACbb_ICC <- icc(timeDf[grep("^ACbb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+reliability_Df <- rbind(reliability_Df, c("Lai1", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, NA, 3 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai2/"))
+Time1<-read.csv("IndividualParametersLaiStudy2Quad1.csv", header = T)
+Time2<-read.csv("IndividualParametersLaiStudy2Quad2.csv", header = T)
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "session_id", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$session_id), unique(Time2$session_id)))
+
+length(setdiff(unique(Time2$session_id), unique(Time1$session_id)))
+```
+
+```{r}
+D_ICC <- icc(timeDf[grep("^D1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+G_ICC <- icc(timeDf[grep("^G1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+OB_ICC <- icc(timeDf[grep("^OB1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACbb_ICC <- icc(timeDf[grep("^ACbb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+reliability_Df <- rbind(reliability_Df, c("Lai2", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, NA, 3 ) )
+```
+
+```{r}
+reliability_Df <- reliability_Df[-1,]
+reliability_Df[2:ncol(reliability_Df)] <- apply(reliability_Df[2:ncol(reliability_Df)], 2, as.numeric)
+write.csv(reliability_Df, paste0(path,"Research Project/IAT_Retest/Meta-Analysis/Quad_TRT_relDf.csv"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=D_ICC, ni=N, slab=Study, var.names=c("D_Z","D_SE"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=G_ICC, ni=N, slab=Study, var.names=c("G_Z","G_SE"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=OB_ICC, ni=N, slab=Study, var.names=c("OB_Z","OB_SE"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=ACbb_ICC, ni=N, slab=Study, var.names=c("ACbb_Z","ACbb_SE"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=ACwg_ICC, ni=N, slab=Study, var.names=c("ACwg_Z","ACwg_SE"))
+```
+
+# Inspect individual studies
+
+```{r}
+ICCsonly <- reliability_Df %>% select(D_ICC:ACwg_ICC)
+colnames(ICCsonly)[apply(ICCsonly,1,which.max)]
+colnames(ICCsonly)[apply(ICCsonly,1,which.min)]
+```
+
+
+#
+
+```{r}
+res.mod_D <- rma.mv(D_Z,D_SE, random = ~1 | Study, data=reliability_Df )
+summary(res.mod_D)
+res.mod_D
+I2gen(res.mod_D)
+
+res.mod_G <- rma.mv(G_Z,G_SE, random = ~1 | Study, data=reliability_Df )
+summary(res.mod_G)
+I2gen(res.mod_G)
+
+res.mod_OB <- rma.mv(OB_Z,OB_SE, random = ~1 | Study, data=reliability_Df )
+summary(res.mod_OB)
+I2gen(res.mod_OB)
+
+res.mod_ACbb <- rma.mv(ACbb_Z,ACbb_SE, random = ~1 | Study, data=reliability_Df )
+summary(res.mod_ACbb)
+I2gen(res.mod_ACbb)
+
+res.mod_ACwg <- rma.mv(ACwg_Z, ACwg_SE, random = ~1 | Study, data=reliability_Df )
+summary(res.mod_ACwg)
+I2gen(res.mod_ACwg)
+```
+
+# Moderated by Time Interval
+
+```{r}
+reliability_Df$Order <- as.factor(reliability_Df$Order) 
+contrasts(reliability_Df$Order)<-contr.poly(5)
+timeMod_D <- rma.mv(D_Z,D_SE, random = ~ 1 |  Study, mods = ~ Order, data=reliability_Df )
+summary(timeMod_D)
+
+timeMod_G <- rma.mv(G_Z,G_SE, random = ~1 | Study,  mods = ~ Order, data=reliability_Df )
+summary(timeMod_G)
+
+timeMod_OB <- rma.mv(OB_Z,OB_SE, random = ~1 | Study, mods = ~ Order, data=reliability_Df )
+summary(timeMod_OB)
+
+timeMod_ACbb <- rma.mv(ACbb_Z,ACbb_SE, random = ~1 | Study, mods = ~ Order, data=reliability_Df )
+summary(timeMod_ACbb)
+
+timeMod_ACwg <- rma.mv(ACwg_Z, ACwg_SE, random = ~1 | Study, mods = ~ Order, data=reliability_Df )
+summary(timeMod_ACwg)
+```
+
+
+```{r}
+MPT_MA_df <- data.frame(Param=c("D","OB","ACwg","ACbb","G"),
+           ICC=c(fisherz2r(res.mod_D$b),
+                 fisherz2r(res.mod_OB$b),
+                 fisherz2r(res.mod_ACwg$b),
+                 fisherz2r(res.mod_ACbb$b),
+                 fisherz2r(res.mod_G$b)
+                 ),
+           CI.LB = c(fisherz2r(res.mod_D$ci.lb),
+                 fisherz2r(res.mod_OB$ci.lb),
+                 fisherz2r(res.mod_ACwg$ci.lb),
+                 fisherz2r(res.mod_ACbb$ci.lb),
+                 fisherz2r(res.mod_G$ci.lb)
+                            ),
+           CI.UB = c(fisherz2r(res.mod_D$ci.ub),
+                 fisherz2r(res.mod_OB$ci.ub),
+                 fisherz2r(res.mod_ACwg$ci.ub),
+                 fisherz2r(res.mod_ACbb$ci.ub),
+                 fisherz2r(res.mod_G$ci.ub)
+           )
+)
+write.csv(MPT_MA_df, paste0(path,"Research Project/IAT_Retest/Meta-Analysis/Quad_TRT_metaDf.csv"))
+```
+
+```{r}
+G_ICC$value <- 0
+x <- c("ICC_Phen", "ICC_MPT", "Samp", "TrueR", "ObsR", "PowObs", "PowTrue")
+
+Samp <- c(10:5000)
+TrueR <- c(.15, .20, .25, .30)
+ICC_Phen <- c(.8)
+MPT_P <- c("OB","D","G","ACwg","ACbb")
+ICC_MPT <- c(MPT_MA_df$ICC[MPT_MA_df$Param=="OB"], MPT_MA_df$ICC[MPT_MA_df$Param=="D"], MPT_MA_df$ICC[MPT_MA_df$Param=="ACwg"], MPT_MA_df$ICC[MPT_MA_df$Param=="ACbb"])
+N <- length(Samp) * length(TrueR) * length(ICC_Phen) * length(ICC_MPT)
+
+lt <- ICC_Phen[1]
+
+mat <- matrix(ncol=length(x), nrow = N)
+namesP <- matrix(ncol=1, nrow = N)
+
+iter <- 1
+
+for(i in 1:length(ICC_MPT)){
+  it <- ICC_MPT[i]
+  p <- MPT_P[i]
+  
+  for(j in 1:length(TrueR)){
+    jt <- TrueR[j]
+    
+    for(k in Samp){
+
+      obsCor <- jt * sqrt(lt * it)
+      powerOut <- pwr::pwr.r.test(n = k, r = obsCor)
+      powerOut2 <- pwr::pwr.r.test(n = k, r = jt)
+      powObs <- powerOut$power
+      powTrue <- powerOut2$power
+      
+      mat[iter,] <- c(lt, it, k, jt, obsCor, powObs, powTrue)
+      namesP[iter] <- p
+      
+      iter <- iter + 1
+      
+    }
+  }
+}
+colnames(mat) <- x
+df <- as.data.frame(mat)
+df <- cbind(namesP, df)
+colnames(df)[1] <- "Param"
+#dftest <- stack(df[])
+
+library(tidyverse)
+# df %>%
+#   group_by(Param) %>%
+  
+
+```
+
+```{r}
+OBdf<-subset(df, Param=="OB")  
+ggplot(OBdf, aes(x=Samp, y=PowObs, color=as.factor(TrueR) )) +
+    geom_line() +
+  geom_line(aes(y=PowTrue),linetype="dashed") +
+  geom_hline(yintercept=.80, linetype="dashed", 
+                color = "black", size=.5) + labs(title="N for estimating correlation between OB and .8 Reliable Phenotype \nNote: Solid denotes N for observed correlation, while dashed denotes \nN for perfect reliability.",
+        x ="N", y = "Power", color="True R")
+
+Ddf<-subset(df, Param=="D") 
+Ddf<-Ddf[Ddf$Samp<1500,]
+ggplot(Ddf, aes(x=Samp, y=PowObs, color=as.factor(TrueR) ))  + jtools::theme_apa() +
+    geom_line() +
+  geom_line(aes(y=PowTrue),linetype="dashed") +
+  geom_hline(yintercept=.80, linetype="dashed", 
+                color = "black", size=.5) + labs(title="N for estimating correlation between D and .8 Reliable Phenotype \nNote: Solid denotes N for observed correlation, while dashed denotes \nN for perfect reliability.",
+        x ="N", y = "Power", color="True R") + 
+scale_x_continuous(breaks = pretty(Ddf$Samp, n = 20))+
+  theme(axis.text.x = element_text(angle = 45))#+
+  scale_x_continuous(limits = c(0, 2400))
+
+ACbbdf<-subset(df, Param=="ACbb")  
+ggplot(ACbbdf, aes(x=Samp, y=PowObs, color=as.factor(TrueR) )) +
+    geom_line() +
+  geom_line(aes(y=PowTrue),linetype="dashed") +
+  geom_hline(yintercept=.80, linetype="dashed", 
+                color = "black", size=.5) + labs(title="N for estimating correlation between ACbb and .8 Reliable Phenotype \nNote: Solid denotes N for observed correlation, while dashed denotes \nN for perfect reliability.",
+        x ="N", y = "Power", color="True R")
+
+ACwgdf<-subset(df, Param=="ACwg")  
+ggplot(ACwgdf, aes(x=Samp, y=PowObs, color=as.factor(TrueR) )) +
+    geom_line() +
+  geom_line(aes(y=PowTrue),linetype="dashed") +
+  geom_hline(yintercept=.80, linetype="dashed", 
+                color = "black", size=.5) + labs(title="N for estimating correlation between ACwg and .8 Reliable Phenotype \nNote: Solid denotes N for observed correlation, while dashed denotes \nN for perfect reliability.",
+        x ="N", y = "Power", color="True R")
+
+Gdf<-subset(df, Param=="G")  
+ggplot(Gdf, aes(x=Samp, y=PowObs, color=as.factor(TrueR) )) +
+    geom_line() +
+  geom_line(aes(y=PowTrue),linetype="dashed") +
+  geom_hline(yintercept=.80, linetype="dashed", 
+                color = "black", size=.5) + labs(title="N for estimating correlation between G and .8 Reliable Phenotype \nNote: Solid denotes N for observed correlation, while dashed denotes \nN for perfect reliability.",
+        x ="N", y = "Power", color="True R")
+```
+
+```{r}
+G_ICC$value <- 0
+x <- c("ICC_Phen", "ICC_MPT", "TrueR", "ObsR", "SampObs", "SampTrue")
+
+Samp <- c(10:5000)
+TrueR <- c(.15, .20, .25, .30)
+ICC_Phen <- c(40:100/100)
+MPT_P <- c("OB","D","ACwg","ACbb")
+
+
+ICC_MPT <- c(MPT_MA_df$ICC[MPT_MA_df$Param=="OB"], MPT_MA_df$ICC[MPT_MA_df$Param=="D"], MPT_MA_df$ICC[MPT_MA_df$Param=="ACwg"], MPT_MA_df$ICC[MPT_MA_df$Param=="ACbb"])
+N <- length(Samp) * length(TrueR) * length(ICC_Phen) * length(ICC_MPT)
+
+mat <- matrix(ncol=length(x), nrow = N)
+namesP <- matrix(ncol=1, nrow = N)
+
+iter <- 1
+
+for(i in 1:length(ICC_MPT)){
+  it <- ICC_MPT[i]
+  p <- MPT_P[i]
+  
+  for(k in 1:length(ICC_Phen)){
+  
+    kt <- ICC_Phen[k]
+    
+  for(j in 1:length(TrueR)){
+    jt <- TrueR[j]
+
+      obsCor <- jt * sqrt(kt * it)
+      powerOut <- pwr::pwr.r.test(power = .8, r = obsCor)
+      powerOut2 <- pwr::pwr.r.test(power = .8, r = jt)
+      sampObs <- powerOut$n
+      sampTrue <- powerOut2$n
+      
+      mat[iter,] <- c(kt, it, jt, obsCor, sampObs, sampTrue)
+      namesP[iter] <- p
+      
+      iter <- iter + 1
+      
+  }
+  }
+}
+colnames(mat) <- x
+df <- as.data.frame(mat)
+df <- cbind(namesP, df)
+colnames(df)[1] <- "Param"
+#dftest <- stack(df[])
+
+library(tidyverse)
+# df %>%
+#   group_by(Param) %>%
+  
+
+```
+
+```{r}
+OBdf<-subset(df, Param=="OB")  
+ggplot(OBdf, aes(x=ICC_Phen, y=SampObs, color=as.factor(TrueR) )) +
+    geom_line() + 
+  labs(title="Required Sample Size for 80% Power to Detect Association\nBetween OB and Phenotype",
+        x ="Phenotypic ICC", y = "Sample Size", color="True R")
+
+Ddf<-subset(df, Param=="D")  
+ggplot(Ddf, aes(x=ICC_Phen, y=SampObs, color=as.factor(TrueR) )) + jtools::theme_apa() +
+    geom_line() + 
+  labs(title="Required Sample Size for 80% Power to Detect Association\nBetween D and Phenotype",
+        x ="Phenotypic ICC", y = "Sample Size", color="True R") + 
+scale_y_continuous(breaks = pretty(Ddf$SampObs, n = 20))
+
+ACbbdf<-subset(df, Param=="ACbb")  
+ggplot(ACbbdf, aes(x=ICC_Phen, y=SampObs, color=as.factor(TrueR) )) +
+    geom_line() + 
+  labs(title="Required Sample Size for 80% Power to Detect Association\nBetween ACbb and Phenotype",
+        x ="Phenotypic ICC", y = "Sample Size", color="True R")
+
+ACwgdf<-subset(df, Param=="ACwg")  
+ggplot(ACwgdf, aes(x=ICC_Phen, y=SampObs, color=as.factor(TrueR) )) +
+    geom_line() + 
+  labs(title="Required Sample Size for 80% Power to Detect Association\nBetween ACwg and Phenotype",
+        x ="Phenotypic ICC", y = "Sample Size", color="True R")
+```
+
+
+# PD Model
+
+```{r}
+x <- c("Study","Ab_ICC","Aw_ICC","Cb_ICC","Cp_ICC","Cu_ICC","Cw_ICC","N","Interval","Order")
+PDrel_Df <- data.frame(matrix(ncol=length(x)))
+colnames(PDrel_Df) <- x
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/UCR/"))
+Time1<-read.csv("IndividualParametersPDUCR1.csv", header = T)
+Time2<-read.csv("IndividualParametersPDUCR2.csv", header = T)
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "subject", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$ID), unique(Time2$ID)))
+
+length(setdiff(unique(Time2$ID), unique(Time1$ID)))
+```
+
+```{r}
+Ab_ICC <- icc(timeDf[grep("^Ab1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Aw_ICC <- icc(timeDf[grep("^Aw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cb_ICC <- icc(timeDf[grep("^Cb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cp_ICC <- icc(timeDf[grep("^Cp1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cu_ICC <- icc(timeDf[grep("^Cu1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+PDrel_Df <- rbind(PDrel_Df, c("Calanchini", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, 48, 2 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/PI/"))
+Time1 <- read.csv("IndividualParametersProjectImplicitPD1.csv")
+Time2 <- read.csv("IndividualParametersProjectImplicitPD2.csv")
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "ID", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$subject), unique(Time2$subject)))
+
+length(setdiff(unique(Time2$subject), unique(Time1$subject)))
+```
+
+```{r}
+Ab_ICC <- icc(timeDf[grep("^Ab1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Aw_ICC <- icc(timeDf[grep("^Aw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cb_ICC <- icc(timeDf[grep("^Cb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cp_ICC <- icc(timeDf[grep("^Cp1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cu_ICC <- icc(timeDf[grep("^Cu1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+PDrel_Df <- rbind(PDrel_Df, c("PI", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, 28, 1 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Gawronski/"))
+Time1 <- read.csv("IndividualParametersPDGawronski1.csv")
+Time2 <- read.csv("IndividualParametersPDGawronski2.csv")
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "code", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$code), unique(Time2$code)))
+
+length(setdiff(unique(Time2$code), unique(Time1$code)))
+```
+
+
+```{r}
+Ab_ICC <- icc(timeDf[grep("^Ab1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Aw_ICC <- icc(timeDf[grep("^Aw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cb_ICC <- icc(timeDf[grep("^Cb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cp_ICC <- icc(timeDf[grep("^Cp1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cu_ICC <- icc(timeDf[grep("^Cu1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+PDrel_Df <- rbind(PDrel_Df, c("Gawronski", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, 730, 4 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Forscher/"))
+Time1<-read.csv("IndividualParametersForscherPD1.csv", header = T)
+Time2<-read.csv("IndividualParametersForscherPD2.csv", header = T)
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "subject", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$subID), unique(Time2$subID)))
+
+length(setdiff(unique(Time2$subID), unique(Time1$subID)))
+
+```
+
+```{r}
+Ab_ICC <- icc(timeDf[grep("^Ab1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Aw_ICC <- icc(timeDf[grep("^Aw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cb_ICC <- icc(timeDf[grep("^Cb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cp_ICC <- icc(timeDf[grep("^Cp1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cu_ICC <- icc(timeDf[grep("^Cu1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+PDrel_Df <- rbind(PDrel_Df, c("Forscher", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, 8760, 5 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai1/"))
+Time1<-read.csv("IndividualParametersLaiStudy1PD1.csv", header = T)
+Time2<-read.csv("IndividualParametersLaiStudy1PD2.csv", header = T)
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "session_id", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$session_id), unique(Time2$session_id)))
+
+length(setdiff(unique(Time2$session_id), unique(Time1$session_id)))
+```
+
+```{r}
+Ab_ICC <- icc(timeDf[grep("^Ab1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Aw_ICC <- icc(timeDf[grep("^Aw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cb_ICC <- icc(timeDf[grep("^Cb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cp_ICC <- icc(timeDf[grep("^Cp1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cu_ICC <- icc(timeDf[grep("^Cu1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+PDrel_Df <- rbind(PDrel_Df, c("Lai1", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, NA, 3 ) )
+```
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai2/"))
+Time1<-read.csv("IndividualParametersLaiStudy2PD1.csv", header = T)
+Time2<-read.csv("IndividualParametersLaiStudy2PD2.csv", header = T)
+
+colnames(Time1)[2:ncol(Time1)]<-paste(colnames(Time1[2:ncol(Time1)]),"T1",sep="_")
+colnames(Time2)[2:ncol(Time2)]<-paste(colnames(Time2[2:ncol(Time2)]),"T2",sep="_")
+
+timeDf <- merge(Time1, Time2, by = "session_id", all.x = T, all.y = T)
+#timeDf <- merge(Time1, Time2, by = "subID")
+
+length(setdiff(unique(Time1$session_id), unique(Time2$session_id)))
+
+length(setdiff(unique(Time2$session_id), unique(Time1$session_id)))
+```
+
+```{r}
+Ab_ICC <- icc(timeDf[grep("^Ab1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Aw_ICC <- icc(timeDf[grep("^Aw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cb_ICC <- icc(timeDf[grep("^Cb1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cp_ICC <- icc(timeDf[grep("^Cp1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cu_ICC <- icc(timeDf[grep("^Cu1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+
+Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"), 
+    type = c("consistency"), 
+    unit = c("single"))
+```
+
+```{r}
+PDrel_Df <- rbind(PDrel_Df, c("Lai2", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, NA, 3 ) )
+```
+
+
+```{r}
+PDrel_Df <- PDrel_Df[-1,]
+PDrel_Df[2:ncol(PDrel_Df)] <- apply(PDrel_Df[2:ncol(PDrel_Df)], 2, as.numeric)
+write.csv(PDrel_Df, paste0(path,"Research Project/IAT_Retest/Meta-Analysis/PD_TRT_relDf.csv"))
+PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Ab_ICC, ni=N, slab=Study, var.names=c("Ab_Z","Ab_SE"))
+PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Aw_ICC, ni=N, slab=Study, var.names=c("Aw_Z","Aw_SE"))
+PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Cb_ICC, ni=N, slab=Study, var.names=c("Cb_Z","Cb_SE"))
+PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Cp_ICC, ni=N, slab=Study, var.names=c("Cp_Z","Cp_SE"))
+PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Cu_ICC, ni=N, slab=Study, var.names=c("Cu_Z","Cu_SE"))
+PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Cw_ICC, ni=N, slab=Study, var.names=c("Cw_Z","Cw_SE"))
+```
+
+# Individual studies
+
+```{r}
+ICCsonly <- PDrel_Df %>% select(Ab_ICC:Cw_ICC)
+colnames(ICCsonly)[apply(ICCsonly,1,which.max)]
+colnames(ICCsonly)[apply(ICCsonly,1,which.min)]
+```
+
+```{r}
+res.mod_Ab <- rma.mv(Ab_Z,Ab_SE, random = ~1 | Study, data=PDrel_Df )
+summary(res.mod_Ab)
+I2gen(res.mod_Ab)
+
+res.mod_Aw <- rma.mv(Aw_Z,Aw_SE, random = ~1 | Study, data=PDrel_Df )
+summary(res.mod_Aw)
+I2gen(res.mod_Aw)
+
+res.mod_Cb <- rma.mv(Cb_Z,Cb_SE, random = ~1 | Study, data=PDrel_Df )
+summary(res.mod_Cb)
+I2gen(res.mod_Cb)
+
+res.mod_Cp <- rma.mv(Cp_Z,Cp_SE, random = ~1 | Study, data=PDrel_Df )
+summary(res.mod_Cp)
+I2gen(res.mod_Cp)
+
+res.mod_Cu <- rma.mv(Cu_Z,Cu_SE, random = ~1 | Study, data=PDrel_Df )
+summary(res.mod_Cu)
+I2gen(res.mod_Cu)
+
+res.mod_Cw <- rma.mv(Cw_Z,Cw_SE, random = ~1 | Study, data=PDrel_Df )
+summary(res.mod_Cw)
+I2gen(res.mod_Cw)
+```
+
+# Moderated by Time Interval
+
+```{r}
+PDrel_Df$Order <- as.factor(PDrel_Df$Order) 
+contrasts(PDrel_Df$Order)<-contr.poly(5)
+timeMod_Ab <- rma.mv(Ab_Z,Ab_SE, random = ~1 | Study, mods = ~ Order,   data=PDrel_Df )
+summary(timeMod_Ab)
+
+timeMod_Aw <- rma.mv(Aw_Z,Aw_SE, random = ~1 | Study, mods = ~ Order,  data=PDrel_Df )
+summary(timeMod_G)
+
+timeMod_Cb <- rma.mv(Cb_Z,Cb_SE, random = ~1 | Study, mods = ~ Order,  data=PDrel_Df )
+summary(timeMod_Cb)
+
+timeMod_Cp <- rma.mv(Cp_Z,Cp_SE, random = ~1 | Study, mods = ~ Order,  data=PDrel_Df )
+summary(timeMod_Cp)
+
+timeMod_Cu <- rma.mv(Cu_Z,Cu_SE, random = ~1 | Study, mods = ~ Order,  data=PDrel_Df )
+summary(timeMod_Cu)
+
+timeMod_Cw <- rma.mv(Cw_Z,Cw_SE, random = ~1 | Study, mods = ~ Order,  data=PDrel_Df )
+summary(timeMod_Cw)
+```
+
+```{r}
+pd_MA_df <- data.frame(Param=c("Ab","Aw","Cb","Cp","Cu","Cw") ,
+           ICC=c( fisherz2r(res.mod_Ab$b),
+                 fisherz2r(res.mod_Aw$b),
+                 fisherz2r(res.mod_Cb$b),
+                 fisherz2r(res.mod_Cp$b),
+                 fisherz2r(res.mod_Cu$b),
+                 fisherz2r(res.mod_Cw$b)
+           ),
+           CI.LB = c(
+                 fisherz2r(res.mod_Ab$ci.lb),
+                 fisherz2r(res.mod_Aw$ci.lb),
+                 fisherz2r(res.mod_Cb$ci.lb),
+                 fisherz2r(res.mod_Cp$ci.lb),
+                 fisherz2r(res.mod_Cu$ci.lb),
+                 fisherz2r(res.mod_Cw$ci.lb)
+           ),
+           CI.UB = c(
+                 fisherz2r(res.mod_Ab$ci.ub),
+                 fisherz2r(res.mod_Aw$ci.ub),
+                 fisherz2r(res.mod_Cb$ci.ub),
+                 fisherz2r(res.mod_Cp$ci.ub),
+                 fisherz2r(res.mod_Cu$ci.ub),
+                 fisherz2r(res.mod_Cw$ci.ub)
+           )
+)
+write.csv(pd_MA_df, paste0(path,"Research Project/IAT_Retest/Meta-Analysis/PD_TRT_metaDf.csv"))
+```
+

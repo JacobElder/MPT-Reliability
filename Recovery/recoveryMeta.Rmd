@@ -1,0 +1,359 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(psych)
+library(metafor)
+```
+
+
+# Set path
+
+```{r}
+path <- "/Volumes/"
+```
+
+# Load Original PD Params
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/"))
+Calanchini.PD.True.Time1<-read.csv("UCR/IndividualParametersPDUCR1.csv", header = T)
+Calanchini.PD.True.Time2<-read.csv("UCR/IndividualParametersPDUCR2.csv", header = T)
+PI.PD.True.Time1 <- read.csv("PI/IndividualParametersProjectImplicitPD1.csv",header=T)
+PI.PD.True.Time2 <- read.csv("PI/IndividualParametersProjectImplicitPD2.csv",header=T)
+Gawronski.PD.True.Time1 <- read.csv("Gawronski/IndividualParametersPDGawronski1.csv",header=T)
+Gawronski.PD.True.Time2 <- read.csv("Gawronski/IndividualParametersPDGawronski2.csv",header=T)
+Forscher.PD.True.Time1<-read.csv("Forscher/IndividualParametersForscherPD1.csv", header = T)
+Forscher.PD.True.Time2<-read.csv("Forscher/IndividualParametersForscherPD2.csv", header = T)
+Lai1.PD.True.Time1<-read.csv("Lai1/IndividualParametersLaiStudy1PD1.csv", header = T)
+Lai1.PD.True.Time2<-read.csv("Lai1/IndividualParametersLaiStudy1PD2.csv", header = T)
+Lai2.PD.True.Time1<-read.csv("Lai2/IndividualParametersLaiStudy2PD1.csv", header = T)
+Lai2.PD.True.Time2<-read.csv("Lai2/IndividualParametersLaiStudy2PD2.csv", header = T)
+
+Time1<-grep(".PD.True.Time1",names(.GlobalEnv),value=TRUE)
+Time1_list<-do.call("list",mget(Time1))
+Time2<-grep(".PD.True.Time2",names(.GlobalEnv),value=TRUE)
+Time2_list<-do.call("list",mget(Time2))
+
+PD_trueParams <- list(Time1_list, Time2_list)
+```
+
+# Load Original Quad Params
+
+```{r}
+path <- "/Volumes/"
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/"))
+Calanchini.Quad.True.Time1<-read.csv("UCR/IndividualParametersQuadUCR1.csv", header = T)
+Calanchini.Quad.True.Time2<-read.csv("UCR/IndividualParametersQuadUCR2.csv", header = T)
+PI.Quad.True.Time1 <- read.csv("PI/IndividualParametersQuadProjectImplicit1.csv",header=T)
+PI.Quad.True.Time2 <- read.csv("PI/IndividualParametersQuadProjectImplicit2.csv",header=T)
+Gawronski.Quad.True.Time1 <- read.csv("Gawronski/IndividualParametersQuadGawronski1.csv",header=T)
+Gawronski.Quad.True.Time2 <- read.csv("Gawronski/IndividualParametersQuadGawronski2.csv",header=T)
+Forscher.Quad.True.Time1<-read.csv("Forscher/IndividualParametersQuadForscher1.csv", header = T)
+Forscher.Quad.True.Time2<-read.csv("Forscher/IndividualParametersQuadForscher2.csv", header = T)
+Lai1.Quad.True.Time1<-read.csv("Lai1/IndividualParametersLaiStudy1Quad1.csv", header = T)
+Lai1.Quad.True.Time2<-read.csv("Lai1/IndividualParametersLaiStudy1Quad2.csv", header = T)
+Lai2.Quad.True.Time1<-read.csv("Lai2/IndividualParametersLaiStudy2Quad1.csv", header = T)
+Lai2.Quad.True.Time2<-read.csv("Lai2/IndividualParametersLaiStudy2Quad2.csv", header = T)
+
+Time1<-grep(".Quad.True.Time1",names(.GlobalEnv),value=TRUE)
+Time1_list<-do.call("list",mget(Time1))
+Time2<-grep(".Quad.True.Time2",names(.GlobalEnv),value=TRUE)
+Time2_list<-do.call("list",mget(Time2))
+
+Quad_trueParams <- list(Time1_list, Time2_list)
+```
+
+# Load Recovered PD Params
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Recovery/RecoveredParams/PD/"))
+times<-c("Time1","Time2")
+
+PDdirs <- list.dirs(path = ".", full.names = TRUE, recursive = TRUE)[-1]
+d <- PDdirs[4]
+for(d in PDdirs){
+  for(ti in times){
+    curFiles <- list.files(path=d,pattern="\\.csv$")
+    id<-grep(ti,curFiles)
+    output<-read.csv(paste0(d,"/",curFiles[id]))
+    name<-gsub("./","",d)
+    name<-gsub(" ","",name)
+    assign(paste0(name,".PD.Recov.",ti),output)
+  }
+}
+
+Time1<-grep(".PD.Recov.Time1",names(.GlobalEnv),value=TRUE)
+Time1_list<-do.call("list",mget(Time1))
+Time2<-grep(".PD.Recov.Time2",names(.GlobalEnv),value=TRUE)
+Time2_list<-do.call("list",mget(Time2))
+
+PD_recovParams <- list(Time1_list, Time2_list)
+```
+
+# Load Recovered Quad Params
+
+```{r}
+setwd(paste0(path,"Research Project/IAT_Retest/Recovery/RecoveredParams/Quad/"))
+times<-c("Time1","Time2")
+
+Quaddirs <- list.dirs(path = ".", full.names = TRUE, recursive = TRUE)[-1]
+d <- Quaddirs[4]
+for(d in Quaddirs){
+  for(ti in times){
+    curFiles <- list.files(path=d,pattern="\\.csv$")
+    id<-grep(ti,curFiles)
+    output<-read.csv(paste0(d,"/",curFiles[id]))
+    name<-gsub("./","",d)
+    name<-gsub(" ","",name)
+    assign(paste0(name,".Quad.Recov.",ti),output)
+  }
+}
+
+Time1<-grep(".Quad.Recov.Time1",names(.GlobalEnv),value=TRUE)
+Time1_list<-do.call("list",mget(Time1))
+Time2<-grep(".Quad.Recov.Time2",names(.GlobalEnv),value=TRUE)
+Time2_list<-do.call("list",mget(Time2))
+
+Quad_recovParams <- list(Time1_list, Time2_list)
+```
+
+# PD Recovery
+
+```{r}
+PDnames<-gsub("./","",PDdirs)
+PDnames<-gsub(" ","",PDnames)
+paramnames<-names(PI.PD.True.Time1)[2:7]
+x<-c("Study","Time",paramnames)
+PDrecovDf <- matrix(nrow=length(PDnames)*2,ncol=length(x))
+k<-1
+for(n in PDnames){
+  for(ti in 1:length(times)){
+    time<-times[ti]
+    timeQrecovList <- PD_recovParams[[ti]]
+    timeQtrueList <- PD_trueParams[[ti]]
+    curQrecov <- timeQrecovList[[ grep(n,names(timeQrecovList)) ]]
+    curQtrue <- timeQtrueList[[ grep(n,names(timeQtrueList)) ]]
+    
+    recovVector <- c()
+    for(p in paramnames){
+      currentRecovery <- cor(curQrecov[,p],curQtrue[,p])
+      recovVector <- c(recovVector, currentRecovery)
+    }
+    PDrecovDf[k,] <- c(n,time,recovVector)
+    k <- k + 1
+    
+  }
+}
+colnames(PDrecovDf) <- x
+PDrecovDf <- as.data.frame(PDrecovDf)
+PDrecovDf[3:8] <- apply(PDrecovDf[3:8], 2, as.numeric)
+```
+
+
+# Quad Recovery
+
+```{r}
+Quadnames<-gsub("./","",Quaddirs)
+Quadnames<-gsub(" ","",Quadnames)
+paramnames<-names(PI.Quad.True.Time1)[2:6]
+x<-c("Study","Time",paramnames)
+QuadRecovDf <- matrix(nrow=length(Quadnames)*2,ncol=length(x))
+k<-1
+for(n in Quadnames){
+  for(ti in 1:length(times)){
+    time<-times[ti]
+    timeQrecovList <- Quad_recovParams[[ti]]
+    timeQtrueList <- Quad_trueParams[[ti]]
+    curQrecov <- timeQrecovList[[ grep(n,names(timeQrecovList)) ]]
+    curQtrue <- timeQtrueList[[ grep(n,names(timeQtrueList)) ]]
+    
+    recovVector <- c()
+    for(p in paramnames){
+      currentRecovery <- cor(curQrecov[,p],curQtrue[,p])
+      recovVector <- c(recovVector, currentRecovery)
+    }
+    QuadRecovDf[k,] <- c(n,time,recovVector)
+    k <- k + 1
+    
+  }
+}
+colnames(QuadRecovDf) <- x
+QuadRecovDf <- as.data.frame(QuadRecovDf)
+QuadRecovDf[3:7] <- apply(QuadRecovDf[3:7], 2, as.numeric)
+```
+
+```{r}
+QuadRecovDf$N[QuadRecovDf$Study=="Lai1"] <- nrow(Lai1.Quad.Recov.Time1)
+QuadRecovDf$N[QuadRecovDf$Study=="Lai2"] <- nrow(Lai2.Quad.Recov.Time1)
+QuadRecovDf$N[QuadRecovDf$Study=="Calanchini"] <- nrow(Calanchini.Quad.Recov.Time1)
+QuadRecovDf$N[QuadRecovDf$Study=="Forscher"] <- nrow(Forscher.Quad.Recov.Time1)
+QuadRecovDf$N[QuadRecovDf$Study=="Gawronski"] <- nrow(Gawronski.Quad.Recov.Time1)
+QuadRecovDf$N[QuadRecovDf$Study=="PI"] <- nrow(PI.Quad.Recov.Time1)
+write.csv(QuadRecovDf, paste0(path,"Research Project/IAT_Retest/Recovery/Meta-Analysis/QuadRecovDf.csv"))
+```
+
+```{r}
+PDrecovDf$N[PDrecovDf$Study=="Lai1"] <- nrow(Lai1.PD.Recov.Time1)
+PDrecovDf$N[PDrecovDf$Study=="Lai2"] <- nrow(Lai2.PD.Recov.Time1)
+PDrecovDf$N[PDrecovDf$Study=="Calanchini"] <- nrow(Calanchini.PD.Recov.Time1)
+PDrecovDf$N[PDrecovDf$Study=="Forscher"] <- nrow(Forscher.PD.Recov.Time1)
+PDrecovDf$N[PDrecovDf$Study=="Gawronski"] <- nrow(Gawronski.PD.Recov.Time1)
+PDrecovDf$N[PDrecovDf$Study=="PI"] <- nrow(PI.PD.Recov.Time1)
+write.csv(PDrecovDf, paste0(path,"Research Project/IAT_Retest/Recovery/Meta-Analysis/PDRecovDf.csv"))
+```
+
+# Meta-Analysis
+
+## Heterogeneity Function
+
+```{r}
+I2gen <- function(res){
+  W <- diag(1/res$vi)
+X <- model.matrix(res)
+P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+100 * sum(res$sigma2) / (sum(res$sigma2) + (res$k-res$p)/sum(diag(P)))
+}
+```
+
+# R to Z transform
+
+```{r}
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=ACbb1, ni=N, slab=Study, var.names=c("ACbb_Z","ACbb_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=ACwg1, ni=N, slab=Study, var.names=c("ACwg_Z","ACwg_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=D1, ni=N, slab=Study, var.names=c("D_Z","D_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=G1, ni=N, slab=Study, var.names=c("G_Z","G_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=OB1, ni=N, slab=Study, var.names=c("OB_Z","OB_SE"))
+```
+
+```{r}
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Ab1, ni=N, slab=Study, var.names=c("Ab_Z","Ab_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Aw1, ni=N, slab=Study, var.names=c("Aw_Z","Aw_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cb1, ni=N, slab=Study, var.names=c("Cb_Z","Cb_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cp1, ni=N, slab=Study, var.names=c("Cp_Z","Cp_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cu1, ni=N, slab=Study, var.names=c("Cu_Z","Cu_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cw1, ni=N, slab=Study, var.names=c("Cw_Z","Cw_SE"))
+```
+
+```{r}
+res.mod_D <- rma.mv(D_Z,D_SE, random = ~1 | Study/Time, data=QuadRecovDf )
+summary(res.mod_D)
+I2gen(res.mod_D)
+
+res.mod_G <- rma.mv(G_Z,G_SE, random = ~1 | Study/Time, data=QuadRecovDf )
+summary(res.mod_G)
+I2gen(res.mod_G)
+
+res.mod_OB <- rma.mv(OB_Z,OB_SE, random = ~1 | Study/Time, data=QuadRecovDf )
+summary(res.mod_OB)
+I2gen(res.mod_OB)
+
+res.mod_ACbb <- rma.mv(ACbb_Z,ACbb_SE, random = ~1 | Study/Time, data=QuadRecovDf )
+summary(res.mod_ACbb)
+I2gen(res.mod_ACbb)
+
+res.mod_ACwg <- rma.mv(ACwg_Z, ACwg_SE, random = ~1 | Study/Time, data=QuadRecovDf )
+summary(res.mod_ACwg)
+I2gen(res.mod_ACwg)
+```
+
+```{r}
+res.mod_Ab <- rma.mv(Ab_Z,Ab_SE, random = ~1 |  Study/Time, data=PDrecovDf )
+summary(res.mod_Ab)
+I2gen(res.mod_Ab)
+
+res.mod_Aw <- rma.mv(Aw_Z,Aw_SE, random = ~1 |  Study/Time, data=PDrecovDf )
+summary(res.mod_Aw)
+I2gen(res.mod_Aw)
+
+res.mod_Cb <- rma.mv(Cb_Z,Cb_SE, random = ~1 |  Study/Time, data=PDrecovDf )
+summary(res.mod_Cb)
+I2gen(res.mod_Cb)
+
+res.mod_Cp <- rma.mv(Cp_Z,Cp_SE, random = ~1 |  Study/Time, data=PDrecovDf )
+summary(res.mod_Cp)
+I2gen(res.mod_Cp)
+
+res.mod_Cu <- rma.mv(Cu_Z,Cu_SE, random = ~1 |  Study/Time, data=PDrecovDf )
+summary(res.mod_Cu)
+I2gen(res.mod_Cu)
+
+res.mod_Cw <- rma.mv(Cw_Z,Cw_SE, random = ~1 |  Study/Time, data=PDrecovDf )
+summary(res.mod_Cw)
+I2gen(res.mod_Cw)
+```
+
+```{r}
+library(dplyr)
+ICCsonly <- QuadRecovDf %>% select(ACbb1:OB1)
+colnames(ICCsonly)[apply(ICCsonly,1,which.max)]
+colnames(ICCsonly)[apply(ICCsonly,1,which.min)]
+```
+
+```{r}
+ICCsonly <- PDrecovDf %>% select(Ab1:Cw1)
+table(colnames(ICCsonly)[apply(ICCsonly,1,which.max)])
+table(colnames(ICCsonly)[apply(ICCsonly,1,which.min)])
+```
+
+
+```{r}
+MPT_MA_df <- data.frame(Param=c("D","OB","ACwg","ACbb","G"),
+           Recov=c(fisherz2r(res.mod_D$b),
+                 fisherz2r(res.mod_OB$b),
+                 fisherz2r(res.mod_ACwg$b),
+                 fisherz2r(res.mod_ACbb$b),
+                 fisherz2r(res.mod_G$b)
+                 ),
+           CI.LB = c(fisherz2r(res.mod_D$ci.lb),
+                 fisherz2r(res.mod_OB$ci.lb),
+                 fisherz2r(res.mod_ACwg$ci.lb),
+                 fisherz2r(res.mod_ACbb$ci.lb),
+                 fisherz2r(res.mod_G$ci.lb)
+                            ),
+           CI.UB = c(fisherz2r(res.mod_D$ci.ub),
+                 fisherz2r(res.mod_OB$ci.ub),
+                 fisherz2r(res.mod_ACwg$ci.ub),
+                 fisherz2r(res.mod_ACbb$ci.ub),
+                 fisherz2r(res.mod_G$ci.ub)
+           )
+)
+write.csv(MPT_MA_df, paste0(path,"Research Project/IAT_Retest/Recovery/Meta-Analysis/Quad_Recovery_Meta.csv"))
+```
+
+
+```{r}
+pd_MA_df <- data.frame(Param=c("Ab","Aw","Cb","Cp","Cu","Cw") ,
+           Recov=c( fisherz2r(res.mod_Ab$b),
+                 fisherz2r(res.mod_Aw$b),
+                 fisherz2r(res.mod_Cb$b),
+                 fisherz2r(res.mod_Cp$b),
+                 fisherz2r(res.mod_Cu$b),
+                 fisherz2r(res.mod_Cw$b)
+           ),
+           CI.LB = c(
+                 fisherz2r(res.mod_Ab$ci.lb),
+                 fisherz2r(res.mod_Aw$ci.lb),
+                 fisherz2r(res.mod_Cb$ci.lb),
+                 fisherz2r(res.mod_Cp$ci.lb),
+                 fisherz2r(res.mod_Cu$ci.lb),
+                 fisherz2r(res.mod_Cw$ci.lb)
+           ),
+           CI.UB = c(
+                 fisherz2r(res.mod_Ab$ci.ub),
+                 fisherz2r(res.mod_Aw$ci.ub),
+                 fisherz2r(res.mod_Cb$ci.ub),
+                 fisherz2r(res.mod_Cp$ci.ub),
+                 fisherz2r(res.mod_Cu$ci.ub),
+                 fisherz2r(res.mod_Cw$ci.ub)
+           )
+)
+write.csv(pd_MA_df, paste0(path,"Research Project/IAT_Retest/Recovery/Meta-Analysis/PD_Recovery_Meta.csv"))
+```
+
+
+
+
+

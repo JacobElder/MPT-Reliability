@@ -1,0 +1,317 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Equations
+
+1      t01      Cw1
+1      t01      (1-Cw1)*Aw1
+1      t02      (1-Cw1)*(1-Aw1)
+2      t03      Cb1
+2      t04      (1-Cb1)*Ab1
+2      t03      (1-Cb1)*(1-Ab1)
+3      t05      Cp1
+3      t05      (1-Cp1)*Aw1
+3      t06      (1-Cp1)*(1-Aw1)
+4      t07      Cu1
+4      t08      (1-Cu1)*Ab1
+4      t07      (1-Cu1)*(1-Ab1)
+5      t09      Cw1
+5      t10     (1-Cw1)*Aw1
+5      t09      (1-Cw1)*(1-Aw1)
+6      t11     Cb1
+6      t11     (1-Cb1)*Ab1
+6      t12     (1-Cb1)*(1-Ab1)
+7      t13     Cp1
+7      t13     (1-Cp1)*Ab1
+7      t14     (1-Cp1)*(1-Ab1)
+8      t15     Cu1
+8      t16     (1-Cu1)*Aw1
+8      t15     (1-Cu1)*(1-Aw1)
+
+# White-Compatible: White stimuli
+
+t01: correct responses to White stimuli when White/good share a response key 
+t02: incorrect responses to White stimuli when White/good share a response key
+
+1      t01      Cw1
+1      t01      (1-Cw1)*Aw1
+1      t02      (1-Cw1)*(1-Aw1)
+
+```{r}
+t01 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ Cw1 + (1-Cw1)*Aw1
+}
+t02 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ (1-Cw1)*(1-Aw1)
+}
+```
+
+# Black-Compatible: Black stimuli
+
+t03: correct responses to Black stimuli when Black/bad share a response key 
+t04: incorrect responses to Black stimuli when Black/bad share a response key 
+
+2      t03      Cb1
+2      t04      (1-Cb1)*Ab1
+2      t03      (1-Cb1)*(1-Ab1)
+
+```{r}
+t03 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ Cb1 + (1-Cb1)*(1-Ab1)
+}
+t04 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ (1-Cb1)*Ab1
+}
+```
+
+# White-Compatible: Good stimuli
+
+t05: correct responses to good stimuli when White/good share a response key 
+t06: incorrect responses to good stimuli when White/good share a response key
+
+3      t05      Cp1
+3      t05      (1-Cp1)*Aw1
+3      t06      (1-Cp1)*(1-Aw1)
+
+```{r}
+t05 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ Cp1 + (1-Cp1)*Aw1
+}
+t06 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+  (1-Cp1)*(1-Aw1)
+}
+```
+
+# Black-Compatible: Bad stimuli
+
+t07: correct responses to bad stimuli when Black/bad share a response key 
+t08: incorrect responses to bad stimuli when Black/bad share a response key 
+
+4      t07      Cu1
+4      t08      (1-Cu1)*Ab1
+4      t07      (1-Cu1)*(1-Ab1)
+
+```{r}
+t07 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ Cu1 + (1-Cu1)*(1-Ab1)
+}
+t08 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ (1-Cu1)*Ab1
+}
+```
+
+# White-Incompatible: White stimuli
+
+t09: correct responses to White stimuli when White/bad share a response key 
+t10: incorrect responses to White stimuli when White/bad share a response key
+
+5      t09      Cw1
+5      t10     (1-Cw1)*Aw1
+5      t09      (1-Cw1)*(1-Aw1)
+
+```{r}
+t09 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ Cw1 + (1-Cw1)*(1-Aw1)
+}
+t10 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ (1-Cw1)*Aw1
+}
+```
+
+# Black-Incompatible: Black stimuli
+
+t11: correct responses to Black stimuli when Black/good share a response key 
+t12: incorrect responses to Black stimuli when Black/good share a response key
+
+6      t11     Cb1
+6      t11     (1-Cb1)*Ab1
+6      t12     (1-Cb1)*(1-Ab1)
+
+```{r}
+t11 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ Cb1 + (1-Cb1)*Ab1
+}
+t12 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ (1-Cb1)*(1-Ab1)
+}
+```
+
+# White-Incompatible: Good stimuli
+
+t13: correct responses to good stimuli when White/bad share a response key 
+t14: incorrect responses to good stimuli when White/bad share a response key
+
+7      t13     Cp1
+7      t13     (1-Cp1)*Ab1
+7      t14     (1-Cp1)*(1-Ab1)
+
+```{r}
+t13 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ Cp1 + (1-Cp1)*Ab1
+}
+t14 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+  (1-Cp1)*(1-Ab1)
+}
+```
+
+
+# Black-incompatible: Bad stimuli
+
+t15: correct responses to bad stimuli when Black/good share a response key 
+t16: incorrect responses to bad stimuli when Black/good share a response key
+
+8      t15     Cu1
+8      t16     (1-Cu1)*Aw1
+8      t15     (1-Cu1)*(1-Aw1)
+
+```{r}
+t15 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ Cu1 + (1-Cu1)*(1-Aw1)
+}
+t16 <- function(Aw1, Ab1, Cw1, Cb1, Cp1, Cu1){
+ (1-Cu1)*Aw1
+}
+```
+
+# Calanchini Data Generation
+
+```{r}
+path <- "/Volumes/"
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/"))
+Cal.Time1<-read.csv("UCR/IndividualParametersPDUCR1.csv", header = T)
+Cal.Time2<-read.csv("UCR/IndividualParametersPDUCR2.csv", header = T)
+PI.Time1 <- read.csv("PI/IndividualParametersProjectImplicitPD1.csv",header=T)
+PI.Time2 <- read.csv("PI/IndividualParametersProjectImplicitPD2.csv",header=T)
+Gaw.Time1 <- read.csv("Gawronski/IndividualParametersPDGawronski1.csv",header=T)
+Gaw.Time2 <- read.csv("Gawronski/IndividualParametersPDGawronski2.csv",header=T)
+For.Time1<-read.csv("Forscher/IndividualParametersForscherPD1.csv", header = T)
+For.Time2<-read.csv("Forscher/IndividualParametersForscherPD2.csv", header = T)
+Lai1.Time1<-read.csv("Lai1/IndividualParametersLaiStudy1PD1.csv", header = T)
+Lai1.Time2<-read.csv("Lai1/IndividualParametersLaiStudy1PD2.csv", header = T)
+Lai2.Time1<-read.csv("Lai2/IndividualParametersLaiStudy2PD1.csv", header = T)
+Lai2.Time2<-read.csv("Lai2/IndividualParametersLaiStudy2PD2.csv", header = T)
+
+Time1<-grep("Time1",names(.GlobalEnv),value=TRUE)
+Time1_list<-do.call("list",mget(Time1))
+Time2<-grep("Time2",names(.GlobalEnv),value=TRUE)
+Time2_list<-do.call("list",mget(Time2))
+
+paramList <- list(Time1_list, Time2_list)
+```
+
+```{r}
+PDDataGen <- function(df){
+Theta1 <- tibble(t01 = t01(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1),
+                t02 = t02(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1)
+                )
+Theta2 <- tibble(t03 = t03(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1),
+                t04 = t04(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1)
+                )
+Theta3 <- tibble(t05 = t05(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1),
+                t06 = t06(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1)
+                )
+Theta4 <- tibble(t07 = t07(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1),
+                t08 = t08(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1)
+                )
+Theta5 <- tibble(t09 = t09(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1),
+                t10 = t10(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1)
+                )
+Theta6 <- tibble(t11 = t11(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1),
+                t12 = t12(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1)
+                )
+Theta7 <- tibble(t13 = t13(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1),
+                t14 = t14(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1)
+                )
+Theta8 <- tibble(t15 = t15(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1),
+                t16 = t16(df$Aw1, df$Ab1, df$Cw1, df$Cb1, df$Cp1, df$Cu1)
+                )
+
+output <- cbind( t(apply(Theta1, 1, function(x) rmultinom(1,15,x) )),
+       t(apply(Theta2, 1, function(x) rmultinom(1,15,x) )),
+       t(apply(Theta3, 1, function(x) rmultinom(1,15,x) )),
+       t(apply(Theta4, 1, function(x) rmultinom(1,15,x) )),
+       t(apply(Theta5, 1, function(x) rmultinom(1,15,x) )),
+       t(apply(Theta6, 1, function(x) rmultinom(1,15,x) )),
+       t(apply(Theta7, 1, function(x) rmultinom(1,15,x) )),
+       t(apply(Theta8, 1, function(x) rmultinom(1,15,x) ))
+)
+
+colnames(output) <- c("t01","t02","t03","t04","t05","t06","t07","t08","t09","t10","t11","t12","t13","t14","t15","t16")
+
+return(output)
+
+}
+
+```
+
+
+```{r}
+
+set.seed(52)
+
+setwd("/Volumes/GoogleDrive/Shared drives/RSSC Lab/Current Studies/MPT reliability/RepeatedSim/PDRepeated/")
+
+# number of simulations
+iter <- 200
+
+for(t in 1:2){
+  timeList <- paramList[[t]]
+  for(d in 1:length(timeList)){
+    
+    for(n in 1:iter){
+    df <- timeList[[d]]
+    curName <- names(timeList)[d]
+    PDdf <- PDDataGen(df)
+    dir.create(paste0("./",curName))
+    write.csv(PDdf, paste0("./",curName,"/",curName,".Num",n,".Sim.csv"))
+    }
+  }
+}
+```
+
+```{r}
+
+curDirs <- list.dirs("/Volumes/GoogleDrive/Shared drives/RSSC Lab/Current Studies/MPT reliability/RepeatedSim/PDRepeated/", recursive = F)
+
+countAssoc <- matrix(ncol=17,nrow=12)
+
+j <- 1
+for(i in curDirs){
+  setwd(i) # set working directory as current iteration
+  curFiles<-list.files(".") # list all files in it
+  test<-lapply(curFiles, read.csv) # read in files as list
+  curName <- gsub("Num1.Sim.csv","",curFiles[1]) # extract name for files
+  countAssoc[j,1] <- curName # assign name to matrix
+  for(n in 2:17){
+    # bind all simulated DF's nth column, for count data
+    curCount <- do.call(cbind, lapply(1:length(curFiles), function(x) cbind(test[[x]][,n]) ) )
+    # assign name to the binded counts for the nth column
+    assign(paste0(curName,"t",(n-1),"countSims"),curCount)
+    # conduct correlations across all columns of counts
+    spearCors <- cor(curCount, method="spearman")
+    # remove diagonal of 1s which will inflate correlation
+    diag(spearCors)=NA
+    # assign mean to matrix
+    spearMean <- mean(spearCors, na.rm=T)
+    countAssoc[j,n] <- spearMean
+    
+
+    
+    
+  }
+  j <- j + 1
+}
+
+colnames(countAssoc) <- c("Study",paste0("t0",1:9),paste0("t",10:16))
+countAssoc <- countAssoc[,c(1,seq(from=2,to=17,by=2))]
+countAssoc <- as.data.frame(countAssoc)
+countAssoc[,2:ncol(countAssoc)] <- apply(countAssoc[,2:ncol(countAssoc)],2,as.numeric)
+write.csv(countAssoc, "~/Documents/GitHub/MPT-Reliability/RepeatedSimulation/output/PDSpearmanCors.csv",row.names = F)
+```
+
+
+
+
+

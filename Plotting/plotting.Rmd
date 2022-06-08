@@ -1,0 +1,389 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+saveto <- "/Volumes/Research Project/IAT_Retest/Plotting/SavedFigs/"
+```
+
+
+
+```{r}
+path <- "/Volumes/"
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/UCR/"))
+Cal1 <-read.csv("IndividualParametersQuadUCR1.csv", header = T)
+Cal2 <-read.csv("IndividualParametersQuadUCR2.csv", header = T)
+
+colnames(Cal1)[2:ncol(Cal1)]<-paste(colnames(Cal1[2:ncol(Cal1)]),"T1",sep="_")
+colnames(Cal2)[2:ncol(Cal2)]<-paste(colnames(Cal2[2:ncol(Cal2)]),"T2",sep="_")
+
+Q.Cal <- merge(Cal1, Cal2, by = "subject", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/PI/"))
+PI1 <- read.csv("IndividualParametersQuadProjectImplicit1.csv")
+PI2 <- read.csv("IndividualParametersQuadProjectImplicit2.csv")
+
+colnames(PI1)[2:ncol(PI1)]<-paste(colnames(PI1[2:ncol(PI1)]),"T1",sep="_")
+colnames(PI2)[2:ncol(PI2)]<-paste(colnames(PI2[2:ncol(PI2)]),"T2",sep="_")
+
+Q.PI <- merge(PI1, PI2, by = "ID", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Gawronski/"))
+Gaw1 <- read.csv("IndividualParametersQuadGawronski1.csv")
+Gaw2 <- read.csv("IndividualParametersQuadGawronski2.csv")
+
+colnames(Gaw1)[2:ncol(Gaw1)]<-paste(colnames(Gaw1[2:ncol(Gaw1)]),"T1",sep="_")
+colnames(Gaw2)[2:ncol(Gaw2)]<-paste(colnames(Gaw2[2:ncol(Gaw2)]),"T2",sep="_")
+
+Q.Gaw <- merge(Gaw1, Gaw2, by = "code", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Forscher/"))
+For1<-read.csv("IndividualParametersQuadForscher1.csv", header = T)
+For2<-read.csv("IndividualParametersQuadForscher2.csv", header = T)
+
+colnames(For1)[2:ncol(For1)]<-paste(colnames(For1[2:ncol(For1)]),"T1",sep="_")
+colnames(For2)[2:ncol(For2)]<-paste(colnames(For2[2:ncol(For2)]),"T2",sep="_")
+
+Q.For <- merge(For1, For2, by = "subject", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai1/"))
+Lai11<-read.csv("IndividualParametersLaiStudy1Quad1.csv", header = T)
+Lai12<-read.csv("IndividualParametersLaiStudy1Quad2.csv", header = T)
+
+colnames(Lai11)[2:ncol(Lai11)]<-paste(colnames(Lai11[2:ncol(Lai11)]),"T1",sep="_")
+colnames(Lai12)[2:ncol(Lai12)]<-paste(colnames(Lai12[2:ncol(Lai12)]),"T2",sep="_")
+
+Q.Lai1 <- merge(Lai11, Lai12, by = "session_id", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai2/"))
+Lai21<-read.csv("IndividualParametersLaiStudy2Quad1.csv", header = T)
+Lai22<-read.csv("IndividualParametersLaiStudy2Quad2.csv", header = T)
+
+colnames(Lai21)[2:ncol(Lai21)]<-paste(colnames(Lai21[2:ncol(Lai21)]),"T1",sep="_")
+colnames(Lai22)[2:ncol(Lai22)]<-paste(colnames(Lai22[2:ncol(Lai22)]),"T2",sep="_")
+
+Q.Lai2 <- merge(Lai21, Lai22, by = "session_id", all.x = T, all.y = T)
+
+colnames(Q.Cal)[1] <- "subID"
+Q.Cal <- cbind(Q.Cal, Study = "Calanchini")
+colnames(Q.PI)[1] <- "subID"
+Q.PI <- cbind(Q.PI, Study = "PI")
+colnames(Q.Gaw)[1] <- "subID"
+Q.Gaw <- cbind(Q.Gaw, Study = "Gawronski")
+colnames(Q.For)[1] <- "subID"
+Q.For <- cbind(Q.For, Study = "Forscher")
+colnames(Q.Lai1)[1] <- "subID"
+Q.Lai1 <- cbind(Q.Lai1, Study = "Lai 1")
+colnames(Q.Lai2)[1] <- "subID"
+Q.Lai2 <- cbind(Q.Lai2, Study = "Lai 2")
+
+Quad <- rbind(Q.Cal,Q.PI,Q.Gaw,Q.For,Q.Lai1,Q.Lai2)
+```
+
+```{r}
+path <- "/Volumes/"
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/UCR/"))
+Cal1 <-read.csv("IndividualParametersPDUCR1.csv", header = T)
+Cal2 <-read.csv("IndividualParametersPDUCR2.csv", header = T)
+
+colnames(Cal1)[2:ncol(Cal1)]<-paste(colnames(Cal1[2:ncol(Cal1)]),"T1",sep="_")
+colnames(Cal2)[2:ncol(Cal2)]<-paste(colnames(Cal2[2:ncol(Cal2)]),"T2",sep="_")
+
+P.Cal <- merge(Cal1, Cal2, by = "subject", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/PI/"))
+PI1 <- read.csv("IndividualParametersProjectImplicitPD1.csv")
+PI2 <- read.csv("IndividualParametersProjectImplicitPD2.csv")
+
+colnames(PI1)[2:ncol(PI1)]<-paste(colnames(PI1[2:ncol(PI1)]),"T1",sep="_")
+colnames(PI2)[2:ncol(PI2)]<-paste(colnames(PI2[2:ncol(PI2)]),"T2",sep="_")
+
+P.PI <- merge(PI1, PI2, by = "ID", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Gawronski/"))
+Gaw1 <- read.csv("IndividualParametersPDGawronski1.csv")
+Gaw2 <- read.csv("IndividualParametersPDGawronski2.csv")
+
+colnames(Gaw1)[2:ncol(Gaw1)]<-paste(colnames(Gaw1[2:ncol(Gaw1)]),"T1",sep="_")
+colnames(Gaw2)[2:ncol(Gaw2)]<-paste(colnames(Gaw2[2:ncol(Gaw2)]),"T2",sep="_")
+
+P.Gaw <- merge(Gaw1, Gaw2, by = "code", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Forscher/"))
+For1<-read.csv("IndividualParametersForscherPD1.csv", header = T)
+For2<-read.csv("IndividualParametersForscherPD2.csv", header = T)
+
+colnames(For1)[2:ncol(For1)]<-paste(colnames(For1[2:ncol(For1)]),"T1",sep="_")
+colnames(For2)[2:ncol(For2)]<-paste(colnames(For2[2:ncol(For2)]),"T2",sep="_")
+
+P.For <- merge(For1, For2, by = "subject", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai1/"))
+Lai11<-read.csv("IndividualParametersLaiStudy1PD1.csv", header = T)
+Lai12<-read.csv("IndividualParametersLaiStudy1PD2.csv", header = T)
+
+colnames(Lai11)[2:ncol(Lai11)]<-paste(colnames(Lai11[2:ncol(Lai11)]),"T1",sep="_")
+colnames(Lai12)[2:ncol(Lai12)]<-paste(colnames(Lai12[2:ncol(Lai12)]),"T2",sep="_")
+
+P.Lai1 <- merge(Lai11, Lai12, by = "session_id", all.x = T, all.y = T)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai2/"))
+Lai21<-read.csv("IndividualParametersLaiStudy2PD1.csv", header = T)
+Lai22<-read.csv("IndividualParametersLaiStudy2PD2.csv", header = T)
+
+colnames(Lai21)[2:ncol(Lai21)]<-paste(colnames(Lai21[2:ncol(Lai21)]),"T1",sep="_")
+colnames(Lai22)[2:ncol(Lai22)]<-paste(colnames(Lai22[2:ncol(Lai22)]),"T2",sep="_")
+
+P.Lai2 <- merge(Lai21, Lai22, by = "session_id", all.x = T, all.y = T)
+
+colnames(P.Cal)[1] <- "subID"
+P.Cal <- cbind(P.Cal, Study = "Calanchini")
+colnames(P.PI)[1] <- "subID"
+P.PI <- cbind(P.PI, Study = "PI")
+colnames(P.Gaw)[1] <- "subID"
+P.Gaw <- cbind(P.Gaw, Study = "Gawronski")
+colnames(P.For)[1] <- "subID"
+P.For <- cbind(P.For, Study = "Forscher")
+colnames(P.Lai1)[1] <- "subID"
+P.Lai1 <- cbind(P.Lai1, Study = "Lai 1")
+colnames(P.Lai2)[1] <- "subID"
+P.Lai2 <- cbind(P.Lai2, Study = "Lai 2")
+
+PD <- rbind(P.Cal,P.PI,P.Gaw,P.For,P.Lai1,P.Lai2)
+```
+
+# Quad Model
+
+## Activation Black-Bad
+
+```{r}
+ACbbScatter <- ggplot(Quad, aes(x=ACbb1_T1, y=ACbb1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black-Bad Activation",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+ACbbScatter
+ggsave(paste0(saveto,"ACbbScatter.jpg"),dpi=600)
+```
+
+## Activation White-Good
+
+```{r}
+ACwgScatter <- ggplot(Quad, aes(x=ACwg1_T1, y=ACwg1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White-Good Activation",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+ACwgScatter
+ggsave(paste0(saveto,"ACwgScatter.jpg"),dpi=600)
+```
+
+## Detection
+
+```{r}
+DScatter <- ggplot(Quad, aes(x=D1_T1, y=D1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Detection",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+DScatter
+ggsave(paste0(saveto,"DScatter.jpg"),dpi=600)
+```
+
+## Overcoming Bias
+
+```{r}
+OBScatter <- ggplot(Quad, aes(x=OB1_T1, y=OB1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Overcoming Bias",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+OBScatter
+ggsave(paste0(saveto,"OBScatter.jpg"),dpi=600)
+```
+
+## Guessing
+
+```{r}
+GScatter <- ggplot(Quad, aes(x=G1_T1, y=G1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Guessing",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+ggsave(paste0(saveto,"GScatter.jpg"),dpi=600)
+```
+
+## Panel
+
+```{r}
+library(ggpubr)
+QuadPanel1 <- ggarrange(ACwgScatter, ACbbScatter, DScatter, OBScatter, GScatter,
+          ncol = 3, nrow = 2, common.legend = T)
+QuadPanel1
+
+require(grid)   # for the textGrob() function
+
+QuadPanel2 <- ggarrange(ACwgScatter + rremove("ylab") + rremove("xlab"), 
+                        ACbbScatter + rremove("ylab") + rremove("xlab"),
+                        DScatter + rremove("ylab") + rremove("xlab"),
+                        OBScatter + rremove("ylab") + rremove("xlab"),
+                        GScatter + rremove("ylab") + rremove("xlab"),
+          ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = "top",
+          align = "hv", 
+                    font.label = list(size = 10, color = "black", face = "bold", family = NULL, position = "top"))
+QuadPanel2
+
+annotate_figure(QuadPanel2, left = textGrob("Time 2", rot = 90, vjust = 1, gp = gpar(cex = 1.3)),
+                    bottom = textGrob("Time 1", vjust = -.1, gp = gpar(cex = 1.3)))
+ggsave(paste0(saveto,"QuadPanel.jpg"),dpi=600)
+```
+
+
+# PD Model
+
+## Automatic Black
+
+```{r}
+AbScatter <- ggplot(PD, aes(x=Ab1_T1, y=Ab1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black Automatic",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+AbScatter
+ggsave(paste0(saveto,"AbScatter.jpg"),dpi=600)
+```
+
+## Activation White
+
+```{r}
+AwScatter <- ggplot(PD, aes(x=Aw1_T1, y=Aw1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White Automatic",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+AwScatter
+ggsave(paste0(saveto,"AwScatter.jpg"),dpi=600)
+```
+
+## Control-P
+
+```{r}
+CpScatter <- ggplot(PD, aes(x=Cp1_T1, y=Cp1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-P",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+CpScatter
+ggsave(paste0(saveto,"CpScatter.jpg"),dpi=600)
+```
+
+## Control-U
+
+```{r}
+CuScatter <- ggplot(PD, aes(x=Cu1_T1, y=Cu1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-U",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+CuScatter
+ggsave(paste0(saveto,"CuScatter.jpg"),dpi=600)
+```
+
+## Control-White
+
+```{r}
+CwScatter <- ggplot(PD, aes(x=Cw1_T1, y=Cw1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-White",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+CwScatter
+ggsave(paste0(saveto,"CwScatter.jpg"),dpi=600)
+```
+
+## Control-Black
+
+```{r}
+CbScatter <- ggplot(PD, aes(x=Cb1_T1, y=Cb1_T2, color=Study)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-Black",
+       x="Time 1", y = "Time 2") + jtools::theme_apa()
+CbScatter
+ggsave(paste0(saveto,"CbScatter.jpg"),dpi=600)
+```
+
+## Panel
+
+```{r}
+library(ggpubr)
+PDPanel1 <- ggarrange(AwScatter, AbScatter, CuScatter, CpScatter, CbScatter, CwScatter,
+          ncol = 3, nrow = 2, common.legend = T)
+PDPanel1
+
+require(grid)   # for the textGrob() function
+
+PDPanel2 <- ggarrange(AwScatter + rremove("ylab") + rremove("xlab"), 
+                        AbScatter + rremove("ylab") + rremove("xlab"),
+                        CuScatter + rremove("ylab") + rremove("xlab"),
+                        CpScatter + rremove("ylab") + rremove("xlab"),
+                        CbScatter + rremove("ylab") + rremove("xlab"),
+                        CwScatter + rremove("ylab") + rremove("xlab"),
+          ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = "top",
+          align = "hv", 
+                    font.label = list(size = 10, color = "black", face = "bold", family = NULL, position = "top"))
+PDPanel2 <- annotate_figure(PDPanel2, left = textGrob("Time 2", rot = 90, vjust = 1, gp = gpar(cex = 1.3)),
+                    bottom = textGrob("Time 1", vjust = -.1, gp = gpar(cex = 1.3)))
+PDPanel2
+ggsave(paste0(saveto,"PDPanel.jpg"),dpi=600)
+```
+
+```{r}
+Quad_TRT_relDf <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/Quad_TRT_relDf.csv")
+longQuadRels <- data.frame(Study = Quad_TRT_relDf$Study, stack(Quad_TRT_relDf[3:7]))
+colnames(longQuadRels) <- c("Study","ICC","Parameter")
+longQuadRels$Parameter <- gsub("_ICC", "" ,longQuadRels$Parameter)
+p<- ggplot(longQuadRels, aes(x=Study, y=ICC, group=Parameter, color=Parameter)) + 
+  geom_point()
+p
+```
+
+```{r}
+PD_TRT_relDf <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/PD_TRT_relDf.csv")
+longPDRels <- data.frame(Study = PD_TRT_relDf$Study, stack(PD_TRT_relDf[3:8]))
+colnames(longPDRels) <- c("Study","ICC","Parameter")
+longPDRels$Parameter <- gsub("_ICC", "" ,longPDRels$Parameter)
+p<- ggplot(longPDRels, aes(x=Study, y=ICC, group=Parameter, color=Parameter)) + 
+  geom_point()
+p
+```
+
+
+```{r}
+library(lmerTest)
+m <- lmer(scale(D1_T2) ~ scale(D1_T1) + ( scale(D1_T1) | Study), data = Quad)
+summary(m)
+
+m <- lmer(scale(OB1_T2) ~ scale(OB1_T1) + ( scale(OB1_T1) | Study), data = Quad)
+summary(m)
+
+m <- lmer(scale(ACbb1_T2) ~ scale(ACbb1_T1) + ( scale(ACbb1_T1) | Study), data = Quad)
+summary(m)
+
+m <- lmer(scale(ACwg1_T2) ~ scale(ACwg1_T1) + ( scale(ACwg1_T1) | Study), data = Quad)
+summary(m)
+
+m <- lmer(scale(G1_T2) ~ scale(G1_T1) + ( scale(ACwg1_T1) | Study), data = Quad)
+summary(m)
+```
+
+
+
+
+
+

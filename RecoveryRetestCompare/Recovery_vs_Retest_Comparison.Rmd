@@ -1,0 +1,42 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+Q.R.Df <- read.csv("/Volumes/Research Project/IAT_Retest/Recovery/Meta-Analysis/Quad_Recovery_Meta.csv")
+Q.T.Df <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/Quad_TRT_metaDf.csv")
+```
+
+```{r}
+
+CI.Diff <- function(Df1, Df2){
+  UB1 <- Df1 %>% select(CI.UB)
+  LB2 <- Df2 %>% select(CI.LB)
+  UB2 <- Df2 %>% select(CI.UB)
+  LB1 <- Df1 %>% select(CI.LB)
+  outcome <- ifelse(LB1 > UB2, "1 > 2", ifelse(LB2 > UB1, "2 > 1", "1 == 2"))
+  colnames(outcome) <- "Difference"
+  outcome <- data.frame("Param" = Df1$Param, "UB1"=UB1, "LB2"=LB2, "UB2"=UB2, "LB1"=LB1, "Difference"=outcome)
+  colnames(outcome) <- c("Param",paste0(colnames(Df1)[3],".UB"),paste0(colnames(Df2)[3],".LB"),paste0(colnames(Df2)[3],".UB"),paste0(colnames(Df1)[3],".LB"), "Difference" )
+  return(outcome)
+}
+```
+
+```{r}
+CI.Diff(Q.R.Df, Q.T.Df)
+```
+
+```{r}
+P.T.Df <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/PD_TRT_metaDf.csv")
+P.R.Df <- read.csv("/Volumes/Research Project/IAT_Retest/Recovery/Meta-Analysis/PD_Recovery_Meta.csv")
+```
+
+```{r}
+CI.Diff(P.R.Df, P.T.Df)
+```
+
+
+
+
+
