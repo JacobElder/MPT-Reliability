@@ -271,11 +271,25 @@ for(t in 1:2){
 }
 ```
 
+# Insert Original, True Frequencies
+
+```{r}
+setwd("/Volumes/GoogleDrive/Shared drives/RSSC Lab/Current Studies/MPT reliability/Frequency Data (t codes)/")
+trueFiles <- list.files()
+trueFilesList<-lapply(trueFiles, read.csv)
+trueFiles <- gsub("Freq.csv","True",trueFiles)
+names(trueFilesList) <- trueFiles
+```
+
+# Determine How Similar Counts Are With Each Other and With True Counts
+
 ```{r}
 
 curDirs <- list.dirs("/Volumes/GoogleDrive/Shared drives/RSSC Lab/Current Studies/MPT reliability/RepeatedSim/PDRepeated/", recursive = F)
 
 countAssoc <- matrix(ncol=17,nrow=12)
+trueAssocMean <- matrix(ncol=17,nrow=12)
+trueAssocSD <- matrix(ncol=17, nrow=12)
 
 j <- 1
 for(i in curDirs){
@@ -284,23 +298,42 @@ for(i in curDirs){
   test<-lapply(curFiles, read.csv) # read in files as list
   curName <- gsub("Num1.Sim.csv","",curFiles[1]) # extract name for files
   countAssoc[j,1] <- curName # assign name to matrix
+  
+  curTrue <- trueFilesList[[paste0(curName,"True")]]
+
+  trueAssoc <- matrix(ncol=17,nrow=200)
+  
+  trueAssoc[j,1] <- curName
+  trueAssocMean[j,1] <- curName
+  trueAssocSD[j,1] <- curName
+  
   for(n in 2:17){
     # bind all simulated DF's nth column, for count data
     curCount <- do.call(cbind, lapply(1:length(curFiles), function(x) cbind(test[[x]][,n]) ) )
     # assign name to the binded counts for the nth column
     assign(paste0(curName,"t",(n-1),"countSims"),curCount)
-    # conduct correlations across all columns of counts
+    # conduct correlations across all columns of count simulations
     spearCors <- cor(curCount, method="spearman")
+    
+    # extract true, original count
+    trueCount <- curTrue[,n]
+    # conduct correlations across simulations to true count
+    trueAssociations <- unlist(lapply(1:ncol(curCount), function(x) cor(curCount[,x], trueCount, method="spearman")) ) 
+    trueAssoc[,n] <- trueAssociations
+    trueAssocMean[j,n] <- mean(trueAssociations)
+    trueAssocSD[j,n] <- sd(trueAssociations)
+    
     # remove diagonal of 1s which will inflate correlation
     diag(spearCors)=NA
     # assign mean to matrix
-    spearMean <- mean(spearCors, na.rm=T)
+    spearMean <- mean(spearCors[lower.tri(spearCors)], na.rm=T)
     countAssoc[j,n] <- spearMean
     
 
     
     
   }
+  assign(paste0(curName,".TrueAssoc"), trueAssoc)
   j <- j + 1
 }
 
@@ -308,7 +341,20 @@ colnames(countAssoc) <- c("Study",paste0("t0",1:9),paste0("t",10:16))
 countAssoc <- countAssoc[,c(1,seq(from=2,to=17,by=2))]
 countAssoc <- as.data.frame(countAssoc)
 countAssoc[,2:ncol(countAssoc)] <- apply(countAssoc[,2:ncol(countAssoc)],2,as.numeric)
+
 write.csv(countAssoc, "~/Documents/GitHub/MPT-Reliability/RepeatedSimulation/output/PDSpearmanCors.csv",row.names = F)
+
+colnames(trueAssocMean) <- c("Study",paste0("t0",1:9),paste0("t",10:16))
+trueAssocMean <- trueAssocMean[,c(1,seq(from=2,to=17,by=2))]
+trueAssocMean <- as.data.frame(trueAssocMean)
+trueAssocMean[,2:ncol(trueAssocMean)] <- apply(trueAssocMean[,2:ncol(trueAssocMean)],2,as.numeric)
+write.csv(trueAssocMean, "~/Documents/GitHub/MPT-Reliability/RepeatedSimulation/output/PDTrueCorMeans.csv",row.names = F)
+
+colnames(trueAssocSD) <- c("Study",paste0("t0",1:9),paste0("t",10:16))
+trueAssocSD <- trueAssocSD[,c(1,seq(from=2,to=17,by=2))]
+trueAssocSD <- as.data.frame(trueAssocSD)
+trueAssocSD[,2:ncol(trueAssocSD)] <- apply(trueAssocSD[,2:ncol(trueAssocSD)],2,as.numeric)
+write.csv(trueAssocSD, "~/Documents/GitHub/MPT-Reliability/RepeatedSimulation/output/PDTrueCorSD.csv",row.names = F)
 ```
 
 

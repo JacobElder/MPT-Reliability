@@ -5,6 +5,8 @@ output: html_notebook
 
 ```{r}
 library(ggplot2)
+library(grid)
+library(forestploter)
 ```
 
 ```{r}
@@ -159,26 +161,28 @@ PD <- rbind(P.Cal,P.PI,P.Gaw,P.For,P.Lai1,P.Lai2)
 
 # Quad Model
 
-## Activation Black-Bad
+## Associate Black-Bad
 
 ```{r}
 ACbbScatter <- ggplot(Quad, aes(x=ACbb1_T1, y=ACbb1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black-Bad Activation",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black-Bad Associate",
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 ACbbScatter
 ggsave(paste0(saveto,"ACbbScatter.jpg"),dpi=600)
 ```
 
-## Activation White-Good
+## Associate White-Good
 
 ```{r}
 ACwgScatter <- ggplot(Quad, aes(x=ACwg1_T1, y=ACwg1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White-Good Activation",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White-Good Associate",
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 ACwgScatter
 ggsave(paste0(saveto,"ACwgScatter.jpg"),dpi=600)
 ```
@@ -190,7 +194,8 @@ DScatter <- ggplot(Quad, aes(x=D1_T1, y=D1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Detection",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 DScatter
 ggsave(paste0(saveto,"DScatter.jpg"),dpi=600)
 ```
@@ -202,7 +207,8 @@ OBScatter <- ggplot(Quad, aes(x=OB1_T1, y=OB1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Overcoming Bias",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 OBScatter
 ggsave(paste0(saveto,"OBScatter.jpg"),dpi=600)
 ```
@@ -214,7 +220,8 @@ GScatter <- ggplot(Quad, aes(x=G1_T1, y=G1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Guessing",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 ggsave(paste0(saveto,"GScatter.jpg"),dpi=600)
 ```
 
@@ -253,19 +260,21 @@ AbScatter <- ggplot(PD, aes(x=Ab1_T1, y=Ab1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black Automatic",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 AbScatter
 ggsave(paste0(saveto,"AbScatter.jpg"),dpi=600)
 ```
 
-## Activation White
+## Associate White
 
 ```{r}
 AwScatter <- ggplot(PD, aes(x=Aw1_T1, y=Aw1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White Automatic",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 AwScatter
 ggsave(paste0(saveto,"AwScatter.jpg"),dpi=600)
 ```
@@ -277,7 +286,8 @@ CpScatter <- ggplot(PD, aes(x=Cp1_T1, y=Cp1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-P",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 CpScatter
 ggsave(paste0(saveto,"CpScatter.jpg"),dpi=600)
 ```
@@ -289,7 +299,8 @@ CuScatter <- ggplot(PD, aes(x=Cu1_T1, y=Cu1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-U",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 CuScatter
 ggsave(paste0(saveto,"CuScatter.jpg"),dpi=600)
 ```
@@ -301,7 +312,8 @@ CwScatter <- ggplot(PD, aes(x=Cw1_T1, y=Cw1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-White",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 CwScatter
 ggsave(paste0(saveto,"CwScatter.jpg"),dpi=600)
 ```
@@ -313,7 +325,8 @@ CbScatter <- ggplot(PD, aes(x=Cb1_T1, y=Cb1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-Black",
-       x="Time 1", y = "Time 2") + jtools::theme_apa()
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
 CbScatter
 ggsave(paste0(saveto,"CbScatter.jpg"),dpi=600)
 ```
@@ -342,6 +355,7 @@ PDPanel2 <- annotate_figure(PDPanel2, left = textGrob("Time 2", rot = 90, vjust 
 PDPanel2
 ggsave(paste0(saveto,"PDPanel.jpg"),dpi=600)
 ```
+# Reliability Meta-Analysis
 
 ```{r}
 Quad_TRT_relDf <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/Quad_TRT_relDf.csv")
@@ -354,6 +368,163 @@ p
 ```
 
 ```{r}
+dt <- read.csv("~/Documents/GitHub/MPT-Reliability/Retest/output/Quad_TRT_metaDf.csv")[2:5]
+colnames(dt)[colnames(dt)=="Param"] <- "Parameter"
+dt$` ` <- paste(rep(" ", 20), collapse = " ")
+dt$`ICC (95% CI)` <- ifelse(is.na(dt$ICC), "",
+                             sprintf("%.2f (%.2f to %.2f)",
+                                     dt$ICC, dt$CI.LB, dt$CI.UB))
+p <- forest(#dt[,c(1,5:6)],
+dt,
+            est = dt$ICC,
+            lower = dt$CI.LB, 
+            upper = dt$CI.UB,
+            ci_column = 5,
+            ref_line = .4,
+            xlim = c(0, 1),
+            ticks_at = c(0, .4,.6, .75, 1))
+plot(p[,c(1:2,6:7)])
+```
+```{r}
+# Read provided sample example data
+dt <- read.csv(system.file("extdata", "example_data.csv", package = "forestploter"))
+
+# indent the subgroup if there is a number in the placebo column
+dt$Subgroup <- ifelse(is.na(dt$Placebo), 
+                      dt$Subgroup,
+                      paste0("   ", dt$Subgroup))
+
+# NA to blank or NA will be transformed to carachter.
+dt$`n` <- ifelse(is.na(dt$Treatment), "", dt$Treatment)
+dt$`n ` <- ifelse(is.na(dt$Placebo), "", dt$Placebo)
+
+# Add two blank column for CI
+dt$`CVD outcome` <- paste(rep(" ", 20), collapse = " ")
+dt$`COPD outcome` <- paste(rep(" ", 20), collapse = " ")
+
+# Set-up theme
+tm <- forest_theme(base_size = 10,
+                   refline_lty = "solid",
+                   ci_pch = c(15, 18),
+                   ci_col = c("#377eb8", "#4daf4a"),
+                   footnote_col = "blue",
+                   legend_name = "Group",
+                   legend_value = c("Trt 1", "Trt 2"),
+                   vertline_lty = c("dashed", "dotted"),
+                   vertline_col = c("#d6604d", "#bababa"))
+
+p <- forest(dt[,c(1, 19, 21, 20, 22)],
+            est = list(dt$est_gp1,
+                       dt$est_gp2,
+                       dt$est_gp3,
+                       dt$est_gp4),
+            lower = list(dt$low_gp1,
+                         dt$low_gp2,
+                         dt$low_gp3,
+                         dt$low_gp4), 
+            upper = list(dt$hi_gp1,
+                         dt$hi_gp2,
+                         dt$hi_gp3,
+                         dt$hi_gp4),
+            ci_column = c(3, 5),
+            ref_line = 1,
+            vert_line = c(0.5, 2),
+            nudge_y = 0.2,
+            theme = tm)
+
+plot(p)
+
+```
+
+
+```{r}
+dt <- read.csv("~/Documents/GitHub/MPT-Reliability/Retest/output/combQuad_Df.csv")[2:6]
+
+dt$Param[dt$Param=="D"]<-"Detection"
+dt$Param[dt$Param=="OB"]<-"Overcoming Bias"
+dt$Param[dt$Param=="ACbb"]<-"Activation Black-Bad"
+dt$Param[dt$Param=="ACwg"]<-"Activation White-Good"
+dt$Param[dt$Param=="G"]<-"Guessing"
+
+dt$Param[dt$Param=="PI"]<-"Project Implicit 2020"
+dt$Param[dt$Param=="Calanchini"]<-"Wilson & Calanchini, 2020"
+dt$Param[dt$Param=="Lai1"]<-"Lai et al., 2016 (Study 1)  "
+dt$Param[dt$Param=="Lai2"]<-"Lai et al., 2016 (Study 2)  "
+dt$Param[dt$Param=="Gawronski"]<-"Gawronski et al., 2017"
+dt$Param[dt$Param=="Forscher"]<-"Forscher et al., 2017"
+
+# indent the subgroup if there is a number in the placebo column
+dt$Param <- ifelse(dt$type==0, 
+                      dt$Param,
+                      paste0(" ", dt$Param))
+
+colnames(dt)[colnames(dt)=="Param"] <- "   "
+dt$` ` <- paste(rep(" ", 20), collapse = " ")
+dt$`ICC (95% CI)` <- ifelse(is.na(dt$ICC), "",
+                             sprintf("%.2f [%.2f, %.2f]",
+                                     dt$ICC, dt$CI.LB, dt$CI.UB))
+dt<-dt[c(1:4,6:7)]
+
+library(forestploter)
+p <- forest(
+  dt,
+            est = dt$ICC,
+            lower = dt$CI.LB, 
+            upper = dt$CI.UB,
+            ci_column = 5,
+            ref_line = .4,
+            xlim = c(-.1, 1),
+            ticks_at = c(0, .4,.6, .75, 1),
+  sizes = .1
+)
+
+library(grid)
+p <- edit_plot(p,
+               row = seq(from=1,to=nrow(dt),by=7),
+               gp = gpar(fontface = c("bold","italic")
+                         ), col = 1)
+
+studyInds <- setdiff(1:nrow(dt),seq(from=1,to=nrow(dt),by=7))
+paramInds <- seq(from=1,to=nrow(dt),by=7)
+
+p <- edit_plot(p, row = studyInds, which = "background",
+               gp = gpar(fill = "white"))
+p <- edit_plot(p, row = paramInds, which = "background",
+               gp = gpar(fill = "grey"))
+
+```
+
+
+
+```{r}
+
+png("~/Desktop/test.png", units="in", width=10, height=10, res=300)
+# insert ggplot code
+plot(p[,c(1:2,6:7)])
+dev.off()
+```
+
+
+```{r}
+dt <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/PD_TRT_metaDf.csv")[2:5]
+colnames(dt)[colnames(dt)=="Param"] <- "Parameter"
+dt$` ` <- paste(rep(" ", 20), collapse = " ")
+dt$`ICC (95% CI)` <- ifelse(is.na(dt$ICC), "",
+                             sprintf("%.2f (%.2f, %.2f)",
+                                     dt$ICC, dt$CI.LB, dt$CI.UB))
+p <- forest(#dt[,c(1,5:6)],
+dt,
+            est = dt$ICC,
+            lower = dt$CI.LB, 
+            upper = dt$CI.UB,
+            ci_column = 5,
+            ref_line = .4,
+            xlim = c(0, 1),
+            ticks_at = c(0, .4,.6, .75, 1))
+plot(p[,c(1:2,6:7)])
+```
+
+```{r}
 PD_TRT_relDf <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/PD_TRT_relDf.csv")
 longPDRels <- data.frame(Study = PD_TRT_relDf$Study, stack(PD_TRT_relDf[3:8]))
 colnames(longPDRels) <- c("Study","ICC","Parameter")
@@ -363,27 +534,578 @@ p<- ggplot(longPDRels, aes(x=Study, y=ICC, group=Parameter, color=Parameter)) +
 p
 ```
 
+```{r}
+dt <- read.csv("~/Documents/GitHub/MPT-Reliability/Retest/output/combPD_Df.csv")[2:6]
+
+dt$Param[dt$Param=="Ab"]<-"Automatic Black"
+dt$Param[dt$Param=="Aw"]<-"Automatic White"
+dt$Param[dt$Param=="Cb"]<-"Control Black"
+dt$Param[dt$Param=="Cw"]<-"Control White"
+dt$Param[dt$Param=="Cu"]<-"Control Bad"
+dt$Param[dt$Param=="Cp"]<-"Control Good"
+
+dt$Param[dt$Param=="PI"]<-"Project Implicit 2020"
+dt$Param[dt$Param=="Calanchini"]<-"Wilson & Calanchini, 2020"
+dt$Param[dt$Param=="Lai1"]<-"Lai et al., 2016 (Study 1)  "
+dt$Param[dt$Param=="Lai2"]<-"Lai et al., 2016 (Study 2)  "
+dt$Param[dt$Param=="Gawronski"]<-"Gawronski et al., 2017"
+dt$Param[dt$Param=="Forscher"]<-"Forscher et al., 2017"
+
+# indent the subgroup if there is a number in the placebo column
+dt$Param <- ifelse(dt$type==0, 
+                      dt$Param,
+                      paste0(" ", dt$Param))
+
+colnames(dt)[colnames(dt)=="Param"] <- "   "
+dt$` ` <- paste(rep(" ", 20), collapse = " ")
+dt$`ICC (95% CI)` <- ifelse(is.na(dt$ICC), "",
+                             sprintf("%.2f [%.2f, %.2f]",
+                                     dt$ICC, dt$CI.LB, dt$CI.UB))
+dt<-dt[c(1:4,6:7)]
+
+library(forestploter)
+p <- forest(
+  dt,
+            est = dt$ICC,
+            lower = dt$CI.LB, 
+            upper = dt$CI.UB,
+            ci_column = 5,
+            ref_line = .4,
+            xlim = c(-.1, 1),
+            ticks_at = c(0, .4,.6, .75, 1),
+  sizes = .1
+)
+
+library(grid)
+p <- edit_plot(p,
+               row = seq(from=1,to=nrow(dt),by=7),
+               gp = gpar(fontface = c("bold","italic")
+                         ), col = 1)
+
+studyInds <- setdiff(1:nrow(dt),seq(from=1,to=nrow(dt),by=7))
+paramInds <- seq(from=1,to=nrow(dt),by=7)
+
+p <- edit_plot(p, row = studyInds, which = "background",
+               gp = gpar(fill = "white"))
+p <- edit_plot(p, row = paramInds, which = "background",
+               gp = gpar(fill = "grey"))
+
+```
+
+
 
 ```{r}
-library(lmerTest)
-m <- lmer(scale(D1_T2) ~ scale(D1_T1) + ( scale(D1_T1) | Study), data = Quad)
-summary(m)
 
-m <- lmer(scale(OB1_T2) ~ scale(OB1_T1) + ( scale(OB1_T1) | Study), data = Quad)
-summary(m)
-
-m <- lmer(scale(ACbb1_T2) ~ scale(ACbb1_T1) + ( scale(ACbb1_T1) | Study), data = Quad)
-summary(m)
-
-m <- lmer(scale(ACwg1_T2) ~ scale(ACwg1_T1) + ( scale(ACwg1_T1) | Study), data = Quad)
-summary(m)
-
-m <- lmer(scale(G1_T2) ~ scale(G1_T1) + ( scale(ACwg1_T1) | Study), data = Quad)
-summary(m)
+png("~/Desktop/test.png", units="in", width=10, height=10, res=300)
+# insert ggplot code
+plot(p[,c(1:2,6:7)])
+dev.off()
 ```
 
 
 
 
+# Recovery
+
+```{r}
+setwd(paste0("/Volumes/Research Project/IAT_Retest/Recovery/RecoveredParams/PD/"))
+times<-c("Time1","Time2")
+
+allrecovs <- as.data.frame(matrix(ncol=14,nrow=0))
+
+PDdirs <- list.dirs(path = ".", full.names = TRUE, recursive = TRUE)[-1]
+for(d in PDdirs){
+  for(ti in times){
+    curFiles <- list.files(path=d,pattern="\\.csv$")
+    id<-grep(ti,curFiles)
+    output<-read.csv(paste0(d,"/",curFiles[id]))
+    name<-gsub("./","",d)
+    name<-gsub(" ","",name)
+    
+    if(ti=="Time1"){
+      #colnames(output) <- paste(colnames(output),"T1",sep="_")
+      output$time <- "T1"
+    }else if(ti=="Time2"){
+      #colnames(output) <- paste(colnames(output),"T2",sep="_")
+      output$time <- "T2"
+    }
+    
+    assign(paste0(name,".PD.Recov.",ti),output)
+  }
+  df <- rbind(get(paste0(name,".PD.Recov.Time1")),get(paste0(name,".PD.Recov.Time2")))
+  assign(paste0(name,".PD.Recov"),df)
+  allrecovs <- rbind(allrecovs,cbind(df,Study=name))
+}
 
 
+allrecovs$Study <- gsub("Lai1", "Lai 1", allrecovs$Study)
+allrecovs$Study <- gsub("Lai2", "Lai 2", allrecovs$Study)
+PD.recovs <- allrecovs
+PD.recovs <- dplyr::rename(PD.recovs, subID=X)
+
+tapply(PD.recovs$Ab1, PD.recovs$Study, function(x) length(x))
+```
+
+```{r}
+path <- "/Volumes/"
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/UCR/"))
+Cal1 <-read.csv("IndividualParametersPDUCR1.csv", header = T)
+Cal2 <-read.csv("IndividualParametersPDUCR2.csv", header = T)
+
+Cal1$time <- "T1"
+Cal2$time <- "T2"
+Cal1$subID <- 1:nrow(Cal1)
+Cal2$subID <- 1:nrow(Cal2)
+P.Cal <- rbind(Cal1, Cal2)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/PI/"))
+PI1 <- read.csv("IndividualParametersProjectImplicitPD1.csv")
+PI2 <- read.csv("IndividualParametersProjectImplicitPD2.csv")
+
+PI1$time <- "T1"
+PI2$time <- "T2"
+PI1$subID <- 1:nrow(PI1)
+PI2$subID <- 1:nrow(PI2)
+P.PI <- rbind(PI1, PI2)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Gawronski/"))
+Gaw1 <- read.csv("IndividualParametersPDGawronski1.csv")
+Gaw2 <- read.csv("IndividualParametersPDGawronski2.csv")
+
+Gaw1$time <- "T1"
+Gaw2$time <- "T2"
+Gaw1$subID <- 1:nrow(Gaw1)
+Gaw2$subID <- 1:nrow(Gaw2)
+P.Gaw <- rbind(Gaw1, Gaw2)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Forscher/"))
+For1<-read.csv("IndividualParametersForscherPD1.csv", header = T)
+For2<-read.csv("IndividualParametersForscherPD2.csv", header = T)
+
+For1$time <- "T1"
+For2$time <- "T2"
+For1$subID <- 1:nrow(For1)
+For2$subID <- 1:nrow(For2)
+P.For <- rbind(For1, For2)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai1/"))
+Lai11<-read.csv("IndividualParametersLaiStudy1PD1.csv", header = T)
+Lai12<-read.csv("IndividualParametersLaiStudy1PD2.csv", header = T)
+
+Lai11$time <- "T1"
+Lai12$time <- "T2"
+Lai11$subID <- 1:nrow(Lai11)
+Lai12$subID <- 1:nrow(Lai12)
+P.Lai1 <- rbind(Lai11, Lai12)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai2/"))
+Lai21<-read.csv("IndividualParametersLaiStudy2PD1.csv", header = T)
+Lai22<-read.csv("IndividualParametersLaiStudy2PD2.csv", header = T)
+
+Lai21$time <- "T1"
+Lai22$time <- "T2"
+Lai21$subID <- 1:nrow(Lai21)
+Lai22$subID <- 1:nrow(Lai22)
+P.Lai2 <- rbind(Lai21,Lai22)
+
+colnames(P.Cal)[1] <- "subID"
+P.Cal <- cbind(P.Cal, Study = "Calanchini")
+colnames(P.PI)[1] <- "subID"
+P.PI <- cbind(P.PI, Study = "PI")
+colnames(P.Gaw)[1] <- "subID"
+P.Gaw <- cbind(P.Gaw, Study = "Gawronski")
+colnames(P.For)[1] <- "subID"
+P.For <- cbind(P.For, Study = "Forscher")
+colnames(P.Lai1)[1] <- "subID"
+P.Lai1 <- cbind(P.Lai1, Study = "Lai 1")
+colnames(P.Lai2)[1] <- "subID"
+P.Lai2 <- cbind(P.Lai2, Study = "Lai 2")
+
+PD.orig <- rbind(P.Cal,P.PI,P.Gaw,P.For,P.Lai1,P.Lai2)
+PD.orig[1] <- NULL
+```
+
+```{r}
+
+colnames(PD.recovs)[2: (ncol(PD.recovs)-2) ] <- paste(colnames(PD.recovs)[2: (ncol(PD.recovs)-2) ],"R",sep="_")
+colnames(PD.orig)[1: (ncol(PD.orig)-3) ] <- paste(colnames(PD.orig)[1: (ncol(PD.orig)-3) ],"O",sep="_")
+PD.orig <- PD.orig[order(PD.orig$Study, PD.orig$time),]
+PD.recovs <- PD.recovs[order(PD.recovs$Study, PD.recovs$time),]
+
+#PD.orig.recovs <- cbind(PD.orig,PD.recovs)
+PD.orig.recovs <- merge(PD.orig, PD.recovs, by = c("subID","Study","time"))
+```
+
+
+# Recovery
+
+## PD Model
+
+### Automatic Black
+
+```{r}
+AbScatter <- ggplot(PD.orig.recovs, aes(x=Ab1_O, y=Ab1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black Automatic",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+AbScatter
+ggsave(paste0(saveto,"AbScatterREC.jpg"),dpi=600)
+```
+
+### Automatic White
+
+```{r}
+AwScatter <- ggplot(PD.orig.recovs, aes(x=Aw1_O, y=Aw1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White Automatic",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+AwScatter
+ggsave(paste0(saveto,"AwScatterREC.jpg"),dpi=600)
+```
+
+### Control-P
+
+```{r}
+CpScatter <- ggplot(PD.orig.recovs, aes(x=Cp1_O, y=Cp1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="P Control",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+CpScatter
+ggsave(paste0(saveto,"CpScatterREC.jpg"),dpi=600)
+```
+
+### Control-U
+
+```{r}
+CuScatter <- ggplot(PD.orig.recovs, aes(x=Cu1_O, y=Cu1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="U Control",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+CuScatter
+ggsave(paste0(saveto,"CuScatterREC.jpg"),dpi=600)
+```
+
+### Control-White
+
+```{r}
+CwScatter <- ggplot(PD.orig.recovs, aes(x=Cw1_O, y=Cw1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White Control",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+CwScatter
+ggsave(paste0(saveto,"CwScatterREC.jpg"),dpi=600)
+```
+
+### Control-Black
+
+```{r}
+CbScatter <- ggplot(PD.orig.recovs, aes(x=Cb1_O, y=Cb1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black Control",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+CbScatter
+ggsave(paste0(saveto,"CbScatterREC.jpg"),dpi=600)
+```
+
+### Panel
+
+```{r}
+library(ggpubr)
+PDPanel1 <- ggarrange(AwScatter, AbScatter, CuScatter, CpScatter, CbScatter, CwScatter,
+          ncol = 3, nrow = 2, common.legend = T)
+PDPanel1
+
+require(grid)   # for the textGrob() function
+
+PDPanel2 <- ggarrange(AwScatter + rremove("ylab") + rremove("xlab"), 
+                        AbScatter + rremove("ylab") + rremove("xlab"),
+                        CuScatter + rremove("ylab") + rremove("xlab"),
+                        CpScatter + rremove("ylab") + rremove("xlab"),
+                        CbScatter + rremove("ylab") + rremove("xlab"),
+                        CwScatter + rremove("ylab") + rremove("xlab"),
+          ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = "top",
+          align = "hv", 
+                    font.label = list(size = 10, color = "black", face = "bold", family = NULL, position = "top"))
+PDPanel2 <- annotate_figure(PDPanel2, left = textGrob("Recovered", rot = 90, vjust = 1, gp = gpar(cex = 1.3)),
+                    bottom = textGrob("Original", vjust = -.1, gp = gpar(cex = 1.3)))
+PDPanel2
+ggsave(paste0(saveto,"PDPanelREC.jpg"),dpi=600)
+```
+
+## Quad Model
+
+# Recovery
+
+```{r}
+setwd(paste0("/Volumes/Research Project/IAT_Retest/Recovery/RecoveredParams/Quad/"))
+times<-c("Time1","Time2")
+
+allrecovs <- as.data.frame(matrix(ncol=14,nrow=0))
+
+Quaddirs <- list.dirs(path = ".", full.names = TRUE, recursive = TRUE)[-1]
+for(d in Quaddirs){
+  for(ti in times){
+    curFiles <- list.files(path=d,pattern="\\.csv$")
+    id<-grep(ti,curFiles)
+    output<-read.csv(paste0(d,"/",curFiles[id]))
+    name<-gsub("./","",d)
+    name<-gsub(" ","",name)
+    
+    if(ti=="Time1"){
+      #colnames(output) <- paste(colnames(output),"T1",sep="_")
+      output$time <- "T1"
+    }else if(ti=="Time2"){
+      #colnames(output) <- paste(colnames(output),"T2",sep="_")
+      output$time <- "T2"
+    }
+    
+    assign(paste0(name,".Quad.Recov.",ti),output)
+  }
+  df <- rbind(get(paste0(name,".Quad.Recov.Time1")),get(paste0(name,".Quad.Recov.Time2")))
+  assign(paste0(name,".Quad.Recov"),df)
+  allrecovs <- rbind(allrecovs,cbind(df,Study=name))
+}
+
+
+allrecovs$Study <- gsub("Lai1", "Lai 1", allrecovs$Study)
+allrecovs$Study <- gsub("Lai2", "Lai 2", allrecovs$Study)
+Quad.recovs <- allrecovs
+Quad.recovs <- dplyr::rename(Quad.recovs, subID=X)
+
+tapply(Quad.recovs$ACbb1, Quad.recovs$Study, function(x) length(x))
+```
+
+```{r}
+path <- "/Volumes/"
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/UCR/"))
+Cal1 <-read.csv("IndividualParametersQuadUCR1.csv", header = T)
+Cal2 <-read.csv("IndividualParametersQuadUCR2.csv", header = T)
+
+Cal1$time <- "T1"
+Cal2$time <- "T2"
+Cal1$subID <- 1:nrow(Cal1)
+Cal2$subID <- 1:nrow(Cal2)
+P.Cal <- rbind(Cal1, Cal2)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/PI/"))
+PI1 <- read.csv("IndividualParametersQuadProjectImplicit1.csv")
+PI2 <- read.csv("IndividualParametersQuadProjectImplicit2.csv")
+
+PI1$time <- "T1"
+PI2$time <- "T2"
+PI1$subID <- 1:nrow(PI1)
+PI2$subID <- 1:nrow(PI2)
+P.PI <- rbind(PI1, PI2)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Gawronski/"))
+Gaw1 <- read.csv("IndividualParametersQuadGawronski1.csv")
+Gaw2 <- read.csv("IndividualParametersQuadGawronski2.csv")
+
+Gaw1$time <- "T1"
+Gaw2$time <- "T2"
+Gaw1$subID <- 1:nrow(Gaw1)
+Gaw2$subID <- 1:nrow(Gaw2)
+P.Gaw <- rbind(Gaw1, Gaw2)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Forscher/"))
+For1<-read.csv("IndividualParametersQuadForscher1.csv", header = T)
+For2<-read.csv("IndividualParametersQuadForscher2.csv", header = T)
+
+For1$time <- "T1"
+For2$time <- "T2"
+For1$subID <- 1:nrow(For1)
+For2$subID <- 1:nrow(For2)
+P.For <- rbind(For1, For2)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai1/"))
+Lai11<-read.csv("IndividualParametersLaiStudy1Quad1.csv", header = T)
+Lai12<-read.csv("IndividualParametersLaiStudy1Quad2.csv", header = T)
+
+Lai11$time <- "T1"
+Lai12$time <- "T2"
+Lai11$subID <- 1:nrow(Lai11)
+Lai12$subID <- 1:nrow(Lai12)
+P.Lai1 <- rbind(Lai11, Lai12)
+
+setwd(paste0(path,"Research Project/IAT_Retest/Estimates/Lai2/"))
+Lai21<-read.csv("IndividualParametersLaiStudy2Quad1.csv", header = T)
+Lai22<-read.csv("IndividualParametersLaiStudy2Quad2.csv", header = T)
+
+Lai21$time <- "T1"
+Lai22$time <- "T2"
+Lai21$subID <- 1:nrow(Lai21)
+Lai22$subID <- 1:nrow(Lai22)
+P.Lai2 <- rbind(Lai21,Lai22)
+
+colnames(P.Cal)[1] <- "subID"
+P.Cal <- cbind(P.Cal, Study = "Calanchini")
+colnames(P.PI)[1] <- "subID"
+P.PI <- cbind(P.PI, Study = "PI")
+colnames(P.Gaw)[1] <- "subID"
+P.Gaw <- cbind(P.Gaw, Study = "Gawronski")
+colnames(P.For)[1] <- "subID"
+P.For <- cbind(P.For, Study = "Forscher")
+colnames(P.Lai1)[1] <- "subID"
+P.Lai1 <- cbind(P.Lai1, Study = "Lai 1")
+colnames(P.Lai2)[1] <- "subID"
+P.Lai2 <- cbind(P.Lai2, Study = "Lai 2")
+
+Quad.orig <- rbind(P.Cal,P.PI,P.Gaw,P.For,P.Lai1,P.Lai2)
+Quad.orig[1] <- NULL
+```
+
+```{r}
+colnames(Quad.recovs)[2: (ncol(Quad.recovs)-2) ] <- paste(colnames(Quad.recovs)[2: (ncol(Quad.recovs)-2) ],"R",sep="_")
+colnames(Quad.orig)[1: (ncol(Quad.orig)-3) ] <- paste(colnames(Quad.orig)[1: (ncol(Quad.orig)-3) ],"O",sep="_")
+Quad.orig <- Quad.orig[order(Quad.orig$Study, Quad.orig$time),]
+Quad.recovs <- Quad.recovs[order(Quad.recovs$Study, Quad.recovs$time),]
+
+#Quad.orig.recovs <- cbind(Quad.orig,Quad.recovs)
+Quad.orig.recovs <- merge(Quad.orig, Quad.recovs, by = c("subID","Study","time"))
+```
+
+## Quad Model
+
+### Associate Black-Bad
+
+```{r}
+ACbbScatter <- ggplot(Quad.orig.recovs, aes(x=ACbb1_O, y=ACbb1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black-Bad Associate",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+ACbbScatter
+ggsave(paste0(saveto,"ACbbScatterREC.jpg"),dpi=600)
+```
+
+### Associate White-Good
+
+```{r}
+ACwgScatter <- ggplot(Quad.orig.recovs, aes(x=ACwg1_O, y=ACwg1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White-Good Associate",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+ACwgScatter
+ggsave(paste0(saveto,"ACwgScatterREC.jpg"),dpi=600)
+```
+
+### Detection
+
+```{r}
+DScatter <- ggplot(Quad.orig.recovs, aes(x=D1_O, y=D1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Detection",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+DScatter
+ggsave(paste0(saveto,"DScatterREC.jpg"),dpi=600)
+```
+
+### Overcoming Bias
+
+```{r}
+OBScatter <- ggplot(Quad.orig.recovs, aes(x=OB1_O, y=OB1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Overcoming Bias",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+OBScatter
+ggsave(paste0(saveto,"OBScatterREC.jpg"),dpi=600)
+```
+
+### Guessing
+
+```{r}
+GScatter <- ggplot(Quad.orig.recovs, aes(x=G1_O, y=G1_R, color=Study, shape=time)) + 
+  geom_point(alpha = .2)+
+  geom_smooth(method=lm, se=TRUE, linetype="dashed",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Guessing",
+       x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  jtools::theme_apa()
+GScatter
+ggsave(paste0(saveto,"GScatter.jpg"),dpi=600)
+```
+
+### Panel
+
+```{r}
+library(ggpubr)
+QuadPanel1 <- ggarrange(ACwgScatter, ACbbScatter, DScatter, OBScatter, GScatter,
+          ncol = 3, nrow = 2, common.legend = T)
+QuadPanel1
+
+require(grid)   # for the textGrob() function
+
+QuadPanel2 <- ggarrange(ACwgScatter + rremove("ylab") + rremove("xlab"), 
+                        ACbbScatter + rremove("ylab") + rremove("xlab"),
+                        DScatter + rremove("ylab") + rremove("xlab"),
+                        OBScatter + rremove("ylab") + rremove("xlab"),
+                        GScatter + rremove("ylab") + rremove("xlab"),
+          ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = "top",
+          align = "hv", 
+                    font.label = list(size = 10, color = "black", face = "bold", family = NULL, position = "top"))
+QuadPanel2
+
+annotate_figure(QuadPanel2, left = textGrob("Recovered", rot = 90, vjust = 1, gp = gpar(cex = 1.3)),
+                    bottom = textGrob("Original", vjust = -.1, gp = gpar(cex = 1.3)))
+ggsave(paste0(saveto,"QuadPanelREC.jpg"),dpi=600)
+```
+
+# Recovery Meta-Analysis
+
+```{r}
+dt <- read.csv("/Volumes/Research Project/IAT_Retest/Recovery/Meta-Analysis/Quad_Recovery_Meta.csv")[2:5]
+colnames(dt)[colnames(dt)=="Param"] <- "Parameter"
+colnames(dt)[colnames(dt)=="Recov"] <- "Recovery"
+dt$` ` <- paste(rep(" ", 20), collapse = " ")
+dt$`Recovery (95% CI)` <- ifelse(is.na(dt$Recovery), "",
+                             sprintf("%.2f (%.2f to %.2f)",
+                                     dt$Recovery, dt$CI.LB, dt$CI.UB))
+p <- forest(#dt[,c(1,5:6)],
+dt,
+            est = dt$Recovery,
+            lower = dt$CI.LB, 
+            upper = dt$CI.UB,
+            ci_column = 5,
+            ref_line = .4,
+            xlim = c(0, 1),
+            ticks_at = c(0, .4,.6, .75, 1))
+plot(p[,c(1:2,6:7)])
+```
+
+```{r}
+dt <- read.csv("/Volumes/Research Project/IAT_Retest/Recovery/Meta-Analysis/PD_Recovery_Meta.csv")[2:5]
+colnames(dt)[colnames(dt)=="Param"] <- "Parameter"
+colnames(dt)[colnames(dt)=="Recov"] <- "Recovery"
+dt$` ` <- paste(rep(" ", 20), collapse = " ")
+dt$`Recovery (95% CI)` <- ifelse(is.na(dt$Recovery), "",
+                             sprintf("%.2f (%.2f to %.2f)",
+                                     dt$Recovery, dt$CI.LB, dt$CI.UB))
+p <- forest(#dt[,c(1,5:6)],
+dt,
+            est = dt$Recovery,
+            lower = dt$CI.LB, 
+            upper = dt$CI.UB,
+            ci_column = 5,
+            ref_line = .4,
+            xlim = c(0, 1),
+            ticks_at = c(0, .4,.6, .75, 1))
+plot(p[,c(1:2,6:7)])
+```

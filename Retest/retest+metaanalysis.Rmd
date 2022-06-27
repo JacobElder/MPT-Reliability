@@ -42,7 +42,12 @@ path <- "/Volumes/"
 
 
 ```{r}
-x <- c("Study","D_ICC","G_ICC","OB_ICC","ACbb_ICC","ACwg_ICC","N","Interval", "Order")
+x <- c("Study","D_ICC","D_LB","D_UB",
+       "G_ICC","G_LB","G_UB",
+       "OB_ICC","OB_LB","OB_UB",
+       "ACbb_ICC","ACbb_LB","ACbb_UB",
+       "ACwg_ICC","ACwg_LB","ACwg_UB",
+       "N","Interval", "Order")
 reliability_Df <- data.frame(matrix(ncol=length(x)))
 colnames(reliability_Df) <- x
 ```
@@ -92,7 +97,13 @@ ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-reliability_Df <- rbind(reliability_Df, c("Calanchini", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, 48, 2 ) )
+reliability_Df <- rbind(reliability_Df, c("Calanchini", 
+                                          D_ICC$value,D_ICC$lbound,D_ICC$ubound, 
+                                          G_ICC$value, G_ICC$lbound, G_ICC$ubound,
+                                          OB_ICC$value,  OB_ICC$lbound, OB_ICC$ubound,
+                                          ACbb_ICC$value,  ACbb_ICC$lbound, ACbb_ICC$ubound,
+                                          ACwg_ICC$value, ACwg_ICC$lbound, ACwg_ICC$ubound,
+                                          D_ICC$subjects, 48, 2 ) )
 ```
 
 ```{r}
@@ -134,7 +145,12 @@ ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-reliability_Df <- rbind(reliability_Df, c("PI", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, 28, 1 ) )
+reliability_Df <- rbind(reliability_Df, c("PI", 
+                                          D_ICC$value,D_ICC$lbound,D_ICC$ubound, 
+                                          G_ICC$value, G_ICC$lbound, G_ICC$ubound,
+                                          OB_ICC$value,  OB_ICC$lbound, OB_ICC$ubound,
+                                          ACbb_ICC$value,  ACbb_ICC$lbound, ACbb_ICC$ubound,
+                                          ACwg_ICC$value, ACwg_ICC$lbound, ACwg_ICC$ubound, D_ICC$subjects, 28, 1 ) )
 ```
 
 ```{r}
@@ -176,7 +192,12 @@ ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-reliability_Df <- rbind(reliability_Df, c("Gawronski", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, 730, 4 ) )
+reliability_Df <- rbind(reliability_Df, c("Gawronski",                                          D_ICC$value,D_ICC$lbound,D_ICC$ubound, 
+                                          G_ICC$value, G_ICC$lbound, G_ICC$ubound,
+                                          OB_ICC$value,  OB_ICC$lbound, OB_ICC$ubound,
+                                          ACbb_ICC$value,  ACbb_ICC$lbound, ACbb_ICC$ubound,
+                                          ACwg_ICC$value, ACwg_ICC$lbound, ACwg_ICC$ubound,
+                                          D_ICC$subjects, 730, 4 ) )
 ```
 
 ```{r}
@@ -219,7 +240,12 @@ ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-reliability_Df <- rbind(reliability_Df, c("Forscher", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, 8760, 5 ) )
+reliability_Df <- rbind(reliability_Df, c("Forscher", 
+                                          D_ICC$value,D_ICC$lbound,D_ICC$ubound, 
+                                          G_ICC$value, G_ICC$lbound, G_ICC$ubound,
+                                          OB_ICC$value,  OB_ICC$lbound, OB_ICC$ubound,
+                                          ACbb_ICC$value,  ACbb_ICC$lbound, ACbb_ICC$ubound,
+                                          ACwg_ICC$value, ACwg_ICC$lbound, ACwg_ICC$ubound, D_ICC$subjects, 8760, 5 ) )
 ```
 
 ```{r}
@@ -261,7 +287,13 @@ ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-reliability_Df <- rbind(reliability_Df, c("Lai1", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, NA, 3 ) )
+reliability_Df <- rbind(reliability_Df, c("Lai1", 
+                                          D_ICC$value,D_ICC$lbound,D_ICC$ubound, 
+                                          G_ICC$value, G_ICC$lbound, G_ICC$ubound,
+                                          OB_ICC$value,  OB_ICC$lbound, OB_ICC$ubound,
+                                          ACbb_ICC$value,  ACbb_ICC$lbound, ACbb_ICC$ubound,
+                                          ACwg_ICC$value, ACwg_ICC$lbound, ACwg_ICC$ubound,
+                                          D_ICC$subjects, NA, 3 ) )
 ```
 
 ```{r}
@@ -303,18 +335,25 @@ ACwg_ICC <- icc(timeDf[grep("^ACwg1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-reliability_Df <- rbind(reliability_Df, c("Lai2", D_ICC$value, G_ICC$value, OB_ICC$value, ACbb_ICC$value, ACwg_ICC$value, D_ICC$subjects, NA, 3 ) )
+reliability_Df <- rbind(reliability_Df, c("Lai2", 
+                                          D_ICC$value,D_ICC$lbound,D_ICC$ubound, 
+                                          G_ICC$value, G_ICC$lbound, G_ICC$ubound,
+                                          OB_ICC$value,  OB_ICC$lbound, OB_ICC$ubound,
+                                          ACbb_ICC$value,  ACbb_ICC$lbound, ACbb_ICC$ubound,
+                                          ACwg_ICC$value, ACwg_ICC$lbound, ACwg_ICC$ubound,
+                                          D_ICC$subjects, NA, 3 ) )
 ```
 
 ```{r}
 reliability_Df <- reliability_Df[-1,]
 reliability_Df[2:ncol(reliability_Df)] <- apply(reliability_Df[2:ncol(reliability_Df)], 2, as.numeric)
-write.csv(reliability_Df, paste0(path,"Research Project/IAT_Retest/Meta-Analysis/Quad_TRT_relDf.csv"))
-reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=D_ICC, ni=N, slab=Study, var.names=c("D_Z","D_SE"))
-reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=G_ICC, ni=N, slab=Study, var.names=c("G_Z","G_SE"))
-reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=OB_ICC, ni=N, slab=Study, var.names=c("OB_Z","OB_SE"))
-reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=ACbb_ICC, ni=N, slab=Study, var.names=c("ACbb_Z","ACbb_SE"))
-reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=ACwg_ICC, ni=N, slab=Study, var.names=c("ACwg_Z","ACwg_SE"))
+write.csv(reliability_Df, "~/Documents/GitHub/MPT-Reliability/Retest/output/Quad_TRT_relDf.csv")
+studies <- c("Wilson & Calanchini, 2020", "Project Implicit, 2020", "Gawronski et al., 2017" , "Forscher et al., 2017" , "Lai et al., 2016 (Study 1)", "Lai et al., 2016 (Study 2)")
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=D_ICC, ni=N, slab=studies, var.names=c("D_Z","D_SE"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=G_ICC, ni=N, slab=studies, var.names=c("G_Z","G_SE"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=OB_ICC, ni=N, slab=studies, var.names=c("OB_Z","OB_SE"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=ACbb_ICC, ni=N, slab=studies, var.names=c("ACbb_Z","ACbb_SE"))
+reliability_Df <- escalc(data=reliability_Df, measure="ZCOR", ri=ACwg_ICC, ni=N, slab=studies, var.names=c("ACwg_Z","ACwg_SE"))
 ```
 
 # Inspect individual studies
@@ -350,6 +389,21 @@ res.mod_ACwg <- rma.mv(ACwg_Z, ACwg_SE, random = ~1 | Study, data=reliability_Df
 summary(res.mod_ACwg)
 I2gen(res.mod_ACwg)
 ```
+
+```{r}
+par(mfrow = c(2, 3))
+par(oma = c(5, 5, 0, 0)) # make room (i.e. the 4's) for the overall x and y axis titles
+par(mar = c(2, 2, 3, 3)) # make the plots be closer together
+
+test<-metafor::forest(res.mod_ACbb, transf=transf.ztor.int,  main="Activation Black-Bad",xlab='',xlim=c(-4,4))
+test2<-metafor::forest(res.mod_ACwg, transf=transf.ztor.int,  main="Activation White-Good",xlab='',xlim=c(-4,4))
+test2<-metafor::forest(res.mod_G, transf=transf.ztor.int,  main="Guessing",xlab='',xlim=c(-4,4))
+test2<-metafor::forest(res.mod_OB, transf=transf.ztor.int,  main="Overcoming Bias",xlab='',xlim=c(-4,4))
+test2<-metafor::forest(res.mod_D, transf=transf.ztor.int,  main="Detection",xlab='',xlim=c(-4,4))
+# print the overall labels
+mtext('ICC', side = 1, outer = TRUE, line = 2)
+```
+
 
 # Moderated by Time Interval
 
@@ -394,7 +448,7 @@ MPT_MA_df <- data.frame(Param=c("D","OB","ACwg","ACbb","G"),
                  fisherz2r(res.mod_G$ci.ub)
            )
 )
-write.csv(MPT_MA_df, paste0(path,"Research Project/IAT_Retest/Meta-Analysis/Quad_TRT_metaDf.csv"))
+write.csv(MPT_MA_df, "~/Documents/GitHub/MPT-Reliability/Retest/output/Quad_TRT_metaDf.csv")
 ```
 
 ```{r}
@@ -584,7 +638,14 @@ ggplot(ACwgdf, aes(x=ICC_Phen, y=SampObs, color=as.factor(TrueR) )) +
 # PD Model
 
 ```{r}
-x <- c("Study","Ab_ICC","Aw_ICC","Cb_ICC","Cp_ICC","Cu_ICC","Cw_ICC","N","Interval","Order")
+x <- c("Study",
+       "Ab_ICC","Ab_LB","Ab_UB",
+       "Aw_ICC","Aw_LB","Aw_UB",
+       "Cb_ICC","Cb_LB","Cb_UB",
+       "Cp_ICC","Cp_LB","Cp_UB",
+       "Cu_ICC","Cu_LB","Cu_UB",
+       "Cw_ICC","Cw_LB","Cw_UB",
+       "N","Interval","Order")
 PDrel_Df <- data.frame(matrix(ncol=length(x)))
 colnames(PDrel_Df) <- x
 ```
@@ -632,7 +693,14 @@ Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-PDrel_Df <- rbind(PDrel_Df, c("Calanchini", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, 48, 2 ) )
+PDrel_Df <- rbind(PDrel_Df, c("Calanchini",
+                              Ab_ICC$value, Ab_ICC$lbound, Ab_ICC$ubound,
+                              Aw_ICC$value, Aw_ICC$lbound, Aw_ICC$ubound,
+                              Cb_ICC$value, Cb_ICC$lbound, Cb_ICC$ubound,
+                              Cp_ICC$value, Cp_ICC$lbound, Cp_ICC$ubound,
+                              Cu_ICC$value, Cu_ICC$lbound, Cu_ICC$ubound,
+                              Cw_ICC$value, Cw_ICC$lbound, Cw_ICC$ubound,
+                              Ab_ICC$subjects, 48, 2 ) )
 ```
 
 ```{r}
@@ -678,7 +746,13 @@ Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-PDrel_Df <- rbind(PDrel_Df, c("PI", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, 28, 1 ) )
+PDrel_Df <- rbind(PDrel_Df, c("PI",                               
+                              Ab_ICC$value, Ab_ICC$lbound, Ab_ICC$ubound,
+                              Aw_ICC$value, Aw_ICC$lbound, Aw_ICC$ubound,
+                              Cb_ICC$value, Cb_ICC$lbound, Cb_ICC$ubound,
+                              Cp_ICC$value, Cp_ICC$lbound, Cp_ICC$ubound,
+                              Cu_ICC$value, Cu_ICC$lbound, Cu_ICC$ubound,
+                              Cw_ICC$value, Cw_ICC$lbound, Cw_ICC$ubound, Ab_ICC$subjects, 28, 1 ) )
 ```
 
 ```{r}
@@ -725,7 +799,14 @@ Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-PDrel_Df <- rbind(PDrel_Df, c("Gawronski", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, 730, 4 ) )
+PDrel_Df <- rbind(PDrel_Df, c("Gawronski",                               
+                              Ab_ICC$value, Ab_ICC$lbound, Ab_ICC$ubound,
+                              Aw_ICC$value, Aw_ICC$lbound, Aw_ICC$ubound,
+                              Cb_ICC$value, Cb_ICC$lbound, Cb_ICC$ubound,
+                              Cp_ICC$value, Cp_ICC$lbound, Cp_ICC$ubound,
+                              Cu_ICC$value, Cu_ICC$lbound, Cu_ICC$ubound,
+                              Cw_ICC$value, Cw_ICC$lbound, Cw_ICC$ubound,
+                              Ab_ICC$subjects, 730, 4 ) )
 ```
 
 ```{r}
@@ -772,7 +853,14 @@ Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-PDrel_Df <- rbind(PDrel_Df, c("Forscher", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, 8760, 5 ) )
+PDrel_Df <- rbind(PDrel_Df, c("Forscher",                              
+                              Ab_ICC$value, Ab_ICC$lbound, Ab_ICC$ubound,
+                              Aw_ICC$value, Aw_ICC$lbound, Aw_ICC$ubound,
+                              Cb_ICC$value, Cb_ICC$lbound, Cb_ICC$ubound,
+                              Cp_ICC$value, Cp_ICC$lbound, Cp_ICC$ubound,
+                              Cu_ICC$value, Cu_ICC$lbound, Cu_ICC$ubound,
+                              Cw_ICC$value, Cw_ICC$lbound, Cw_ICC$ubound,
+                              Ab_ICC$subjects, 8760, 5 ) )
 ```
 
 ```{r}
@@ -818,7 +906,14 @@ Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-PDrel_Df <- rbind(PDrel_Df, c("Lai1", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, NA, 3 ) )
+PDrel_Df <- rbind(PDrel_Df, c("Lai1",                               
+                              Ab_ICC$value, Ab_ICC$lbound, Ab_ICC$ubound,
+                              Aw_ICC$value, Aw_ICC$lbound, Aw_ICC$ubound,
+                              Cb_ICC$value, Cb_ICC$lbound, Cb_ICC$ubound,
+                              Cp_ICC$value, Cp_ICC$lbound, Cp_ICC$ubound,
+                              Cu_ICC$value, Cu_ICC$lbound, Cu_ICC$ubound,
+                              Cw_ICC$value, Cw_ICC$lbound, Cw_ICC$ubound,
+                              Ab_ICC$subjects, NA, 3 ) )
 ```
 
 ```{r}
@@ -864,14 +959,21 @@ Cw_ICC <- icc(timeDf[grep("^Cw1_", colnames(timeDf))], model = c("twoway"),
 ```
 
 ```{r}
-PDrel_Df <- rbind(PDrel_Df, c("Lai2", Ab_ICC$value, Aw_ICC$value, Cb_ICC$value, Cp_ICC$value, Cu_ICC$value, Cw_ICC$value, Ab_ICC$subjects, NA, 3 ) )
+PDrel_Df <- rbind(PDrel_Df, c("Lai2", 
+                              Ab_ICC$value, Ab_ICC$lbound, Ab_ICC$ubound,
+                              Aw_ICC$value, Aw_ICC$lbound, Aw_ICC$ubound,
+                              Cb_ICC$value, Cb_ICC$lbound, Cb_ICC$ubound,
+                              Cp_ICC$value, Cp_ICC$lbound, Cp_ICC$ubound,
+                              Cu_ICC$value, Cu_ICC$lbound, Cu_ICC$ubound,
+                              Cw_ICC$value, Cw_ICC$lbound, Cw_ICC$ubound,
+                              Ab_ICC$subjects, NA, 3 ) )
 ```
 
 
 ```{r}
 PDrel_Df <- PDrel_Df[-1,]
 PDrel_Df[2:ncol(PDrel_Df)] <- apply(PDrel_Df[2:ncol(PDrel_Df)], 2, as.numeric)
-write.csv(PDrel_Df, paste0(path,"Research Project/IAT_Retest/Meta-Analysis/PD_TRT_relDf.csv"))
+write.csv(PDrel_Df, "~/Documents/GitHub/MPT-Reliability/Retest/output/PD_TRT_relDf.csv")
 PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Ab_ICC, ni=N, slab=Study, var.names=c("Ab_Z","Ab_SE"))
 PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Aw_ICC, ni=N, slab=Study, var.names=c("Aw_Z","Aw_SE"))
 PDrel_Df <- escalc(data=PDrel_Df, measure="ZCOR", ri=Cb_ICC, ni=N, slab=Study, var.names=c("Cb_Z","Cb_SE"))
@@ -964,6 +1066,54 @@ pd_MA_df <- data.frame(Param=c("Ab","Aw","Cb","Cp","Cu","Cw") ,
                  fisherz2r(res.mod_Cw$ci.ub)
            )
 )
-write.csv(pd_MA_df, paste0(path,"Research Project/IAT_Retest/Meta-Analysis/PD_TRT_metaDf.csv"))
+write.csv(pd_MA_df, "~/Documents/GitHub/MPT-Reliability/Retest/output/PD_TRT_metaDf.csv")
 ```
+
+# Combined
+
+```{r}
+Ds <- reliability_Df %>% select(1:N) %>% select(contains("D_")) %>% bind_cols(Param=reliability_Df$Study) %>% rename(ICC = D_ICC, CI.LB = D_LB, CI.UB = D_UB) %>% bind_cols(type=1)
+Ds<-MPT_MA_df %>% filter(Param=="D") %>% bind_cols(type=0) %>% bind_rows(Ds)
+
+OBs <- reliability_Df %>% select(1:N) %>% select(contains("OB_")) %>% bind_cols(Param=reliability_Df$Study) %>% rename(ICC = OB_ICC, CI.LB = OB_LB, CI.UB = OB_UB) %>% bind_cols(type=1)
+OBs<-MPT_MA_df %>% filter(Param=="OB") %>% bind_cols(type=0) %>% bind_rows(OBs)
+
+ACbbs <- reliability_Df %>% select(1:N) %>% select(contains("ACbb_")) %>% bind_cols(Param=reliability_Df$Study) %>% rename(ICC = ACbb_ICC, CI.LB = ACbb_LB, CI.UB = ACbb_UB) %>% bind_cols(type=1)
+ACbbs<-MPT_MA_df %>% filter(Param=="ACbb") %>% bind_cols(type=0) %>% bind_rows(ACbbs)
+
+ACwgs <- reliability_Df %>% select(1:N) %>% select(contains("ACwg_")) %>% bind_cols(Param=reliability_Df$Study) %>% rename(ICC = ACwg_ICC, CI.LB = ACwg_LB, CI.UB = ACwg_UB) %>% bind_cols(type=1)
+ACwgs<-MPT_MA_df %>% filter(Param=="ACwg") %>% bind_cols(type=0) %>% bind_rows(ACwgs)
+
+Gs <- reliability_Df %>% select(1:N) %>% select(contains("G_",ignore.case = F)) %>% bind_cols(Param=reliability_Df$Study) %>% rename(ICC = G_ICC, CI.LB = G_LB, CI.UB = G_UB) %>% bind_cols(type=1)
+Gs<-MPT_MA_df %>% filter(Param=="G") %>% bind_cols(type=0) %>% bind_rows(Gs)
+
+comb_Quad_Df <- rbind(Ds,OBs,ACbbs,ACwgs,Gs)
+
+write.csv(comb_Quad_Df, "~/Documents/GitHub/MPT-Reliability/Retest/output/combQuad_Df.csv")
+```
+
+```{r}
+Abs <- PDrel_Df %>% select(1:N) %>% select(contains("Ab_")) %>% bind_cols(Param=PDrel_Df$Study) %>% rename(ICC = Ab_ICC, CI.LB = Ab_LB, CI.UB = Ab_UB) %>% bind_cols(type=1)
+Abs<-pd_MA_df %>% filter(Param=="Ab") %>% bind_cols(type=0) %>% bind_rows(Abs)
+
+Aws <- PDrel_Df %>% select(1:N) %>% select(contains("Aw_")) %>% bind_cols(Param=PDrel_Df$Study) %>% rename(ICC = Aw_ICC, CI.LB = Aw_LB, CI.UB = Aw_UB) %>% bind_cols(type=1)
+Aws<-pd_MA_df %>% filter(Param=="Aw") %>% bind_cols(type=0) %>% bind_rows(Aws)
+
+Cbs <- PDrel_Df %>% select(1:N) %>% select(contains("Cb_")) %>% bind_cols(Param=PDrel_Df$Study) %>% rename(ICC = Cb_ICC, CI.LB = Cb_LB, CI.UB = Cb_UB) %>% bind_cols(type=1)
+Cbs<-pd_MA_df %>% filter(Param=="Cb") %>% bind_cols(type=0) %>% bind_rows(Cbs)
+
+Cps <- PDrel_Df %>% select(1:N) %>% select(contains("Cp_")) %>% bind_cols(Param=PDrel_Df$Study) %>% rename(ICC = Cp_ICC, CI.LB = Cp_LB, CI.UB = Cp_UB) %>% bind_cols(type=1)
+Cps<-pd_MA_df %>% filter(Param=="Cp") %>% bind_cols(type=0) %>% bind_rows(Cps)
+
+Cus <- PDrel_Df %>% select(1:N) %>% select(contains("Cu_")) %>% bind_cols(Param=PDrel_Df$Study) %>% rename(ICC = Cu_ICC, CI.LB = Cu_LB, CI.UB = Cu_UB) %>% bind_cols(type=1)
+Cus<-pd_MA_df %>% filter(Param=="Cu") %>% bind_cols(type=0) %>% bind_rows(Cus)
+
+Cws <- PDrel_Df %>% select(1:N) %>% select(contains("Cw_")) %>% bind_cols(Param=PDrel_Df$Study) %>% rename(ICC = Cw_ICC, CI.LB = Cw_LB, CI.UB = Cw_UB) %>% bind_cols(type=1)
+Cws<-pd_MA_df %>% filter(Param=="Cw") %>% bind_cols(type=0) %>% bind_rows(Cws)
+
+comb_PD_Df <- rbind(Abs,Aws,Cbs,Cps,Cus,Cws)
+
+write.csv(comb_PD_Df, "~/Documents/GitHub/MPT-Reliability/Retest/output/combPD_Df.csv")
+```
+
 
