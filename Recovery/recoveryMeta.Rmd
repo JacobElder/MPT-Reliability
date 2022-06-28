@@ -126,7 +126,7 @@ Quad_recovParams <- list(Time1_list, Time2_list)
 PDnames<-gsub("./","",PDdirs)
 PDnames<-gsub(" ","",PDnames)
 paramnames<-names(PI.PD.True.Time1)[2:7]
-x<-c("Study","Time",paramnames)
+x<-c("Study","Time", unlist(lapply(paramnames, function(x) paste0(x, c("_r","_LB","_UB") ))) )
 PDrecovDf <- matrix(nrow=length(PDnames)*2,ncol=length(x))
 k<-1
 for(n in PDnames){
@@ -139,8 +139,11 @@ for(n in PDnames){
     
     recovVector <- c()
     for(p in paramnames){
-      currentRecovery <- cor(curQrecov[,p],curQtrue[,p])
-      recovVector <- c(recovVector, currentRecovery)
+      out<-cor.test(curQrecov[,p],curQtrue[,p])
+      currentRecovery <- out$est
+      lowCI <- out$conf.int[1]
+      highCI <- out$conf.int[2]
+      recovVector <- c(recovVector, currentRecovery, lowCI, highCI)
     }
     PDrecovDf[k,] <- c(n,time,recovVector)
     k <- k + 1
@@ -149,7 +152,7 @@ for(n in PDnames){
 }
 colnames(PDrecovDf) <- x
 PDrecovDf <- as.data.frame(PDrecovDf)
-PDrecovDf[3:8] <- apply(PDrecovDf[3:8], 2, as.numeric)
+PDrecovDf[3:ncol(PDrecovDf)] <- apply(PDrecovDf[3:ncol(PDrecovDf)], 2, as.numeric)
 ```
 
 
@@ -159,7 +162,7 @@ PDrecovDf[3:8] <- apply(PDrecovDf[3:8], 2, as.numeric)
 Quadnames<-gsub("./","",Quaddirs)
 Quadnames<-gsub(" ","",Quadnames)
 paramnames<-names(PI.Quad.True.Time1)[2:6]
-x<-c("Study","Time",paramnames)
+x<-c("Study","Time", unlist(lapply(paramnames, function(x) paste0(x, c("_r","_LB","_UB") )))  )
 QuadRecovDf <- matrix(nrow=length(Quadnames)*2,ncol=length(x))
 k<-1
 for(n in Quadnames){
@@ -172,8 +175,11 @@ for(n in Quadnames){
     
     recovVector <- c()
     for(p in paramnames){
-      currentRecovery <- cor(curQrecov[,p],curQtrue[,p])
-      recovVector <- c(recovVector, currentRecovery)
+      out<-cor.test(curQrecov[,p],curQtrue[,p])
+      currentRecovery <- out$est
+      lowCI <- out$conf.int[1]
+      highCI <- out$conf.int[2]
+      recovVector <- c(recovVector, currentRecovery, lowCI, highCI)
     }
     QuadRecovDf[k,] <- c(n,time,recovVector)
     k <- k + 1
@@ -182,7 +188,7 @@ for(n in Quadnames){
 }
 colnames(QuadRecovDf) <- x
 QuadRecovDf <- as.data.frame(QuadRecovDf)
-QuadRecovDf[3:7] <- apply(QuadRecovDf[3:7], 2, as.numeric)
+QuadRecovDf[3:ncol(QuadRecovDf)] <- apply(QuadRecovDf[3:ncol(QuadRecovDf)], 2, as.numeric)
 ```
 
 ```{r}
@@ -192,7 +198,7 @@ QuadRecovDf$N[QuadRecovDf$Study=="Calanchini"] <- nrow(Calanchini.Quad.Recov.Tim
 QuadRecovDf$N[QuadRecovDf$Study=="Forscher"] <- nrow(Forscher.Quad.Recov.Time1)
 QuadRecovDf$N[QuadRecovDf$Study=="Gawronski"] <- nrow(Gawronski.Quad.Recov.Time1)
 QuadRecovDf$N[QuadRecovDf$Study=="PI"] <- nrow(PI.Quad.Recov.Time1)
-write.csv(QuadRecovDf, paste0(path,"Research Project/IAT_Retest/Recovery/Meta-Analysis/QuadRecovDf.csv"))
+write.csv(QuadRecovDf, "~/Documents/GitHub/MPT-Reliability/Recovery/output/QuadRecovDf.csv")
 ```
 
 ```{r}
@@ -202,7 +208,7 @@ PDrecovDf$N[PDrecovDf$Study=="Calanchini"] <- nrow(Calanchini.PD.Recov.Time1)
 PDrecovDf$N[PDrecovDf$Study=="Forscher"] <- nrow(Forscher.PD.Recov.Time1)
 PDrecovDf$N[PDrecovDf$Study=="Gawronski"] <- nrow(Gawronski.PD.Recov.Time1)
 PDrecovDf$N[PDrecovDf$Study=="PI"] <- nrow(PI.PD.Recov.Time1)
-write.csv(PDrecovDf, paste0(path,"Research Project/IAT_Retest/Recovery/Meta-Analysis/PDRecovDf.csv"))
+write.csv(PDrecovDf, "~/Documents/GitHub/MPT-Reliability/Recovery/output/PDRecovDf.csv")
 ```
 
 # Meta-Analysis
@@ -221,20 +227,20 @@ P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
 # R to Z transform
 
 ```{r}
-QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=ACbb1, ni=N, slab=Study, var.names=c("ACbb_Z","ACbb_SE"))
-QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=ACwg1, ni=N, slab=Study, var.names=c("ACwg_Z","ACwg_SE"))
-QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=D1, ni=N, slab=Study, var.names=c("D_Z","D_SE"))
-QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=G1, ni=N, slab=Study, var.names=c("G_Z","G_SE"))
-QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=OB1, ni=N, slab=Study, var.names=c("OB_Z","OB_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=ACbb1_r, ni=N, slab=Study, var.names=c("ACbb_Z","ACbb_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=ACwg1_r, ni=N, slab=Study, var.names=c("ACwg_Z","ACwg_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=D1_r, ni=N, slab=Study, var.names=c("D_Z","D_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=G1_r, ni=N, slab=Study, var.names=c("G_Z","G_SE"))
+QuadRecovDf <- escalc(data=QuadRecovDf, measure="ZCOR", ri=OB1_r, ni=N, slab=Study, var.names=c("OB_Z","OB_SE"))
 ```
 
 ```{r}
-PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Ab1, ni=N, slab=Study, var.names=c("Ab_Z","Ab_SE"))
-PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Aw1, ni=N, slab=Study, var.names=c("Aw_Z","Aw_SE"))
-PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cb1, ni=N, slab=Study, var.names=c("Cb_Z","Cb_SE"))
-PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cp1, ni=N, slab=Study, var.names=c("Cp_Z","Cp_SE"))
-PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cu1, ni=N, slab=Study, var.names=c("Cu_Z","Cu_SE"))
-PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cw1, ni=N, slab=Study, var.names=c("Cw_Z","Cw_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Ab1_r, ni=N, slab=Study, var.names=c("Ab_Z","Ab_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Aw1_r, ni=N, slab=Study, var.names=c("Aw_Z","Aw_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cb1_r, ni=N, slab=Study, var.names=c("Cb_Z","Cb_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cp1_r, ni=N, slab=Study, var.names=c("Cp_Z","Cp_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cu1_r, ni=N, slab=Study, var.names=c("Cu_Z","Cu_SE"))
+PDrecovDf <- escalc(data=PDrecovDf, measure="ZCOR", ri=Cw1_r, ni=N, slab=Study, var.names=c("Cw_Z","Cw_SE"))
 ```
 
 ```{r}
@@ -287,13 +293,13 @@ I2gen(res.mod_Cw)
 
 ```{r}
 library(dplyr)
-ICCsonly <- QuadRecovDf %>% select(ACbb1:OB1)
+ICCsonly <- QuadRecovDf %>% select(ACbb1_r:OB1_UB)
 colnames(ICCsonly)[apply(ICCsonly,1,which.max)]
 colnames(ICCsonly)[apply(ICCsonly,1,which.min)]
 ```
 
 ```{r}
-ICCsonly <- PDrecovDf %>% select(Ab1:Cw1)
+ICCsonly <- PDrecovDf %>% select(Ab1_r:Cw1_UB)
 table(colnames(ICCsonly)[apply(ICCsonly,1,which.max)])
 table(colnames(ICCsonly)[apply(ICCsonly,1,which.min)])
 ```
@@ -320,7 +326,7 @@ MPT_MA_df <- data.frame(Param=c("D","OB","ACwg","ACbb","G"),
                  fisherz2r(res.mod_G$ci.ub)
            )
 )
-write.csv(MPT_MA_df, paste0(path,"Research Project/IAT_Retest/Recovery/Meta-Analysis/Quad_Recovery_Meta.csv"))
+write.csv(MPT_MA_df, "~/Documents/GitHub/MPT-Reliability/Recovery/output/Quad_Recovery_Meta.csv")
 ```
 
 
@@ -350,10 +356,61 @@ pd_MA_df <- data.frame(Param=c("Ab","Aw","Cb","Cp","Cu","Cw") ,
                  fisherz2r(res.mod_Cw$ci.ub)
            )
 )
-write.csv(pd_MA_df, paste0(path,"Research Project/IAT_Retest/Recovery/Meta-Analysis/PD_Recovery_Meta.csv"))
+write.csv(pd_MA_df, "~/Documents/GitHub/MPT-Reliability/Recovery/output/PD_Recovery_Meta.csv")
+```
+
+# Combined
+
+```{r}
+Ds <- QuadRecovDf %>% select(1:N) %>% select(contains("D1_"), Time) %>% bind_cols(Param=QuadRecovDf$Study) %>% rename(Recov = D1_r, CI.LB = D1_LB, CI.UB = D1_UB) %>% bind_cols(type=1)
+Ds<-MPT_MA_df %>% filter(Param=="D") %>% bind_cols(type=0) %>% bind_rows(Ds)
+
+OBs <- QuadRecovDf %>% select(1:N) %>% select(contains("OB1_"), Time) %>% bind_cols(Param=QuadRecovDf$Study) %>% rename(Recov = OB1_r, CI.LB = OB1_LB, CI.UB = OB1_UB) %>% bind_cols(type=1)
+OBs<-MPT_MA_df %>% filter(Param=="OB") %>% bind_cols(type=0) %>% bind_rows(OBs)
+
+ACbbs <- QuadRecovDf %>% select(1:N) %>% select(contains("ACbb1_"), Time) %>% bind_cols(Param=QuadRecovDf$Study) %>% rename(Recov = ACbb1_r, CI.LB = ACbb1_LB, CI.UB = ACbb1_UB) %>% bind_cols(type=1)
+ACbbs<-MPT_MA_df %>% filter(Param=="ACbb") %>% bind_cols(type=0) %>% bind_rows(ACbbs)
+
+ACwgs <- QuadRecovDf %>% select(1:N) %>% select(contains("ACwg1_"), Time) %>% bind_cols(Param=QuadRecovDf$Study) %>% rename(Recov = ACwg1_r, CI.LB = ACwg1_LB, CI.UB = ACwg1_UB) %>% bind_cols(type=1)
+ACwgs<-MPT_MA_df %>% filter(Param=="ACwg") %>% bind_cols(type=0) %>% bind_rows(ACwgs)
+
+Gs <- QuadRecovDf %>% select(1:N) %>% select(contains("G1_", ignore.case = FALSE), Time) %>% bind_cols(Param=QuadRecovDf$Study) %>% rename(Recov = G1_r, CI.LB = G1_LB, CI.UB = G1_UB) %>% bind_cols(type=1)
+Gs<-MPT_MA_df %>% filter(Param=="G") %>% bind_cols(type=0) %>% bind_rows(Gs)
+
+comb_Quad_Df <- rbind(Ds,ACwgs,ACbbs,OBs,Gs)
+comb_Quad_Df$Time[is.na(comb_Quad_Df$Time)] <- "Meta"
+
+write.csv(comb_Quad_Df, "~/Documents/GitHub/MPT-Reliability/Recovery/output/combQuad_Recovery_Df.csv")
 ```
 
 
+```{r}
+Abs <- PDrecovDf %>% select(1:N) %>% select(contains("Ab1_"), Time) %>% bind_cols(Param=PDrecovDf$Study) %>% rename(Recov = Ab1_r, CI.LB = Ab1_LB, CI.UB = Ab1_UB) %>% bind_cols(type=1)
+Abs<-pd_MA_df %>% filter(Param=="Ab") %>% bind_cols(type=0) %>% bind_rows(Abs)
 
+Aws <- PDrecovDf %>% select(1:N) %>% select(contains("Aw1_"), Time) %>% bind_cols(Param=PDrecovDf$Study) %>% rename(Recov = Aw1_r, CI.LB = Aw1_LB, CI.UB = Aw1_UB) %>% bind_cols(type=1)
+Aws<-pd_MA_df %>% filter(Param=="Aw") %>% bind_cols(type=0) %>% bind_rows(Aws)
+
+Cps <- PDrecovDf %>% select(1:N) %>% select(contains("Cp1_"), Time) %>% bind_cols(Param=PDrecovDf$Study) %>% rename(Recov = Cp1_r, CI.LB = Cp1_LB, CI.UB = Cp1_UB) %>% bind_cols(type=1)
+Cps<-pd_MA_df %>% filter(Param=="Cp") %>% bind_cols(type=0) %>% bind_rows(Cps)
+
+Cws <- PDrecovDf %>% select(1:N) %>% select(contains("Cw1_"), Time) %>% bind_cols(Param=PDrecovDf$Study) %>% rename(Recov = Cw1_r, CI.LB = Cw1_LB, CI.UB = Cw1_UB) %>% bind_cols(type=1)
+Cws<-pd_MA_df %>% filter(Param=="Cw") %>% bind_cols(type=0) %>% bind_rows(Cws)
+
+Cus <- PDrecovDf %>% select(1:N) %>% select(contains("Cu1_"), Time) %>% bind_cols(Param=PDrecovDf$Study) %>% rename(Recov = Cu1_r, CI.LB = Cu1_LB, CI.UB = Cu1_UB) %>% bind_cols(type=1)
+Cus<-pd_MA_df %>% filter(Param=="Cu") %>% bind_cols(type=0) %>% bind_rows(Cus)
+
+Cbs <- PDrecovDf %>% select(1:N) %>% select(contains("Cb1_"), Time) %>% bind_cols(Param=PDrecovDf$Study) %>% rename(Recov = Cb1_r, CI.LB = Cb1_LB, CI.UB = Cb1_UB) %>% bind_cols(type=1)
+Cbs<-pd_MA_df %>% filter(Param=="Cb") %>% bind_cols(type=0) %>% bind_rows(Cbs)
+
+comb_PD_Df <- rbind(Cus,Cps,Cbs,Cws,Aws,Abs)
+comb_PD_Df$Time[is.na(comb_PD_Df$Time)] <- "Meta"
+
+write.csv(comb_PD_Df, "~/Documents/GitHub/MPT-Reliability/Recovery/output/combPD_Recovery_Df.csv")
+```
+
+```{r}
+Ds<-pivot_wider(Ds, names_from = Time, values_from = c("Recov","CI.LB","CI.UB"))
+```
 
 

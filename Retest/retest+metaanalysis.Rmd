@@ -1087,7 +1087,7 @@ ACwgs<-MPT_MA_df %>% filter(Param=="ACwg") %>% bind_cols(type=0) %>% bind_rows(A
 Gs <- reliability_Df %>% select(1:N) %>% select(contains("G_",ignore.case = F)) %>% bind_cols(Param=reliability_Df$Study) %>% rename(ICC = G_ICC, CI.LB = G_LB, CI.UB = G_UB) %>% bind_cols(type=1)
 Gs<-MPT_MA_df %>% filter(Param=="G") %>% bind_cols(type=0) %>% bind_rows(Gs)
 
-comb_Quad_Df <- rbind(Ds,OBs,ACbbs,ACwgs,Gs)
+comb_Quad_Df <- rbind(Ds,ACwgs,OBs,ACbbs,Gs)
 
 write.csv(comb_Quad_Df, "~/Documents/GitHub/MPT-Reliability/Retest/output/combQuad_Df.csv")
 ```
@@ -1111,7 +1111,7 @@ Cus<-pd_MA_df %>% filter(Param=="Cu") %>% bind_cols(type=0) %>% bind_rows(Cus)
 Cws <- PDrel_Df %>% select(1:N) %>% select(contains("Cw_")) %>% bind_cols(Param=PDrel_Df$Study) %>% rename(ICC = Cw_ICC, CI.LB = Cw_LB, CI.UB = Cw_UB) %>% bind_cols(type=1)
 Cws<-pd_MA_df %>% filter(Param=="Cw") %>% bind_cols(type=0) %>% bind_rows(Cws)
 
-comb_PD_Df <- rbind(Abs,Aws,Cbs,Cps,Cus,Cws)
+comb_PD_Df <- rbind(Cps,Cus,Cbs,Cws,Abs,Aws)
 
 write.csv(comb_PD_Df, "~/Documents/GitHub/MPT-Reliability/Retest/output/combPD_Df.csv")
 ```

@@ -85,6 +85,14 @@ colnames(Q.Lai2)[1] <- "subID"
 Q.Lai2 <- cbind(Q.Lai2, Study = "Lai 2")
 
 Quad <- rbind(Q.Cal,Q.PI,Q.Gaw,Q.For,Q.Lai1,Q.Lai2)
+
+
+Quad$Study[Quad$Study=="PI"]<-"Project Implicit, 2020"
+Quad$Study[Quad$Study=="Calanchini"]<-"Wilson & Calanchini, 2022"
+Quad$Study[Quad$Study=="Lai 1"]<-"Lai et al., 2016 (Study 1)  "
+Quad$Study[Quad$Study=="Lai 2"]<-"Lai et al., 2016 (Study 2)  "
+Quad$Study[Quad$Study=="Gawronski"]<-"Gawronski et al., 2017"
+Quad$Study[Quad$Study=="Forscher"]<-"Forscher et al., 2017"
 ```
 
 ```{r}
@@ -157,6 +165,13 @@ colnames(P.Lai2)[1] <- "subID"
 P.Lai2 <- cbind(P.Lai2, Study = "Lai 2")
 
 PD <- rbind(P.Cal,P.PI,P.Gaw,P.For,P.Lai1,P.Lai2)
+
+PD$Study[PD$Study=="PI"]<-"Project Implicit, 2020"
+PD$Study[PD$Study=="Calanchini"]<-"Wilson & Calanchini, 2022"
+PD$Study[PD$Study=="Lai 1"]<-"Lai et al., 2016 (Study 1)  "
+PD$Study[PD$Study=="Lai 2"]<-"Lai et al., 2016 (Study 2)  "
+PD$Study[PD$Study=="Gawronski"]<-"Gawronski et al., 2017"
+PD$Study[PD$Study=="Forscher"]<-"Forscher et al., 2017"
 ```
 
 # Quad Model
@@ -406,7 +421,7 @@ dt$`COPD outcome` <- paste(rep(" ", 20), collapse = " ")
 tm <- forest_theme(base_size = 10,
                    refline_lty = "solid",
                    ci_pch = c(15, 18),
-                   ci_col = c("#377eb8", "#4daf4a"),
+                   ci_lty = c("dashed", "solid"),
                    footnote_col = "blue",
                    legend_name = "Group",
                    legend_value = c("Trt 1", "Trt 2"),
@@ -414,19 +429,16 @@ tm <- forest_theme(base_size = 10,
                    vertline_col = c("#d6604d", "#bababa"))
 
 p <- forest(dt[,c(1, 19, 21, 20, 22)],
-            est = list(dt$est_gp1,
-                       dt$est_gp2,
+            est = list(
                        dt$est_gp3,
                        dt$est_gp4),
-            lower = list(dt$low_gp1,
-                         dt$low_gp2,
+            lower = list(
                          dt$low_gp3,
                          dt$low_gp4), 
-            upper = list(dt$hi_gp1,
-                         dt$hi_gp2,
+            upper = list(
                          dt$hi_gp3,
                          dt$hi_gp4),
-            ci_column = c(3, 5),
+            ci_column = c(5),
             ref_line = 1,
             vert_line = c(0.5, 2),
             nudge_y = 0.2,
@@ -446,8 +458,8 @@ dt$Param[dt$Param=="ACbb"]<-"Activation Black-Bad"
 dt$Param[dt$Param=="ACwg"]<-"Activation White-Good"
 dt$Param[dt$Param=="G"]<-"Guessing"
 
-dt$Param[dt$Param=="PI"]<-"Project Implicit 2020"
-dt$Param[dt$Param=="Calanchini"]<-"Wilson & Calanchini, 2020"
+dt$Param[dt$Param=="PI"]<-"Project Implicit, 2020"
+dt$Param[dt$Param=="Calanchini"]<-"Wilson & Calanchini, 2022"
 dt$Param[dt$Param=="Lai1"]<-"Lai et al., 2016 (Study 1)  "
 dt$Param[dt$Param=="Lai2"]<-"Lai et al., 2016 (Study 2)  "
 dt$Param[dt$Param=="Gawronski"]<-"Gawronski et al., 2017"
@@ -464,14 +476,15 @@ dt$`ICC (95% CI)` <- ifelse(is.na(dt$ICC), "",
                              sprintf("%.2f [%.2f, %.2f]",
                                      dt$ICC, dt$CI.LB, dt$CI.UB))
 dt<-dt[c(1:4,6:7)]
+colnames(dt)[colnames(dt)=="ICC (95% CI)"] <- "     "
 
 library(forestploter)
 p <- forest(
-  dt,
+  dt[c(1,5,6)],
             est = dt$ICC,
             lower = dt$CI.LB, 
             upper = dt$CI.UB,
-            ci_column = 5,
+            ci_column = 2,
             ref_line = .4,
             xlim = c(-.1, 1),
             ticks_at = c(0, .4,.6, .75, 1),
@@ -498,9 +511,9 @@ p <- edit_plot(p, row = paramInds, which = "background",
 
 ```{r}
 
-png("~/Desktop/test.png", units="in", width=10, height=10, res=300)
+png("~/Desktop/Quad_TRT.png", units="in", width=10, height=10, res=300)
 # insert ggplot code
-plot(p[,c(1:2,6:7)])
+plot(p)
 dev.off()
 ```
 
@@ -544,8 +557,8 @@ dt$Param[dt$Param=="Cw"]<-"Control White"
 dt$Param[dt$Param=="Cu"]<-"Control Bad"
 dt$Param[dt$Param=="Cp"]<-"Control Good"
 
-dt$Param[dt$Param=="PI"]<-"Project Implicit 2020"
-dt$Param[dt$Param=="Calanchini"]<-"Wilson & Calanchini, 2020"
+dt$Param[dt$Param=="PI"]<-"Project Implicit, 2020"
+dt$Param[dt$Param=="Calanchini"]<-"Wilson & Calanchini, 2022"
 dt$Param[dt$Param=="Lai1"]<-"Lai et al., 2016 (Study 1)  "
 dt$Param[dt$Param=="Lai2"]<-"Lai et al., 2016 (Study 2)  "
 dt$Param[dt$Param=="Gawronski"]<-"Gawronski et al., 2017"
@@ -557,19 +570,22 @@ dt$Param <- ifelse(dt$type==0,
                       paste0(" ", dt$Param))
 
 colnames(dt)[colnames(dt)=="Param"] <- "   "
+colnames(dt)[colnames(dt)=="Param"] <- "   "
 dt$` ` <- paste(rep(" ", 20), collapse = " ")
 dt$`ICC (95% CI)` <- ifelse(is.na(dt$ICC), "",
                              sprintf("%.2f [%.2f, %.2f]",
                                      dt$ICC, dt$CI.LB, dt$CI.UB))
 dt<-dt[c(1:4,6:7)]
 
+colnames(dt)[colnames(dt)=="ICC (95% CI)"] <- "    "
+
 library(forestploter)
 p <- forest(
-  dt,
+  dt[c(1,5,6)],
             est = dt$ICC,
             lower = dt$CI.LB, 
             upper = dt$CI.UB,
-            ci_column = 5,
+            ci_column = 2,
             ref_line = .4,
             xlim = c(-.1, 1),
             ticks_at = c(0, .4,.6, .75, 1),
@@ -596,9 +612,10 @@ p <- edit_plot(p, row = paramInds, which = "background",
 
 ```{r}
 
-png("~/Desktop/test.png", units="in", width=10, height=10, res=300)
+png("~/Desktop/PDP_TRT.png", units="in", width=10, height=10, res=300)
 # insert ggplot code
-plot(p[,c(1:2,6:7)])
+plot(p)
+#plot(p[,c(1:2,6:7)])
 dev.off()
 ```
 
@@ -1108,4 +1125,232 @@ dt,
             xlim = c(0, 1),
             ticks_at = c(0, .4,.6, .75, 1))
 plot(p[,c(1:2,6:7)])
+```
+
+
+```{r}
+# Read provided sample example data
+dt <- read.csv(system.file("extdata", "example_data.csv", package = "forestploter"))
+
+# indent the subgroup if there is a number in the placebo column
+dt$Subgroup <- ifelse(is.na(dt$Placebo), 
+                      dt$Subgroup,
+                      paste0("   ", dt$Subgroup))
+
+# NA to blank or NA will be transformed to carachter.
+dt$`n` <- ifelse(is.na(dt$Treatment), "", dt$Treatment)
+dt$`n ` <- ifelse(is.na(dt$Placebo), "", dt$Placebo)
+
+# Add two blank column for CI
+dt$`CVD outcome` <- paste(rep(" ", 20), collapse = " ")
+dt$`COPD outcome` <- paste(rep(" ", 20), collapse = " ")
+
+# Set-up theme
+tm <- forest_theme(base_size = 10,
+                   refline_lty = "solid",
+                   ci_pch = c(15, 18),
+                   ci_lty = c("dashed", "solid"),
+                   footnote_col = "blue",
+                   legend_name = "Group",
+                   legend_value = c("Trt 1", "Trt 2"),
+                   vertline_lty = c("dashed", "dotted"),
+                   vertline_col = c("#d6604d", "#bababa"))
+
+p <- forest(dt[,c(1, 19, 21, 20, 22)],
+            est = list(
+                       dt$est_gp3,
+                       dt$est_gp4),
+            lower = list(
+                         dt$low_gp3,
+                         dt$low_gp4), 
+            upper = list(
+                         dt$hi_gp3,
+                         dt$hi_gp4),
+            ci_column = c(5),
+            ref_line = 1,
+            vert_line = c(0.5, 2),
+            nudge_y = 0.2,
+            theme = tm)
+
+plot(p)
+
+```
+
+
+```{r}
+dt <- read.csv("~/Documents/GitHub/MPT-Reliability/Recovery/output/combQuad_Recovery_Df.csv")[2:7]
+dt$id <- unlist(lapply(1:5, function(x) rep(x,times=13)))
+
+dt$Param[dt$Param=="D"]<-"Detection"
+dt$Param[dt$Param=="OB"]<-"Overcoming Bias"
+dt$Param[dt$Param=="ACbb"]<-"Activation Black-Bad"
+dt$Param[dt$Param=="ACwg"]<-"Activation White-Good"
+dt$Param[dt$Param=="G"]<-"Guessing"
+
+dt$Param[dt$Param=="PI"]<-"Project Implicit, 2020"
+dt$Param[dt$Param=="Calanchini"]<-"Wilson & Calanchini, 2022"
+dt$Param[dt$Param=="Lai1"]<-"Lai et al., 2016 (Study 1)  "
+dt$Param[dt$Param=="Lai2"]<-"Lai et al., 2016 (Study 2)  "
+dt$Param[dt$Param=="Gawronski"]<-"Gawronski et al., 2017"
+dt$Param[dt$Param=="Forscher"]<-"Forscher et al., 2017"
+
+# indent the subgroup if there is a number in the placebo column
+dt$Param <- ifelse(dt$type==0, 
+                      dt$Param,
+                      paste0(" ", dt$Param))
+
+dt$` ` <- paste(rep(" ", 20), collapse = " ")
+dt$`Recovery (95% CI)` <- ifelse(is.na(dt$Recov), "",
+                             sprintf("%.2f [%.2f, %.2f]",
+                                     dt$Recov, dt$CI.LB, dt$CI.UB))
+
+dt2 <- pivot_wider(dt, id_cols = c("Param","id"),  names_from = c(Time), values_from = c(Recov,CI.LB,CI.UB,`Recovery (95% CI)`) )
+dt2$`Recovery [95% CI]` <- ifelse(!is.na(dt2$`Recovery (95% CI)_Meta`), paste0("                 ",dt2$`Recovery (95% CI)_Meta`), paste0("T1 :", paste0(dt2$`Recovery (95% CI)_Time1`), " ; ", "T2: ", paste0(dt2$`Recovery (95% CI)_Time2`)))
+dt2$` ` <- paste(rep(" ", 20), collapse = " ")
+
+
+dt3<-dt2 %>% select(Param,Recov_Meta:11,15,16)
+
+colnames(dt3)[colnames(dt3)=="Param"] <- "   "
+colnames(dt3)[colnames(dt3)=="Recovery [95% CI]"] <- "    "
+
+dt3$size_Meta <- ifelse(is.na(dt3$Recov_Meta), NA, 1.2)
+dt3$size_T1 <- ifelse(is.na(dt3$Recov_Time1), NA, .6)
+dt3$size_T2 <- ifelse(is.na(dt3$Recov_Time2), NA, .6)
+
+# Set-up theme
+tm <- forest_theme(
+                   ci_pch = c(15, 16, 17),
+                   ci_col = c("black","red","blue"),
+                   ci_lty = c( "solid", "dashed", "dotted"),
+                  # footnote_col = "blue",
+                   legend_name = " ",
+                  legend_position = "bottom",
+                   legend_value = c("Meta-Analsis ", "Time 1 ", "Time 2 "))
+
+library(forestploter)
+p <- forest(
+  dt3[c(1,12,11)],
+            est = list(dt3$Recov_Meta, dt3$Recov_Time1, dt3$Recov_Time2),
+            lower = list(dt3$CI.LB_Meta, dt3$CI.LB_Time1, dt3$CI.LB_Time2), 
+            upper = list(dt3$CI.UB_Meta, dt3$CI.UB_Time1, dt3$CI.UB_Time2),
+            ci_column = 2,
+            ref_line = .7,
+            xlim = c(-.1, 1),
+            ticks_at = c(0, 2, .5, .7, 1),
+  sizes = list(dt3$size_Meta, dt3$size_T1, dt3$size_T2),
+  theme = tm
+)
+plot(p)
+
+library(grid)
+p <- edit_plot(p,
+               row = seq(from=1,to=nrow(dt3),by=7),
+               gp = gpar(fontface = c("bold","italic")
+                         ), col = 1)
+
+studyInds <- setdiff(1:nrow(dt3),seq(from=1,to=nrow(dt3),by=7))
+paramInds <- seq(from=1,to=nrow(dt),by=7)
+
+p <- edit_plot(p, row = studyInds, which = "background",
+               gp = gpar(fill = "white"))
+p <- edit_plot(p, row = paramInds, which = "background",
+               gp = gpar(fill = "grey"))
+
+```
+
+```{r}
+png("~/Desktop/Quad_RecovForest.png", units="in", width=10, height=15, res=300)
+plot(p)
+dev.off()
+```
+
+
+```{r}
+dt <- read.csv("~/Documents/GitHub/MPT-Reliability/Recovery/output/combPD_Recovery_Df.csv")[2:7]
+dt$id <- unlist(lapply(1:6, function(x) rep(x,times=13)))
+
+dt$Param[dt$Param=="Ab"]<-"Automatic Black"
+dt$Param[dt$Param=="Aw"]<-"Automatic White"
+dt$Param[dt$Param=="Cb"]<-"Control Black"
+dt$Param[dt$Param=="Cw"]<-"Control White"
+dt$Param[dt$Param=="Cu"]<-"Control Bad"
+dt$Param[dt$Param=="Cp"]<-"Control Good"
+
+dt$Param[dt$Param=="PI"]<-"Project Implicit, 2020"
+dt$Param[dt$Param=="Calanchini"]<-"Wilson & Calanchini, 2022"
+dt$Param[dt$Param=="Lai1"]<-"Lai et al., 2016 (Study 1)  "
+dt$Param[dt$Param=="Lai2"]<-"Lai et al., 2016 (Study 2)  "
+dt$Param[dt$Param=="Gawronski"]<-"Gawronski et al., 2017"
+dt$Param[dt$Param=="Forscher"]<-"Forscher et al., 2017"
+
+# indent the subgroup if there is a number in the placebo column
+dt$Param <- ifelse(dt$type==0, 
+                      dt$Param,
+                      paste0(" ", dt$Param))
+
+dt$` ` <- paste(rep(" ", 20), collapse = " ")
+dt$`Recovery (95% CI)` <- ifelse(is.na(dt$Recov), "",
+                             sprintf("%.2f [%.2f, %.2f]",
+                                     dt$Recov, dt$CI.LB, dt$CI.UB))
+
+dt2 <- pivot_wider(dt, id_cols = c("Param","id"),  names_from = c(Time), values_from = c(Recov,CI.LB,CI.UB,`Recovery (95% CI)`) )
+dt2$`Recovery [95% CI]` <- ifelse(!is.na(dt2$`Recovery (95% CI)_Meta`), paste0("                 ",dt2$`Recovery (95% CI)_Meta`), paste0("T1 :", paste0(dt2$`Recovery (95% CI)_Time1`), " ; ", "T2: ", paste0(dt2$`Recovery (95% CI)_Time2`)))
+dt2$` ` <- paste(rep(" ", 20), collapse = " ")
+
+
+dt3<-dt2 %>% select(Param,Recov_Meta:11,15,16)
+
+colnames(dt3)[colnames(dt3)=="Param"] <- "   "
+colnames(dt3)[colnames(dt3)=="Recovery [95% CI]"] <- "    "
+
+dt3$size_Meta <- ifelse(is.na(dt3$Recov_Meta), NA, 1.2)
+dt3$size_T1 <- ifelse(is.na(dt3$Recov_Time1), NA, .6)
+dt3$size_T2 <- ifelse(is.na(dt3$Recov_Time2), NA, .6)
+
+# Set-up theme
+tm <- forest_theme(
+                   ci_pch = c(15, 16, 17),
+                   ci_col = c("black","red","blue"),
+                   ci_lty = c( "solid", "dashed", "dotted"),
+                  # footnote_col = "blue",
+                   legend_name = " ",
+                  legend_position = "bottom",
+                   legend_value = c("Meta-Analsis ", "Time 1 ", "Time 2 "))
+
+library(forestploter)
+p <- forest(
+  dt3[c(1,12,11)],
+            est = list(dt3$Recov_Meta, dt3$Recov_Time1, dt3$Recov_Time2),
+            lower = list(dt3$CI.LB_Meta, dt3$CI.LB_Time1, dt3$CI.LB_Time2), 
+            upper = list(dt3$CI.UB_Meta, dt3$CI.UB_Time1, dt3$CI.UB_Time2),
+            ci_column = 2,
+            ref_line = .7,
+            xlim = c(-.1, 1),
+            ticks_at = c(0, 2, .5, .7, 1),
+  sizes = list(dt3$size_Meta, dt3$size_T1, dt3$size_T2),
+  theme = tm
+)
+plot(p)
+
+library(grid)
+p <- edit_plot(p,
+               row = seq(from=1,to=nrow(dt3),by=7),
+               gp = gpar(fontface = c("bold","italic")
+                         ), col = 1)
+
+studyInds <- setdiff(1:nrow(dt3),seq(from=1,to=nrow(dt3),by=7))
+paramInds <- seq(from=1,to=nrow(dt),by=7)
+
+p <- edit_plot(p, row = studyInds, which = "background",
+               gp = gpar(fill = "white"))
+p <- edit_plot(p, row = paramInds, which = "background",
+               gp = gpar(fill = "grey"))
+
+```
+
+```{r}
+png("~/Desktop/PD_RecovForest.png", units="in", width=10, height=18, res=300)
+plot(p)
+dev.off()
 ```
