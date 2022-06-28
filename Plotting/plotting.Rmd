@@ -7,6 +7,7 @@ output: html_notebook
 library(ggplot2)
 library(grid)
 library(forestploter)
+library(tidyverse)
 ```
 
 ```{r}
@@ -182,9 +183,9 @@ PD$Study[PD$Study=="Forscher"]<-"Forscher et al., 2017"
 ACbbScatter <- ggplot(Quad, aes(x=ACbb1_T1, y=ACbb1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black-Bad Associate",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association Black-Bad",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
-  jtools::theme_apa()
+  jtools::theme_apa() 
 ACbbScatter
 ggsave(paste0(saveto,"ACbbScatter.jpg"),dpi=600)
 ```
@@ -195,8 +196,8 @@ ggsave(paste0(saveto,"ACbbScatter.jpg"),dpi=600)
 ACwgScatter <- ggplot(Quad, aes(x=ACwg1_T1, y=ACwg1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White-Good Associate",
-       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association White-Good",
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) + theme(legend.title = element_text(size = 9)) +
   jtools::theme_apa()
 ACwgScatter
 ggsave(paste0(saveto,"ACwgScatter.jpg"),dpi=600)
@@ -209,7 +210,7 @@ DScatter <- ggplot(Quad, aes(x=D1_T1, y=D1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Detection",
-       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) + theme(legend.title = element_text(size = 9)) +
   jtools::theme_apa()
 DScatter
 ggsave(paste0(saveto,"DScatter.jpg"),dpi=600)
@@ -222,7 +223,7 @@ OBScatter <- ggplot(Quad, aes(x=OB1_T1, y=OB1_T2, color=Study)) +
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
              color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Overcoming Bias",
-       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+       x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) + theme(legend.title = element_text(size = 9))  +
   jtools::theme_apa()
 OBScatter
 ggsave(paste0(saveto,"OBScatter.jpg"),dpi=600)
@@ -250,11 +251,11 @@ QuadPanel1
 
 require(grid)   # for the textGrob() function
 
-QuadPanel2 <- ggarrange(ACwgScatter + rremove("ylab") + rremove("xlab"), 
-                        ACbbScatter + rremove("ylab") + rremove("xlab"),
-                        DScatter + rremove("ylab") + rremove("xlab"),
-                        OBScatter + rremove("ylab") + rremove("xlab"),
-                        GScatter + rremove("ylab") + rremove("xlab"),
+QuadPanel2 <- ggarrange(ACwgScatter  + theme(plot.title = element_text(size=12)) + theme(legend.text = element_text(size = 8)) + rremove("ylab") + rremove("xlab"), 
+                        ACbbScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        DScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        OBScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        GScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
           ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = "top",
           align = "hv", 
                     font.label = list(size = 10, color = "black", face = "bold", family = NULL, position = "top"))
@@ -274,7 +275,7 @@ ggsave(paste0(saveto,"QuadPanel.jpg"),dpi=600)
 AbScatter <- ggplot(PD, aes(x=Ab1_T1, y=Ab1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black Automatic",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic Black",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 AbScatter
@@ -287,46 +288,46 @@ ggsave(paste0(saveto,"AbScatter.jpg"),dpi=600)
 AwScatter <- ggplot(PD, aes(x=Aw1_T1, y=Aw1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White Automatic",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic White",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 AwScatter
 ggsave(paste0(saveto,"AwScatter.jpg"),dpi=600)
 ```
 
-## Control-P
+## Control Good
 
 ```{r}
 CpScatter <- ggplot(PD, aes(x=Cp1_T1, y=Cp1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-P",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Good",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CpScatter
 ggsave(paste0(saveto,"CpScatter.jpg"),dpi=600)
 ```
 
-## Control-U
+## Control Bad
 
 ```{r}
 CuScatter <- ggplot(PD, aes(x=Cu1_T1, y=Cu1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-U",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Bad",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CuScatter
 ggsave(paste0(saveto,"CuScatter.jpg"),dpi=600)
 ```
 
-## Control-White
+## Control White
 
 ```{r}
 CwScatter <- ggplot(PD, aes(x=Cw1_T1, y=Cw1_T2, color=Study)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control-White",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control White",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CwScatter
@@ -356,12 +357,12 @@ PDPanel1
 
 require(grid)   # for the textGrob() function
 
-PDPanel2 <- ggarrange(AwScatter + rremove("ylab") + rremove("xlab"), 
-                        AbScatter + rremove("ylab") + rremove("xlab"),
-                        CuScatter + rremove("ylab") + rremove("xlab"),
-                        CpScatter + rremove("ylab") + rremove("xlab"),
-                        CbScatter + rremove("ylab") + rremove("xlab"),
-                        CwScatter + rremove("ylab") + rremove("xlab"),
+PDPanel2 <- ggarrange(AwScatter  + theme(plot.title = element_text(size=12))  + theme(legend.text = element_text(size = 8)) + rremove("ylab") + rremove("xlab"), 
+                        AbScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        CuScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        CpScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        CbScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        CwScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
           ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = "top",
           align = "hv", 
                     font.label = list(size = 10, color = "black", face = "bold", family = NULL, position = "top"))
@@ -370,84 +371,8 @@ PDPanel2 <- annotate_figure(PDPanel2, left = textGrob("Time 2", rot = 90, vjust 
 PDPanel2
 ggsave(paste0(saveto,"PDPanel.jpg"),dpi=600)
 ```
+
 # Reliability Meta-Analysis
-
-```{r}
-Quad_TRT_relDf <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/Quad_TRT_relDf.csv")
-longQuadRels <- data.frame(Study = Quad_TRT_relDf$Study, stack(Quad_TRT_relDf[3:7]))
-colnames(longQuadRels) <- c("Study","ICC","Parameter")
-longQuadRels$Parameter <- gsub("_ICC", "" ,longQuadRels$Parameter)
-p<- ggplot(longQuadRels, aes(x=Study, y=ICC, group=Parameter, color=Parameter)) + 
-  geom_point()
-p
-```
-
-```{r}
-dt <- read.csv("~/Documents/GitHub/MPT-Reliability/Retest/output/Quad_TRT_metaDf.csv")[2:5]
-colnames(dt)[colnames(dt)=="Param"] <- "Parameter"
-dt$` ` <- paste(rep(" ", 20), collapse = " ")
-dt$`ICC (95% CI)` <- ifelse(is.na(dt$ICC), "",
-                             sprintf("%.2f (%.2f to %.2f)",
-                                     dt$ICC, dt$CI.LB, dt$CI.UB))
-p <- forest(#dt[,c(1,5:6)],
-dt,
-            est = dt$ICC,
-            lower = dt$CI.LB, 
-            upper = dt$CI.UB,
-            ci_column = 5,
-            ref_line = .4,
-            xlim = c(0, 1),
-            ticks_at = c(0, .4,.6, .75, 1))
-plot(p[,c(1:2,6:7)])
-```
-```{r}
-# Read provided sample example data
-dt <- read.csv(system.file("extdata", "example_data.csv", package = "forestploter"))
-
-# indent the subgroup if there is a number in the placebo column
-dt$Subgroup <- ifelse(is.na(dt$Placebo), 
-                      dt$Subgroup,
-                      paste0("   ", dt$Subgroup))
-
-# NA to blank or NA will be transformed to carachter.
-dt$`n` <- ifelse(is.na(dt$Treatment), "", dt$Treatment)
-dt$`n ` <- ifelse(is.na(dt$Placebo), "", dt$Placebo)
-
-# Add two blank column for CI
-dt$`CVD outcome` <- paste(rep(" ", 20), collapse = " ")
-dt$`COPD outcome` <- paste(rep(" ", 20), collapse = " ")
-
-# Set-up theme
-tm <- forest_theme(base_size = 10,
-                   refline_lty = "solid",
-                   ci_pch = c(15, 18),
-                   ci_lty = c("dashed", "solid"),
-                   footnote_col = "blue",
-                   legend_name = "Group",
-                   legend_value = c("Trt 1", "Trt 2"),
-                   vertline_lty = c("dashed", "dotted"),
-                   vertline_col = c("#d6604d", "#bababa"))
-
-p <- forest(dt[,c(1, 19, 21, 20, 22)],
-            est = list(
-                       dt$est_gp3,
-                       dt$est_gp4),
-            lower = list(
-                         dt$low_gp3,
-                         dt$low_gp4), 
-            upper = list(
-                         dt$hi_gp3,
-                         dt$hi_gp4),
-            ci_column = c(5),
-            ref_line = 1,
-            vert_line = c(0.5, 2),
-            nudge_y = 0.2,
-            theme = tm)
-
-plot(p)
-
-```
-
 
 ```{r}
 dt <- read.csv("~/Documents/GitHub/MPT-Reliability/Retest/output/combQuad_Df.csv")[2:6]
@@ -510,41 +435,17 @@ p <- edit_plot(p, row = paramInds, which = "background",
 
 
 ```{r}
-
-png("~/Desktop/Quad_TRT.png", units="in", width=10, height=10, res=300)
-# insert ggplot code
+png(paste0(saveto,"Quad_TRT.png"), units="in", width=10, height=10, res=300)
 plot(p)
 dev.off()
 ```
 
 
 ```{r}
-dt <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/PD_TRT_metaDf.csv")[2:5]
-colnames(dt)[colnames(dt)=="Param"] <- "Parameter"
-dt$` ` <- paste(rep(" ", 20), collapse = " ")
-dt$`ICC (95% CI)` <- ifelse(is.na(dt$ICC), "",
-                             sprintf("%.2f (%.2f, %.2f)",
-                                     dt$ICC, dt$CI.LB, dt$CI.UB))
-p <- forest(#dt[,c(1,5:6)],
-dt,
-            est = dt$ICC,
-            lower = dt$CI.LB, 
-            upper = dt$CI.UB,
-            ci_column = 5,
-            ref_line = .4,
-            xlim = c(0, 1),
-            ticks_at = c(0, .4,.6, .75, 1))
-plot(p[,c(1:2,6:7)])
-```
-
-```{r}
-PD_TRT_relDf <- read.csv("/Volumes/Research Project/IAT_Retest/Meta-Analysis/PD_TRT_relDf.csv")
-longPDRels <- data.frame(Study = PD_TRT_relDf$Study, stack(PD_TRT_relDf[3:8]))
-colnames(longPDRels) <- c("Study","ICC","Parameter")
-longPDRels$Parameter <- gsub("_ICC", "" ,longPDRels$Parameter)
-p<- ggplot(longPDRels, aes(x=Study, y=ICC, group=Parameter, color=Parameter)) + 
-  geom_point()
-p
+# ggsave function
+ggplot2::ggsave(paste0(saveto,"Quad_TRT.png"),
+                dpi = 300,
+                width = 10, height = 10, units = "in", plot=p)
 ```
 
 ```{r}
@@ -611,15 +512,17 @@ p <- edit_plot(p, row = paramInds, which = "background",
 
 
 ```{r}
-
-png("~/Desktop/PDP_TRT.png", units="in", width=10, height=10, res=300)
-# insert ggplot code
+png(paste0(saveto,"PDP_TRT.png"), units="in", width=10, height=12, res=300)
 plot(p)
-#plot(p[,c(1:2,6:7)])
 dev.off()
 ```
 
-
+```{r}
+# ggsave function
+ggplot2::ggsave(paste0(saveto,"PDP_TRT.png"),
+                dpi = 300,
+                width = 10, height = 12, units = "in", plot=p)
+```
 
 
 # Recovery
@@ -751,6 +654,13 @@ PD.recovs <- PD.recovs[order(PD.recovs$Study, PD.recovs$time),]
 
 #PD.orig.recovs <- cbind(PD.orig,PD.recovs)
 PD.orig.recovs <- merge(PD.orig, PD.recovs, by = c("subID","Study","time"))
+
+PD.orig.recovs$Study[PD.orig.recovs$Study=="PI"]<-"Project Implicit, 2020"
+PD.orig.recovs$Study[PD.orig.recovs$Study=="Calanchini"]<-"Wilson & Calanchini, 2022"
+PD.orig.recovs$Study[PD.orig.recovs$Study=="Lai 1"]<-"Lai et al., 2016 (Study 1)  "
+PD.orig.recovs$Study[PD.orig.recovs$Study=="Lai 2"]<-"Lai et al., 2016 (Study 2)  "
+PD.orig.recovs$Study[PD.orig.recovs$Study=="Gawronski"]<-"Gawronski et al., 2017"
+PD.orig.recovs$Study[PD.orig.recovs$Study=="Forscher"]<-"Forscher et al., 2017"
 ```
 
 
@@ -764,7 +674,7 @@ PD.orig.recovs <- merge(PD.orig, PD.recovs, by = c("subID","Study","time"))
 AbScatter <- ggplot(PD.orig.recovs, aes(x=Ab1_O, y=Ab1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black Automatic",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic Black",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 AbScatter
@@ -777,46 +687,46 @@ ggsave(paste0(saveto,"AbScatterREC.jpg"),dpi=600)
 AwScatter <- ggplot(PD.orig.recovs, aes(x=Aw1_O, y=Aw1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White Automatic",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic White",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 AwScatter
 ggsave(paste0(saveto,"AwScatterREC.jpg"),dpi=600)
 ```
 
-### Control-P
+### Control Good
 
 ```{r}
 CpScatter <- ggplot(PD.orig.recovs, aes(x=Cp1_O, y=Cp1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="P Control",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Good",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CpScatter
 ggsave(paste0(saveto,"CpScatterREC.jpg"),dpi=600)
 ```
 
-### Control-U
+### Control Bad
 
 ```{r}
 CuScatter <- ggplot(PD.orig.recovs, aes(x=Cu1_O, y=Cu1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="U Control",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Bad",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CuScatter
 ggsave(paste0(saveto,"CuScatterREC.jpg"),dpi=600)
 ```
 
-### Control-White
+### Control White
 
 ```{r}
 CwScatter <- ggplot(PD.orig.recovs, aes(x=Cw1_O, y=Cw1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White Control",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control White",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CwScatter
@@ -829,7 +739,7 @@ ggsave(paste0(saveto,"CwScatterREC.jpg"),dpi=600)
 CbScatter <- ggplot(PD.orig.recovs, aes(x=Cb1_O, y=Cb1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black Control",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Black",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CbScatter
@@ -846,13 +756,13 @@ PDPanel1
 
 require(grid)   # for the textGrob() function
 
-PDPanel2 <- ggarrange(AwScatter + rremove("ylab") + rremove("xlab"), 
-                        AbScatter + rremove("ylab") + rremove("xlab"),
-                        CuScatter + rremove("ylab") + rremove("xlab"),
-                        CpScatter + rremove("ylab") + rremove("xlab"),
-                        CbScatter + rremove("ylab") + rremove("xlab"),
-                        CwScatter + rremove("ylab") + rremove("xlab"),
-          ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = "top",
+PDPanel2 <- ggarrange(AwScatter  + theme(plot.title = element_text(size=12)) + theme(legend.text = element_text(size = 8)) + rremove("ylab") + rremove("xlab"), 
+                        AbScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        CuScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        CpScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        CbScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        CwScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+          ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = c("top","bottom"),
           align = "hv", 
                     font.label = list(size = 10, color = "black", face = "bold", family = NULL, position = "top"))
 PDPanel2 <- annotate_figure(PDPanel2, left = textGrob("Recovered", rot = 90, vjust = 1, gp = gpar(cex = 1.3)),
@@ -991,6 +901,13 @@ Quad.recovs <- Quad.recovs[order(Quad.recovs$Study, Quad.recovs$time),]
 
 #Quad.orig.recovs <- cbind(Quad.orig,Quad.recovs)
 Quad.orig.recovs <- merge(Quad.orig, Quad.recovs, by = c("subID","Study","time"))
+
+Quad.orig.recovs$Study[Quad.orig.recovs$Study=="PI"]<-"Project Implicit, 2020"
+Quad.orig.recovs$Study[Quad.orig.recovs$Study=="Calanchini"]<-"Wilson & Calanchini, 2022"
+Quad.orig.recovs$Study[Quad.orig.recovs$Study=="Lai 1"]<-"Lai et al., 2016 (Study 1)  "
+Quad.orig.recovs$Study[Quad.orig.recovs$Study=="Lai 2"]<-"Lai et al., 2016 (Study 2)  "
+Quad.orig.recovs$Study[Quad.orig.recovs$Study=="Gawronski"]<-"Gawronski et al., 2017"
+Quad.orig.recovs$Study[Quad.orig.recovs$Study=="Forscher"]<-"Forscher et al., 2017"
 ```
 
 ## Quad Model
@@ -1001,7 +918,7 @@ Quad.orig.recovs <- merge(Quad.orig, Quad.recovs, by = c("subID","Study","time")
 ACbbScatter <- ggplot(Quad.orig.recovs, aes(x=ACbb1_O, y=ACbb1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Black-Bad Associate",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association Black-Bad",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 ACbbScatter
@@ -1014,7 +931,7 @@ ggsave(paste0(saveto,"ACbbScatterREC.jpg"),dpi=600)
 ACwgScatter <- ggplot(Quad.orig.recovs, aes(x=ACwg1_O, y=ACwg1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
   geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="White-Good Associate",
+             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association White-Good",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 ACwgScatter
@@ -1070,11 +987,11 @@ QuadPanel1
 
 require(grid)   # for the textGrob() function
 
-QuadPanel2 <- ggarrange(ACwgScatter + rremove("ylab") + rremove("xlab"), 
-                        ACbbScatter + rremove("ylab") + rremove("xlab"),
-                        DScatter + rremove("ylab") + rremove("xlab"),
-                        OBScatter + rremove("ylab") + rremove("xlab"),
-                        GScatter + rremove("ylab") + rremove("xlab"),
+QuadPanel2 <- ggarrange(ACwgScatter  + theme(plot.title = element_text(size=12))  + theme(legend.text = element_text(size = 8)) + rremove("ylab") + rremove("xlab"), 
+                        ACbbScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        DScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        OBScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
+                        GScatter  + theme(plot.title = element_text(size=12)) + rremove("ylab") + rremove("xlab"),
           ncol = 3, nrow = 2, common.legend = T, labels = NULL, legend = "top",
           align = "hv", 
                     font.label = list(size = 10, color = "black", face = "bold", family = NULL, position = "top"))
@@ -1087,94 +1004,7 @@ ggsave(paste0(saveto,"QuadPanelREC.jpg"),dpi=600)
 
 # Recovery Meta-Analysis
 
-```{r}
-dt <- read.csv("/Volumes/Research Project/IAT_Retest/Recovery/Meta-Analysis/Quad_Recovery_Meta.csv")[2:5]
-colnames(dt)[colnames(dt)=="Param"] <- "Parameter"
-colnames(dt)[colnames(dt)=="Recov"] <- "Recovery"
-dt$` ` <- paste(rep(" ", 20), collapse = " ")
-dt$`Recovery (95% CI)` <- ifelse(is.na(dt$Recovery), "",
-                             sprintf("%.2f (%.2f to %.2f)",
-                                     dt$Recovery, dt$CI.LB, dt$CI.UB))
-p <- forest(#dt[,c(1,5:6)],
-dt,
-            est = dt$Recovery,
-            lower = dt$CI.LB, 
-            upper = dt$CI.UB,
-            ci_column = 5,
-            ref_line = .4,
-            xlim = c(0, 1),
-            ticks_at = c(0, .4,.6, .75, 1))
-plot(p[,c(1:2,6:7)])
-```
-
-```{r}
-dt <- read.csv("/Volumes/Research Project/IAT_Retest/Recovery/Meta-Analysis/PD_Recovery_Meta.csv")[2:5]
-colnames(dt)[colnames(dt)=="Param"] <- "Parameter"
-colnames(dt)[colnames(dt)=="Recov"] <- "Recovery"
-dt$` ` <- paste(rep(" ", 20), collapse = " ")
-dt$`Recovery (95% CI)` <- ifelse(is.na(dt$Recovery), "",
-                             sprintf("%.2f (%.2f to %.2f)",
-                                     dt$Recovery, dt$CI.LB, dt$CI.UB))
-p <- forest(#dt[,c(1,5:6)],
-dt,
-            est = dt$Recovery,
-            lower = dt$CI.LB, 
-            upper = dt$CI.UB,
-            ci_column = 5,
-            ref_line = .4,
-            xlim = c(0, 1),
-            ticks_at = c(0, .4,.6, .75, 1))
-plot(p[,c(1:2,6:7)])
-```
-
-
-```{r}
-# Read provided sample example data
-dt <- read.csv(system.file("extdata", "example_data.csv", package = "forestploter"))
-
-# indent the subgroup if there is a number in the placebo column
-dt$Subgroup <- ifelse(is.na(dt$Placebo), 
-                      dt$Subgroup,
-                      paste0("   ", dt$Subgroup))
-
-# NA to blank or NA will be transformed to carachter.
-dt$`n` <- ifelse(is.na(dt$Treatment), "", dt$Treatment)
-dt$`n ` <- ifelse(is.na(dt$Placebo), "", dt$Placebo)
-
-# Add two blank column for CI
-dt$`CVD outcome` <- paste(rep(" ", 20), collapse = " ")
-dt$`COPD outcome` <- paste(rep(" ", 20), collapse = " ")
-
-# Set-up theme
-tm <- forest_theme(base_size = 10,
-                   refline_lty = "solid",
-                   ci_pch = c(15, 18),
-                   ci_lty = c("dashed", "solid"),
-                   footnote_col = "blue",
-                   legend_name = "Group",
-                   legend_value = c("Trt 1", "Trt 2"),
-                   vertline_lty = c("dashed", "dotted"),
-                   vertline_col = c("#d6604d", "#bababa"))
-
-p <- forest(dt[,c(1, 19, 21, 20, 22)],
-            est = list(
-                       dt$est_gp3,
-                       dt$est_gp4),
-            lower = list(
-                         dt$low_gp3,
-                         dt$low_gp4), 
-            upper = list(
-                         dt$hi_gp3,
-                         dt$hi_gp4),
-            ci_column = c(5),
-            ref_line = 1,
-            vert_line = c(0.5, 2),
-            nudge_y = 0.2,
-            theme = tm)
-
-plot(p)
-
-```
+## Quad
 
 
 ```{r}
@@ -1265,6 +1095,13 @@ plot(p)
 dev.off()
 ```
 
+```{r}
+# ggsave function
+ggplot2::ggsave(paste0(saveto,"Quad_RecovForest.png"),
+                dpi = 300,
+                width = 10, height = 15, units = "in", plot=p)
+```
+
 
 ```{r}
 dt <- read.csv("~/Documents/GitHub/MPT-Reliability/Recovery/output/combPD_Recovery_Df.csv")[2:7]
@@ -1353,4 +1190,11 @@ p <- edit_plot(p, row = paramInds, which = "background",
 png("~/Desktop/PD_RecovForest.png", units="in", width=10, height=18, res=300)
 plot(p)
 dev.off()
+```
+
+```{r}
+# ggsave function
+ggplot2::ggsave(paste0(saveto,"PD_RecovForest.png"),
+                dpi = 300,
+                width = 10, height = 18, units = "in", plot=p)
 ```

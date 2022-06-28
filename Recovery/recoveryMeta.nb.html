@@ -1770,10 +1770,25 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShwc3ljaClcbmxpYnJhcnkobWV0YWZvcilcbmBgYCJ9 -->
-<pre class="r"><code>library(psych)
-library(metafor)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShwc3ljaClcbmBgYCJ9 -->
+<pre class="r"><code>library(psych)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhwc3ljaOKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMC41XG4ifQ== -->
+<pre><code>Warning: package ‘psych’ was built under R version 4.0.5</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtZXRhZm9yKVxuYGBgIn0= -->
+<pre class="r"><code>library(metafor)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBNYXRyaXhcbldhcm5pbmc6IHBhY2thZ2Ug4oCYTWF0cml44oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gNC4wLjVcblxuTG9hZGluZyB0aGUgJ21ldGFmb3InIHBhY2thZ2UgKHZlcnNpb24gMy4wLTIpLiBGb3IgYW5cbmludHJvZHVjdGlvbiB0byB0aGUgcGFja2FnZSBwbGVhc2UgdHlwZTogaGVscChtZXRhZm9yKVxuXG5BbiB1cGRhdGVkIHZlcnNpb24gb2YgdGhlIHBhY2thZ2UgKHZlcnNpb24gMy40LTApIGlzIGF2YWlsYWJsZSFcblRvIHVwZGF0ZSB0byB0aGlzIHZlcnNpb24gdHlwZTogaW5zdGFsbC5wYWNrYWdlcyhcIm1ldGFmb3JcIilcbiJ9 -->
+<pre><code>Loading required package: Matrix
+Warning: package ‘Matrix’ was built under R version 4.0.5
+
+Loading the &#39;metafor&#39; package (version 3.0-2). For an
+introduction to the package please type: help(metafor)
+
+An updated version of the package (version 3.4-0) is available!
+To update to this version type: install.packages(&quot;metafor&quot;)</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="set-path" class="section level1">
@@ -2458,47 +2473,56 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbklDQ3Nvbmx5IDwtIFF1YWRSZWNvdkRmICU+JSBzZWxlY3QoQUNiYjFfcjpPQjFfY2kudWIpXG5gYGAifQ== -->
-<pre class="r"><code>library(dplyr)
-ICCsonly &lt;- QuadRecovDf %&gt;% select(ACbb1_r:OB1_ci.ub)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmBgYCJ9 -->
+<pre class="r"><code>library(dplyr)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gYHNlbGVjdCgpYDpcbiEgQ2FuJ3Qgc3Vic2V0IGNvbHVtbnMgdGhhdCBkb24ndCBleGlzdC5cbuKcliBDb2x1bW4gYE9CMV9jaS51YmAgZG9lc24ndCBleGlzdC5cbkJhY2t0cmFjZTpcbiAgMS4gUXVhZFJlY292RGYgJT4lIHNlbGVjdChBQ2JiMV9yOk9CMV9jaS51YilcbiAgMy4gZHBseXI6OjpzZWxlY3QuZGF0YS5mcmFtZSguLCBBQ2JiMV9yOk9CMV9jaS51YilcbiAgNi4gdGlkeXNlbGVjdDo6ZXZhbF9zZWxlY3QoZXhwcihjKC4uLikpLCAuZGF0YSlcbiAgNy4gdGlkeXNlbGVjdDo6OmV2YWxfc2VsZWN0X2ltcGwoLi4uKVxuIDE2LiB0aWR5c2VsZWN0Ojo6dmFyc19zZWxlY3RfZXZhbCguLi4pXG4gICAgIC4uLlxuIDIxLiB0aWR5c2VsZWN0Ojo6ZXZhbF9jb2xvbihleHByLCBkYXRhX21hc2ssIGNvbnRleHRfbWFzaylcbiAyMi4gdGlkeXNlbGVjdDo6OndhbGtfZGF0YV90cmVlKC4uLilcbiAyMy4gdGlkeXNlbGVjdDo6OmFzX2luZGljZXNfc2VsX2ltcGwoLi4uKVxuIDI0LiB0aWR5c2VsZWN0Ojo6YXNfaW5kaWNlc19pbXBsKHgsIHZhcnMsIGNhbGwgPSBjYWxsLCBzdHJpY3QgPSBzdHJpY3QpXG4gMjUuIHRpZHlzZWxlY3Q6OjpjaHJfYXNfbG9jYXRpb25zKHgsIHZhcnMsIGNhbGwgPSBjYWxsKVxuIn0= -->
-<pre><code>Error in `select()`:
-! Can&#39;t subset columns that don&#39;t exist.
-✖ Column `OB1_ci.ub` doesn&#39;t exist.
-Backtrace:
-  1. QuadRecovDf %&gt;% select(ACbb1_r:OB1_ci.ub)
-  3. dplyr:::select.data.frame(., ACbb1_r:OB1_ci.ub)
-  6. tidyselect::eval_select(expr(c(...)), .data)
-  7. tidyselect:::eval_select_impl(...)
- 16. tidyselect:::vars_select_eval(...)
-     ...
- 21. tidyselect:::eval_colon(expr, data_mask, context_mask)
- 22. tidyselect:::walk_data_tree(...)
- 23. tidyselect:::as_indices_sel_impl(...)
- 24. tidyselect:::as_indices_impl(x, vars, call = call, strict = strict)
- 25. tidyselect:::chr_as_locations(x, vars, call = call)</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYZHBseXLigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOnN0YXRz4oCZOlxuXG4gICAgZmlsdGVyLCBsYWdcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmJhc2XigJk6XG5cbiAgICBpbnRlcnNlY3QsIHNldGRpZmYsIHNldGVxdWFsLCB1bmlvblxuIn0= -->
+<pre><code>
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSUNDc29ubHkgPC0gUXVhZFJlY292RGYgJT4lIHNlbGVjdChBQ2JiMV9yOk9CMV9VQilcbmNvbG5hbWVzKElDQ3Nvbmx5KVthcHBseShJQ0Nzb25seSwxLHdoaWNoLm1heCldXG5gYGAifQ== -->
+<pre class="r"><code>ICCsonly &lt;- QuadRecovDf %&gt;% select(ACbb1_r:OB1_UB)
+colnames(ICCsonly)[apply(ICCsonly,1,which.max)]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkQxX1VCXCIgICAgXCJEMV9VQlwiICAgIFwiRDFfVUJcIiAgICBcIkQxX1VCXCIgICAgXCJEMV9VQlwiICAgIFwiRDFfVUJcIiAgICBcIkFDYmIxX1VCXCIgXCJEMV9VQlwiICAgIFwiRDFfVUJcIiAgIFxuWzEwXSBcIkQxX1VCXCIgICAgXCJEMV9VQlwiICAgIFwiRDFfVUJcIiAgIFxuIn0= -->
+<pre><code> [1] &quot;D1_UB&quot;    &quot;D1_UB&quot;    &quot;D1_UB&quot;    &quot;D1_UB&quot;    &quot;D1_UB&quot;    &quot;D1_UB&quot;    &quot;ACbb1_UB&quot; &quot;D1_UB&quot;    &quot;D1_UB&quot;   
+[10] &quot;D1_UB&quot;    &quot;D1_UB&quot;    &quot;D1_UB&quot;   </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoSUNDc29ubHkpW2FwcGx5KElDQ3Nvbmx5LDEsd2hpY2gubWluKV1cbmBgYCJ9 -->
+<pre class="r"><code>colnames(ICCsonly)[apply(ICCsonly,1,which.min)]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkcxX0xCXCIgICAgXCJBQ2JiMV9MQlwiIFwiT0IxX0xCXCIgICBcIkcxX0xCXCIgICAgXCJPQjFfTEJcIiAgIFwiT0IxX0xCXCIgICBcIkcxX0xCXCIgICAgXCJHMV9MQlwiICAgIFwiRzFfTEJcIiAgIFxuWzEwXSBcIkcxX0xCXCIgICAgXCJHMV9MQlwiICAgIFwiRzFfTEJcIiAgIFxuIn0= -->
+<pre><code> [1] &quot;G1_LB&quot;    &quot;ACbb1_LB&quot; &quot;OB1_LB&quot;   &quot;G1_LB&quot;    &quot;OB1_LB&quot;   &quot;OB1_LB&quot;   &quot;G1_LB&quot;    &quot;G1_LB&quot;    &quot;G1_LB&quot;   
+[10] &quot;G1_LB&quot;    &quot;G1_LB&quot;    &quot;G1_LB&quot;   </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSUNDc29ubHkgPC0gUERyZWNvdkRmICU+JSBzZWxlY3QoQWIxX3I6Q3cxX3IpXG50YWJsZShjb2xuYW1lcyhJQ0Nzb25seSlbYXBwbHkoSUNDc29ubHksMSx3aGljaC5tYXgpXSlcbmBgYCJ9 -->
-<pre class="r"><code>ICCsonly &lt;- PDrecovDf %&gt;% select(Ab1_r:Cw1_r)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSUNDc29ubHkgPC0gUERyZWNvdkRmICU+JSBzZWxlY3QoQWIxX3I6Q3cxX1VCKVxudGFibGUoY29sbmFtZXMoSUNDc29ubHkpW2FwcGx5KElDQ3Nvbmx5LDEsd2hpY2gubWF4KV0pXG5gYGAifQ== -->
+<pre class="r"><code>ICCsonly &lt;- PDrecovDf %&gt;% select(Ab1_r:Cw1_UB)
 table(colnames(ICCsonly)[apply(ICCsonly,1,which.max)])</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5DYjFfY2kudWIgQ3AxX2NpLnViIEN1MV9jaS51YiBcbiAgICAgICAgNiAgICAgICAgIDIgICAgICAgICA0IFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5DYjFfVUIgQ3AxX1VCIEN1MV9VQiBDdzFfVUIgXG4gICAgIDQgICAgICAyICAgICAgNCAgICAgIDIgXG4ifQ== -->
 <pre><code>
-Cb1_ci.ub Cp1_ci.ub Cu1_ci.ub 
-        6         2         4 </code></pre>
+Cb1_UB Cp1_UB Cu1_UB Cw1_UB 
+     4      2      4      2 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUoY29sbmFtZXMoSUNDc29ubHkpW2FwcGx5KElDQ3Nvbmx5LDEsd2hpY2gubWluKV0pXG5gYGAifQ== -->
 <pre class="r"><code>table(colnames(ICCsonly)[apply(ICCsonly,1,which.min)])</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5BYjFfY2kubGIgQXcxX2NpLmxiIFxuICAgICAgICA3ICAgICAgICAgNSBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BYjFfTEIgQXcxX0xCIFxuICAgICA3ICAgICAgNSBcbiJ9 -->
 <pre><code>
-Ab1_ci.lb Aw1_ci.lb 
-        7         5 </code></pre>
+Ab1_LB Aw1_LB 
+     7      5 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2619,6 +2643,13 @@ write.csv(comb_PD_Df, &quot;~/Documents/GitHub/MPT-Reliability/Recovery/output/c
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuRHM8LXBpdm90X3dpZGVyKERzLCBuYW1lc19mcm9tID0gVGltZSwgdmFsdWVzX2Zyb20gPSBjKFwiUmVjb3ZcIixcIkNJLkxCXCIsXCJDSS5VQlwiKSlcbmBgYCJ9 -->
+<pre class="r"><code>Ds&lt;-pivot_wider(Ds, names_from = Time, values_from = c(&quot;Recov&quot;,&quot;CI.LB&quot;,&quot;CI.UB&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gcGl2b3Rfd2lkZXIoRHMsIG5hbWVzX2Zyb20gPSBUaW1lLCB2YWx1ZXNfZnJvbSA9IGMoXCJSZWNvdlwiLCBcIkNJLkxCXCIsICA6IFxuICBjb3VsZCBub3QgZmluZCBmdW5jdGlvbiBcInBpdm90X3dpZGVyXCJcbiJ9 -->
+<pre><code>Error in pivot_wider(Ds, names_from = Time, values_from = c(&quot;Recov&quot;, &quot;CI.LB&quot;,  : 
+  could not find function &quot;pivot_wider&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
