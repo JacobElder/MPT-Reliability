@@ -182,8 +182,8 @@ PD$Study[PD$Study=="Forscher"]<-"Forscher et al., 2017"
 ```{r}
 ACbbScatter <- ggplot(Quad, aes(x=ACbb1_T1, y=ACbb1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association Black-Bad",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1) + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association Black-Bad",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa() 
 ACbbScatter
@@ -196,8 +196,8 @@ ggsave(paste0(saveto,"ACbbScatter.tiff"),dpi=600)
 ```{r}
 ACwgScatter <- ggplot(Quad, aes(x=ACwg1_T1, y=ACwg1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association White-Good",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association White-Good",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) + theme(legend.title = element_text(size = 9)) +
   jtools::theme_apa()
 ACwgScatter
@@ -210,8 +210,8 @@ ggsave(paste0(saveto,"ACwgScatter.tiff"),dpi=600)
 ```{r}
 DScatter <- ggplot(Quad, aes(x=D1_T1, y=D1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Detection",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Detection",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) + theme(legend.title = element_text(size = 9)) +
   jtools::theme_apa()
 DScatter
@@ -224,8 +224,8 @@ ggsave(paste0(saveto,"DScatter.tiff"),dpi=600)
 ```{r}
 OBScatter <- ggplot(Quad, aes(x=OB1_T1, y=OB1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Overcoming Bias",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Overcoming Bias",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) + theme(legend.title = element_text(size = 9))  +
   jtools::theme_apa()
 OBScatter
@@ -238,8 +238,8 @@ ggsave(paste0(saveto,"OBScatter.tiff"),dpi=600)
 ```{r}
 GScatter <- ggplot(Quad, aes(x=G1_T1, y=G1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Guessing",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Guessing",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 ggsave(paste0(saveto,"GScatter.jpg"),dpi=600)
@@ -280,8 +280,8 @@ ggsave(paste0(saveto,"QuadPanel.tiff"),dpi=600)
 ```{r}
 AbScatter <- ggplot(PD, aes(x=Ab1_T1, y=Ab1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic Black",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic Black",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 AbScatter
@@ -294,8 +294,8 @@ ggsave(paste0(saveto,"AbScatter.tiff"),dpi=600)
 ```{r}
 AwScatter <- ggplot(PD, aes(x=Aw1_T1, y=Aw1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic White",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic White",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 AwScatter
@@ -308,8 +308,8 @@ ggsave(paste0(saveto,"AwScatter.tiff"),dpi=600)
 ```{r}
 CpScatter <- ggplot(PD, aes(x=Cp1_T1, y=Cp1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Good",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Good",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CpScatter
@@ -322,8 +322,8 @@ ggsave(paste0(saveto,"CpScatter.tiff"),dpi=600)
 ```{r}
 CuScatter <- ggplot(PD, aes(x=Cu1_T1, y=Cu1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Bad",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Bad",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CuScatter
@@ -336,8 +336,8 @@ ggsave(paste0(saveto,"CuScatter.tiff"),dpi=600)
 ```{r}
 CwScatter <- ggplot(PD, aes(x=Cw1_T1, y=Cw1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control White",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control White",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CwScatter
@@ -350,8 +350,8 @@ ggsave(paste0(saveto,"CwScatter.tiff"),dpi=600)
 ```{r}
 CbScatter <- ggplot(PD, aes(x=Cb1_T1, y=Cb1_T2, color=Study)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Black",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Black",
        x="Time 1", y = "Time 2") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CbScatter
@@ -764,8 +764,8 @@ PD.orig.recovs$Study[PD.orig.recovs$Study=="Forscher"]<-"Forscher et al., 2017"
 ```{r}
 AbScatter <- ggplot(PD.orig.recovs, aes(x=Ab1_O, y=Ab1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype = "dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic Black",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic Black",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 
@@ -779,8 +779,8 @@ ggsave(paste0(saveto,"AbScatterREC.tiff"),dpi=600)
 ```{r}
 AwScatter <- ggplot(PD.orig.recovs, aes(x=Aw1_O, y=Aw1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic White",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)   + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Automatic White",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 AwScatter
@@ -793,8 +793,8 @@ ggsave(paste0(saveto,"AwScatterREC.tiff"),dpi=600)
 ```{r}
 CpScatter <- ggplot(PD.orig.recovs, aes(x=Cp1_O, y=Cp1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Good",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)   + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Good",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CpScatter
@@ -807,8 +807,8 @@ ggsave(paste0(saveto,"AwScatterREC.tiff"),dpi=600)
 ```{r}
 CuScatter <- ggplot(PD.orig.recovs, aes(x=Cu1_O, y=Cu1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Bad",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)   + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Bad",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CuScatter
@@ -821,8 +821,8 @@ ggsave(paste0(saveto,"CuScatterREC.tiff"),dpi=600)
 ```{r}
 CwScatter <- ggplot(PD.orig.recovs, aes(x=Cw1_O, y=Cw1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control White",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control White",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CwScatter
@@ -835,8 +835,8 @@ ggsave(paste0(saveto,"CwScatterREC.tiff"),dpi=600)
 ```{r}
 CbScatter <- ggplot(PD.orig.recovs, aes(x=Cb1_O, y=Cb1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Black",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Control Black",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 CbScatter
@@ -1017,8 +1017,8 @@ Quad.orig.recovs$Study[Quad.orig.recovs$Study=="Forscher"]<-"Forscher et al., 20
 ```{r}
 ACbbScatter <- ggplot(Quad.orig.recovs, aes(x=ACbb1_O, y=ACbb1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association Black-Bad",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association Black-Bad",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 ACbbScatter
@@ -1031,8 +1031,8 @@ ggsave(paste0(saveto,"ACbbScatterREC.tiff"),dpi=600)
 ```{r}
 ACwgScatter <- ggplot(Quad.orig.recovs, aes(x=ACwg1_O, y=ACwg1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association White-Good",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Association White-Good",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 ACwgScatter
@@ -1045,8 +1045,8 @@ ggsave(paste0(saveto,"ACwgScatterREC.tiff"),dpi=600)
 ```{r}
 DScatter <- ggplot(Quad.orig.recovs, aes(x=D1_O, y=D1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Detection",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Detection",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 DScatter
@@ -1059,8 +1059,8 @@ ggsave(paste0(saveto,"DScatterREC.tiff"),dpi=600)
 ```{r}
 OBScatter <- ggplot(Quad.orig.recovs, aes(x=OB1_O, y=OB1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Overcoming Bias",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Overcoming Bias",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 OBScatter
@@ -1073,8 +1073,8 @@ ggsave(paste0(saveto,"OBScatterREC.tiff"),dpi=600)
 ```{r}
 GScatter <- ggplot(Quad.orig.recovs, aes(x=G1_O, y=G1_R, color=Study, shape=time)) + 
   geom_point(alpha = .2)+
-  geom_smooth(method=lm, se=TRUE, linetype="dashed",
-             color="grey")  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Guessing",
+  geom_smooth(method=lm, se=TRUE,
+             color="darkgrey",alpha=1)  + geom_abline(intercept = 0, slope = 1) + ylim(0,1) + xlim(0,1) + labs(title="Guessing",
        x="Original", y = "Recovered") + guides(colour = guide_legend(override.aes = list(alpha = 1))) +
   jtools::theme_apa()
 GScatter
